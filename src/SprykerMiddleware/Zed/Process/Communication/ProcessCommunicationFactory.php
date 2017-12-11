@@ -1,12 +1,10 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Communication;
 
-use Generated\Shared\Transfer\IteratorSettingsTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Iterator;
 use League\Pipeline\FingersCrossedProcessor;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
-use SprykerMiddleware\Zed\Process\Business\Iterator\CsvIterator;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage;
@@ -62,16 +60,6 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     protected function getProcessIteratorsList(): array
     {
         return [];
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\IteratorSettingsTransfer $iteratorSettingsTransfer
-     *
-     * @return \Iterator
-     */
-    protected function createProductImportIterator(IteratorSettingsTransfer $iteratorSettingsTransfer): Iterator
-    {
-        return new CsvIterator($this->getConfig()->getProductImportPath(), $iteratorSettingsTransfer);
     }
 
     /**

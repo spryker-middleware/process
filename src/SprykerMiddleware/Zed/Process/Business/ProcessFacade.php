@@ -9,4 +9,16 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
  */
 class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
 {
+    /**
+     * @param array $payload
+     * @param array $map
+     *
+     * @return array
+     */
+    public function map(array $payload, array $map)
+    {
+        return $this->getFactory()
+            ->createMapper($map)
+            ->map($payload);
+    }
 }
