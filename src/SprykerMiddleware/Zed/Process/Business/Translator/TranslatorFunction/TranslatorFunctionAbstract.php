@@ -21,7 +21,7 @@ abstract class TranslatorFunctionAbstract implements TranslatorFunctionInterface
      *
      * @return void
      */
-    public function setOptions($options)
+    public function setOptions(array $options): void
     {
         $this->options = $options;
     }

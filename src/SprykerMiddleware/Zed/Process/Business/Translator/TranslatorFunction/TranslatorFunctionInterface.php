@@ -16,5 +16,5 @@ interface TranslatorFunctionInterface
      *
      * @return void
      */
-    public function setOptions($options);
+    public function setOptions(array $options): void;
 }
