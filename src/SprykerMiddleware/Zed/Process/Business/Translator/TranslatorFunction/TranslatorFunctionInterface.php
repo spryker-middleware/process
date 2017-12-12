@@ -10,4 +10,11 @@ interface TranslatorFunctionInterface
      * @return mixed
      */
     public function translate($value);
+
+    /**
+     * @param array $options
+     *
+     * @return void
+     */
+    public function setOptions($options);
 }
