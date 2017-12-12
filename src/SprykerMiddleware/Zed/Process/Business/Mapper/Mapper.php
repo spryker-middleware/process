@@ -7,14 +7,14 @@ class Mapper implements MapperInterface
     /**
      * @var array
      */
-    protected $mapping;
+    protected $map;
 
     /**
-     * @param array $mapping
+     * @param array $map
      */
-    public function __construct(array $mapping)
+    public function __construct(array $map)
     {
-        $this->mapping = $mapping;
+        $this->map = $map;
     }
 
     /**
@@ -25,7 +25,7 @@ class Mapper implements MapperInterface
     public function map(array $payload): array
     {
         $result = [];
-        foreach ($this->mapping as $key => $value) {
+        foreach ($this->map as $key => $value) {
             $result = $this->mapByRule($result, $payload, $key, $value);
         }
 
@@ -109,7 +109,7 @@ class Mapper implements MapperInterface
     {
         $originKey = reset($value);
         $originArray = $this->getValueByKey($payload, $originKey);
-        $originArray  = $this->filterArray($originArray, $value);
+        $originArray = $this->filterArray($originArray, $value);
         if (!isset($value['itemMap'])) {
             return $this->setValue($result, $key, $originArray);
         }

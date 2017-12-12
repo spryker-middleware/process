@@ -21,4 +21,17 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
             ->createMapper($map)
             ->map($payload);
     }
+
+    /**
+     * @param array $payload
+     * @param array $dictionary
+     *
+     * @return array
+     */
+    public function translate(array $payload, array $dictionary)
+    {
+        return $this->getFactory()
+            ->createTranslator($dictionary)
+            ->translate($payload);
+    }
 }
