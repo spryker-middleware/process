@@ -3,9 +3,11 @@
 namespace SprykerMiddleware\Zed\Process\Business;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
 
 /**
@@ -30,6 +32,14 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     public function createTranslator(array $dictionary): TranslatorInterface
     {
-        return new Translator($dictionary);
+        return new Translator($dictionary, $this->createTranslatorFunctionResolver());
+    }
+
+    /**
+     * @return \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver
+     */
+    protected function createTranslatorFunctionResolver(): AbstractClassResolver
+    {
+        return new TranslatorFunctionResolver();
     }
 }
