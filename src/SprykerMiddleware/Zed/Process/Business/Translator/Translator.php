@@ -70,6 +70,9 @@ class Translator implements TranslatorInterface
         if (is_array($translation)) {
             return $this->translateValue($result, $payload, $key, $translation);
         }
+        if (is_string($translation)) {
+            return $this->translateValue($result, $payload, $key, [$translation]);
+        }
 
         return $result;
     }
