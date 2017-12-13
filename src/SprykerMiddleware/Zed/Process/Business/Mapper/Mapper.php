@@ -2,6 +2,8 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
+use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
+
 class Mapper implements MapperInterface
 {
     /**
@@ -10,11 +12,18 @@ class Mapper implements MapperInterface
     protected $map;
 
     /**
-     * @param array $map
+     * @var \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface
      */
-    public function __construct(array $map)
+    protected $payloadManager;
+
+    /**
+     * @param array $map
+     * @param \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface $payloadManager
+     */
+    public function __construct(array $map, PayloadManagerInterface $payloadManager)
     {
         $this->map = $map;
+        $this->payloadManager = $payloadManager;
     }
 
     /**
@@ -43,58 +52,17 @@ class Mapper implements MapperInterface
     protected function mapByRule(array $result, array $payload, string $key, $value): array
     {
         if (is_callable($value)) {
-            return $this->setValue($result, $key, $value($payload));
+            return $this->payloadManager->setValue($result, $key, $value($payload));
         }
         if (is_array($value)) {
             return $this->mapArray($result, $payload, $key, $value);
         }
         if (is_string($value) || is_int($value)) {
-            return $this->setValue($result, $key, $this->getValueByKey($payload, $value));
+            return $this->payloadManager
+                ->setValue($result, $key, $this->payloadManager->getValueByKey($payload, $value));
         }
 
         return $result;
-    }
-
-    /**
-     * @param array $result
-     * @param string $key
-     * @param mixed $value
-     *
-     * @return array
-     */
-    protected function setValue(array $result, string $key, $value): array
-    {
-        $keys = explode('.', $key);
-        $temp = &$result;
-        foreach ($keys as $key) {
-            if (!isset($temp[$key])) {
-                $temp[$key] = [];
-            }
-            $temp = &$temp[$key];
-        }
-        $temp = $value;
-
-        return $result;
-    }
-
-    /**
-     * @param mixed $payload
-     * @param string $keyString
-     *
-     * @return mixed
-     */
-    private function getValueByKey($payload, string $keyString)
-    {
-        $keys = explode('.', $keyString);
-        $value = $payload;
-        foreach ($keys as $key) {
-            if (!isset($value[$key])) {
-                return null;
-            }
-            $value = $value[$key];
-        }
-
-        return $value;
     }
 
     /**
@@ -108,10 +76,10 @@ class Mapper implements MapperInterface
     protected function mapArray(array $result, array $payload, string $key, array $value): array
     {
         $originKey = reset($value);
-        $originArray = $this->getValueByKey($payload, $originKey);
+        $originArray = $this->payloadManager->getValueByKey($payload, $originKey);
         $originArray = $this->filterArray($originArray, $value);
         if (!isset($value['itemMap'])) {
-            return $this->setValue($result, $key, $originArray);
+            return $this->payloadManager->setValue($result, $key, $originArray);
         }
         $resultArray = [];
         $rules = $value['itemMap'];
@@ -123,7 +91,7 @@ class Mapper implements MapperInterface
             $resultArray[$originItemKey] = $resultItem;
         }
 
-        return $this->setValue($result, $key, $resultArray);
+        return $this->payloadManager->setValue($result, $key, $resultArray);
     }
 
     /**
