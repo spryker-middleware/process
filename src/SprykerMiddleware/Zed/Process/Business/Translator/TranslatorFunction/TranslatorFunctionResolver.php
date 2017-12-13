@@ -78,7 +78,7 @@ class TranslatorFunctionResolver extends AbstractClassResolver
      *
      * @return void
      */
-    public function setTranslationFunctionClassName(string $translationFunctionClassName)
+    protected function setTranslationFunctionClassName(string $translationFunctionClassName)
     {
         $this->translationFunctionClassName = $translationFunctionClassName;
     }
@@ -93,5 +93,13 @@ class TranslatorFunctionResolver extends AbstractClassResolver
         $instance = $this->getResolvedClassInstance();
         $instance->setOptions($options);
         return $instance;
+    }
+
+    /**
+     * @return string
+     */
+    protected function buildCacheKey(): string
+    {
+        return get_class($this) . '-' . $this->translationFunctionClassName;
     }
 }
