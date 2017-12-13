@@ -3,6 +3,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
+use SprykerMiddleware\Zed\Process\Business\Exception\TranslatorFunctionNotFoundException;
 
 class TranslatorFunctionResolver extends AbstractClassResolver
 {
@@ -18,6 +19,8 @@ class TranslatorFunctionResolver extends AbstractClassResolver
      * @param string $translationFunctionClassName
      * @param array $options
      *
+     * @throws \SprykerMiddleware\Zed\Process\Business\Exception\TranslatorFunctionNotFoundException
+     *
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunctionInterface
      */
     public function resolve($callerClass, string $translationFunctionClassName, array $options = [])
@@ -27,6 +30,8 @@ class TranslatorFunctionResolver extends AbstractClassResolver
         if ($this->canResolve()) {
             return $this->getResolvedClassInstanceWithOptions($options);
         }
+
+        throw new TranslatorFunctionNotFoundException($this->translationFunctionClassName);
     }
 
     /**
