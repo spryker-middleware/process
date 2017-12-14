@@ -46,4 +46,41 @@ class PayloadManager implements PayloadManagerInterface
 
         return $payload;
     }
+
+    /**
+     * @param array $payload
+     * @param string $key
+     *
+     * @return array
+     */
+    public function getAllNestedKeys(array $payload, string $key): array
+    {
+        $keyParts = explode('.', $key);
+        $keyLevel = count($keyParts);
+        $keys = [
+            reset($keyParts),
+        ];
+        for ($i = 1; $i < $keyLevel; $i++) {
+            if ($keyParts[$i] !== '*') {
+                foreach ($keys as $k => $value) {
+                    $keys[$k] = implode('.', [$value, $keyParts[$i]]);
+                }
+                continue;
+            }
+            $newKeys = [];
+            foreach ($keys as $parentKey) {
+                $nestedArray = $this->getValueByKey($payload, $parentKey);
+                if (!is_array($nestedArray)) {
+                    continue;
+                }
+                $nestedKeys = array_keys($nestedArray);
+                foreach ($nestedKeys as $nestedKey) {
+                    $newKeys[] = implode('.', [$parentKey, $nestedKey]);
+                }
+            }
+            $keys = $newKeys;
+        }
+
+        return $keys;
+    }
 }

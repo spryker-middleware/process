@@ -21,4 +21,12 @@ interface PayloadManagerInterface
      * @return array
      */
     public function setValue(array $payload, string $key, $value): array;
+
+    /**
+     * @param array $payload
+     * @param string $key
+     *
+     * @return array
+     */
+    public function getAllNestedKeys(array $payload, string $key): array;
 }
