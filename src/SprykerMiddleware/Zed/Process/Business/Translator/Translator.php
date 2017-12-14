@@ -47,10 +47,27 @@ class Translator implements TranslatorInterface
     {
         $result = $payload;
         foreach ($this->dictionary as $key => $translation) {
-            $result = $this->translateByRule($result, $payload, $key, $translation);
+            $result = $this->translateKey($result, $payload, $key, $translation);
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $translation
+     *
+     * @return array
+     */
+    protected function translateKey(array $result, array $payload, string $key, $translation): array
+    {
+        if (!strstr($key, '*')) {
+            return $this->translateByRule($result, $payload, $key, $translation);
+        }
+
+        return $this->translateNestedKeys($result, $payload, $key, $translation);
     }
 
     /**
@@ -91,6 +108,25 @@ class Translator implements TranslatorInterface
         /** @var \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface $translateFunction */
         $translateFunction = $this->translatorFunctionResolver->resolve($this, reset($translation), $options);
         $value = $translateFunction->translate($this->payloadManager->getValueByKey($payload, $key));
+
         return $this->payloadManager->setValue($result, $key, $value);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $translation
+     *
+     * @return array
+     */
+    protected function translateNestedKeys(array $result, array $payload, string $key, $translation): array
+    {
+        $keys = $this->payloadManager->getAllNestedKeys($payload, $key);
+        foreach ($keys as $key) {
+            $result = $this->translateByRule($result, $payload, $key, $translation);
+        }
+
+        return $result;
     }
 }
