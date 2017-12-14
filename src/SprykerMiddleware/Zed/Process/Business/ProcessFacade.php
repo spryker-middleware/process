@@ -34,4 +34,16 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
             ->createTranslator($dictionary)
             ->translate($payload);
     }
+
+    /**
+     * @param array $payload
+     *
+     * @return array
+     */
+    public function write(array $payload, string $destination)
+    {
+        return $this->getFactory()
+            ->createWriter()
+            ->write($payload, $destination);
+    }
 }
