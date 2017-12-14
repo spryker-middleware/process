@@ -2,13 +2,15 @@
 
 namespace SprykerMiddleware\Zed\Process\Business;
 
+use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
+
 interface ProcessFacadeInterface
 {
     /**
      * @param array $payload
-     * @param array $map
+     * @param \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface $map
      *
      * @return array
      */
-    public function map(array $payload, array $map);
+    public function map(array $payload, MapInterface $map);
 }
