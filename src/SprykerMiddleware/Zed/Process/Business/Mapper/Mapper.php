@@ -52,7 +52,7 @@ class Mapper implements MapperInterface
     protected function mapByRule(array $result, array $payload, string $key, $value): array
     {
         if (is_callable($value)) {
-            return $this->payloadManager->setValue($result, $key, $value($payload));
+            return $this->payloadManager->setValue($result, $key, $value($payload, $key));
         }
         if (is_array($value)) {
             return $this->mapArray($result, $payload, $key, $value);
