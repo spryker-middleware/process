@@ -6,6 +6,7 @@ interface WriterInterface
 {
     /**
      * @param array $payload
+     * @param string $destination
      *
      * @return array
      */

@@ -26,5 +26,13 @@ interface ProcessFacadeInterface
      *
      * @return array
      */
-    public function write(array $payload, string $destination);
+    public function writeSerialized(array $payload, string $destination);
+
+    /**
+     * @param array $payload
+     * @param string $destination
+     *
+     * @return array
+     */
+    public function writeJson(array $payload, string $destination);
 }

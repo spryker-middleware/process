@@ -15,6 +15,6 @@ abstract class AbstractWriterStagePlugin extends AbstractPlugin implements Write
     public function process($payload)
     {
         return $this->getFacade()
-            ->write($payload, $this->getDestination());
+            ->writeJson($payload, $this->getDestination());
     }
 }

@@ -11,7 +11,8 @@ use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterfac
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
-use SprykerMiddleware\Zed\Process\Business\Writer\Writer;
+use SprykerMiddleware\Zed\Process\Business\Writer\JsonFileWriter;
+use SprykerMiddleware\Zed\Process\Business\Writer\SerializedDumpWriter;
 use SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface;
 
 /**
@@ -49,9 +50,17 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
      */
-    public function createWriter(): WriterInterface
+    public function createSerializedWriter(): WriterInterface
     {
-        return new Writer();
+        return new SerializedDumpWriter();
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
+     */
+    public function createJsonWriter(): WriterInterface
+    {
+        return new JsonFileWriter();
     }
 
     /**
