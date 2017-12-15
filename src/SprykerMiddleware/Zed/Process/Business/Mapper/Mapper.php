@@ -2,12 +2,14 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
+use SprykerMiddleware\Shared\Process\ProcessConstants;
+use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
 
 class Mapper implements MapperInterface
 {
     /**
-     * @var array
+     * @var \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface
      */
     protected $map;
 
@@ -17,10 +19,10 @@ class Mapper implements MapperInterface
     protected $payloadManager;
 
     /**
-     * @param array $map
+     * @param \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface $map
      * @param \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface $payloadManager
      */
-    public function __construct(array $map, PayloadManagerInterface $payloadManager)
+    public function __construct(MapInterface $map, PayloadManagerInterface $payloadManager)
     {
         $this->map = $map;
         $this->payloadManager = $payloadManager;
@@ -33,8 +35,8 @@ class Mapper implements MapperInterface
      */
     public function map(array $payload): array
     {
-        $result = [];
-        foreach ($this->map as $key => $value) {
+        $result = $this->prepareResult($payload);
+        foreach ($this->map->getMap() as $key => $value) {
             $result = $this->mapByRule($result, $payload, $key, $value);
         }
 
@@ -52,7 +54,7 @@ class Mapper implements MapperInterface
     protected function mapByRule(array $result, array $payload, string $key, $value): array
     {
         if (is_callable($value)) {
-            return $this->payloadManager->setValue($result, $key, $value($payload));
+            return $this->payloadManager->setValue($result, $key, $value($payload, $key));
         }
         if (is_array($value)) {
             return $this->mapArray($result, $payload, $key, $value);
@@ -112,5 +114,19 @@ class Mapper implements MapperInterface
         }
 
         return array_diff_key($array, array_flip($exceptKeys));
+    }
+
+    /**
+     * @param array $payload
+     *
+     * @return array
+     */
+    protected function prepareResult(array $payload): array
+    {
+        if ($this->map->getStrategy() === ProcessConstants::MAPPER_STRATEGY_COPY_UNKNOWN) {
+            return $payload;
+        }
+
+        return [];
     }
 }

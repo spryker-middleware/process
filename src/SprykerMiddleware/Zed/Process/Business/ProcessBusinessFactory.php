@@ -4,6 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
+use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
 use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManager;
@@ -21,11 +22,11 @@ use SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface;
 class ProcessBusinessFactory extends AbstractBusinessFactory
 {
     /**
-     * @param array $map
+     * @param \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface $map
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createMapper(array $map): MapperInterface
+    public function createMapper(MapInterface $map): MapperInterface
     {
         return new Mapper(
             $map,
