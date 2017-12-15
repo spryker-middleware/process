@@ -67,7 +67,7 @@ class ProcessConsole extends Console
             return $this->exitCode;
         }
         $this->getFactory()
-            ->createProcess($processSettingsTransfer)
+            ->createProcessor($processSettingsTransfer)
             ->process();
 
         return $this->exitCode;

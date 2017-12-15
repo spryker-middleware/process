@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Process;
 
-interface ProcessInterface
+interface ProcessorInterface
 {
     /**
      * @return void
