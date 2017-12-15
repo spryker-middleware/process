@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Writer;
 
-class SerializedDumpWriter implements WriterInterface
+class SerializedDump implements WriterInterface
 {
     /**
      * @param array $payload

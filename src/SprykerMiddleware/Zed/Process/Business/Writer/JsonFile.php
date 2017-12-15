@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Writer;
 
-class JsonFileWriter implements WriterInterface
+class JsonFile implements WriterInterface
 {
     /**
      * @param array $payload

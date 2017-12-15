@@ -38,27 +38,15 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
 
     /**
      * @param array $payload
+     * @param string $writerName
      * @param string $destination
      *
      * @return array
      */
-    public function writeSerialized(array $payload, string $destination)
+    public function write(array $payload, string $writerName, string $destination)
     {
         return $this->getFactory()
-            ->createSerializedWriter()
-            ->write($payload, $destination);
-    }
-
-    /**
-     * @param array $payload
-     * @param string $destination
-     *
-     * @return array
-     */
-    public function writeJson(array $payload, string $destination)
-    {
-        return $this->getFactory()
-            ->createJsonWriter()
+            ->createWriter($writerName)
             ->write($payload, $destination);
     }
 }

@@ -12,9 +12,8 @@ use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterfac
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
-use SprykerMiddleware\Zed\Process\Business\Writer\JsonFileWriter;
-use SprykerMiddleware\Zed\Process\Business\Writer\SerializedDumpWriter;
 use SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface;
+use SprykerMiddleware\Zed\Process\Business\Writer\WriterResolver;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\ProcessConfig getConfig()
@@ -49,19 +48,13 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @param string $writerName
+     *
      * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
      */
-    public function createSerializedWriter(): WriterInterface
+    public function createWriter(string $writerName): WriterInterface
     {
-        return new SerializedDumpWriter();
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
-     */
-    public function createJsonWriter(): WriterInterface
-    {
-        return new JsonFileWriter();
+        return $this->createWriterResolver()->resolve($this, $writerName);
     }
 
     /**
@@ -78,5 +71,13 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function createTranslatorFunctionResolver(): AbstractClassResolver
     {
         return new TranslatorFunctionResolver();
+    }
+
+    /**
+     * @return \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver
+     */
+    protected function createWriterResolver(): AbstractClassResolver
+    {
+        return new WriterResolver();
     }
 }
