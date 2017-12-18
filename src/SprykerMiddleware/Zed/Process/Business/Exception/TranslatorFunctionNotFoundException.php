@@ -24,18 +24,9 @@ class TranslatorFunctionNotFoundException extends Exception
     protected function buildMessage(string $className)
     {
         $message = 'Spryker Middleware Exception' . PHP_EOL;
-        $message .= sprintf(
-            'Can not resolve %1$s translation function',
-            $className
-        ) . PHP_EOL;
-
+        $message .= 'Can not resolve ' . $className . ' translation function' . PHP_EOL;
         $message .= 'You can fix this by adding the missing translationFunction to your bundle.' . PHP_EOL;
-
-        $message .= sprintf(
-            'E.g. Pyz\\Zed\\Process\\Business\\Translator\\TranslatorFunction\\%1$s' . PHP_EOL . PHP_EOL,
-            $className
-        );
-
+        $message .= 'E.g. Pyz\\Zed\\Process\\Business\\Translator\\TranslatorFunction\\' . $className . PHP_EOL . PHP_EOL;
         $message .= new Backtrace();
 
         return $message;
