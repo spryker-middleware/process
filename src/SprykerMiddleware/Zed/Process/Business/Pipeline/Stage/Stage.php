@@ -38,7 +38,7 @@ class Stage implements StageInterface
         ]);
 
         $processedPayload = $this->stagePlugin
-            ->process($payload);
+            ->process($payload, $this->logger);
 
         $this->logger->info('Result Data', [
            'stage' => get_class($this->stagePlugin),

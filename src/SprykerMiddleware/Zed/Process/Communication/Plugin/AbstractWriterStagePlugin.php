@@ -2,6 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
+use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
@@ -12,7 +13,7 @@ abstract class AbstractWriterStagePlugin extends AbstractPlugin implements Write
     /**
      * @inheritdoc
      */
-    public function process($payload)
+    public function process($payload, LoggerInterface $logger)
     {
         return $this->getFacade()
             ->write($payload, 'JsonFile', $this->getDestination());

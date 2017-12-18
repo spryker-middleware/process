@@ -2,6 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business;
 
+use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
@@ -32,18 +33,20 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
             $this->createPayloadManager()
         );
     }
-
+    
     /**
      * @param array $dictionary
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface
      */
-    public function createTranslator(array $dictionary): TranslatorInterface
+    public function createTranslator(array $dictionary, LoggerInterface $logger): TranslatorInterface
     {
         return new Translator(
             $dictionary,
             $this->createTranslatorFunctionResolver(),
-            $this->createPayloadManager()
+            $this->createPayloadManager(),
+            $logger
         );
     }
 

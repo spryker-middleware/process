@@ -2,6 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business;
 
+use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 
@@ -26,13 +27,14 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     /**
      * @param array $payload
      * @param array $dictionary
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function translate(array $payload, array $dictionary)
+    public function translate(array $payload, array $dictionary, LoggerInterface $logger)
     {
         return $this->getFactory()
-            ->createTranslator($dictionary)
+            ->createTranslator($dictionary, $logger)
             ->translate($payload);
     }
 

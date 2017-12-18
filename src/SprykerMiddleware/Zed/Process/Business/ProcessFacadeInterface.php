@@ -2,6 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business;
 
+use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 
 interface ProcessFacadeInterface
@@ -17,10 +18,11 @@ interface ProcessFacadeInterface
     /**
      * @param array $payload
      * @param array $dictionary
+     * @param \Psr\Log\LoggerInterface $logger
      *
-     * @return array
+     * @return mixed
      */
-    public function translate(array $payload, array $dictionary);
+    public function translate(array $payload, array $dictionary, LoggerInterface $logger);
 
     /**
      * @param array $payload
