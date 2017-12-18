@@ -8,7 +8,6 @@
 namespace SprykerMiddlewareTest\Zed\Process\Business\Translator\TranslatorFunction;
 
 use Codeception\Test\Unit;
-use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\ArrayToString;
 
 /**
  * Auto-generated group annotations
