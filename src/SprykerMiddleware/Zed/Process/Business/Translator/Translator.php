@@ -46,8 +46,8 @@ class Translator implements TranslatorInterface
     public function translate(array $payload): array
     {
         $result = $payload;
-        foreach ($this->dictionary as $key => $translation) {
-            $result = $this->translateKey($result, $payload, $key, $translation);
+        foreach ($this->dictionary as $key => $translations) {
+            $result = $this->translateKey($result, $payload, $key, $translations);
         }
 
         return $result;
@@ -64,10 +64,29 @@ class Translator implements TranslatorInterface
     protected function translateKey(array $result, array $payload, string $key, $translation): array
     {
         if (!strstr($key, '*')) {
-            return $this->translateByRule($result, $payload, $key, $translation);
+            return $this->translateByRuleSet($result, $payload, $key, $translation);
         }
 
         return $this->translateNestedKeys($result, $payload, $key, $translation);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $translation
+     *
+     * @return array
+     */
+    protected function translateByRuleSet(array $result, array $payload, string $key, $translation): array
+    {
+        if (is_array($translation)) {
+            foreach ($translation as $rule) {
+                $result = $this->translateByRule($result, $payload, $key, $rule);
+            }
+            return $result;
+        }
+        return $this->translateByRule($result, $payload, $key, $translation);
     }
 
     /**
@@ -124,7 +143,7 @@ class Translator implements TranslatorInterface
     {
         $keys = $this->payloadManager->getAllNestedKeys($payload, $key);
         foreach ($keys as $key) {
-            $result = $this->translateByRule($result, $payload, $key, $translation);
+            $result = $this->translateByRuleSet($result, $payload, $key, $translation);
         }
 
         return $result;

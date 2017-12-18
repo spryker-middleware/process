@@ -13,4 +13,21 @@ interface ProcessFacadeInterface
      * @return array
      */
     public function map(array $payload, MapInterface $map);
+
+    /**
+     * @param array $payload
+     * @param array $dictionary
+     *
+     * @return array
+     */
+    public function translate(array $payload, array $dictionary);
+
+    /**
+     * @param array $payload
+     * @param string $writerName
+     * @param string $destination
+     *
+     * @return array
+     */
+    public function write(array $payload, string $writerName, string $destination);
 }
