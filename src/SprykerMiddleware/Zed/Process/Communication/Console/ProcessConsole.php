@@ -2,7 +2,9 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Console;
 
 use Generated\Shared\Transfer\IteratorSettingsTransfer;
+use Generated\Shared\Transfer\LoggerSettingsTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
+use Monolog\Logger;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -82,13 +84,10 @@ class ProcessConsole extends Console
     protected function processArgs(InputInterface $input, OutputInterface $output): ProcessSettingsTransfer
     {
         $processSettingsTransfer = new ProcessSettingsTransfer();
-        $processSettingsTransfer->setIteratorSettings(new IteratorSettingsTransfer());
         if ($input->getOption(self::OPTION_PROCESS_NAME)) {
             $processSettingsTransfer->setName($input->getOption(self::OPTION_PROCESS_NAME));
-            $offset = $input->getOption(self::OPTION_ITERATOR_OFFSET) ?: 0;
-            $limit = $input->getOption(self::OPTION_ITERATOR_LIMIT) ?: -1;
-            $processSettingsTransfer->getIteratorSettings()->setOffset($offset);
-            $processSettingsTransfer->getIteratorSettings()->setLimit($limit);
+            $this->setIteratorOptions($input, $processSettingsTransfer);
+            $this->setLoggerOptions($output, $processSettingsTransfer);
 
             return $processSettingsTransfer;
         }
@@ -103,5 +102,45 @@ class ProcessConsole extends Console
     protected function hasError()
     {
         return $this->exitCode !== self::CODE_SUCCESS;
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
+     *
+     * @return void
+     */
+    protected function setIteratorOptions(InputInterface $input, ProcessSettingsTransfer $processSettingsTransfer): void
+    {
+        $processSettingsTransfer->setIteratorSettings(new IteratorSettingsTransfer());
+        $offset = $input->getOption(self::OPTION_ITERATOR_OFFSET) ?: 0;
+        $limit = $input->getOption(self::OPTION_ITERATOR_LIMIT) ?: -1;
+        $processSettingsTransfer->getIteratorSettings()->setOffset($offset);
+        $processSettingsTransfer->getIteratorSettings()->setLimit($limit);
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
+     *
+     * @return void
+     */
+    protected function setLoggerOptions(
+        OutputInterface $output,
+        ProcessSettingsTransfer $processSettingsTransfer
+    ): void {
+        $processSettingsTransfer->setLoggerSettings(new LoggerSettingsTransfer());
+        $processSettingsTransfer->getLoggerSettings()->setIsQuiet($output->isQuiet());
+        $verboseLevel = Logger::ERROR;
+        if ($output->isVerbose()) {
+            $verboseLevel = Logger::WARNING;
+        }
+        if ($output->isVeryVerbose()) {
+            $verboseLevel = Logger::INFO;
+        }
+        if ($output->isDebug()) {
+            $verboseLevel = Logger::DEBUG;
+        }
+        $processSettingsTransfer->getLoggerSettings()->setVerboseLevel($verboseLevel);
     }
 }

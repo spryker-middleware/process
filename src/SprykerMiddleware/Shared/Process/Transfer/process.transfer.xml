@@ -6,6 +6,7 @@
     <transfer name="ProcessSettings">
         <property name="name" type="string"/>
         <property name="iteratorSettings" type="IteratorSettings"/>
+        <property name="loggerSettings" type="LoggerSettings"/>
     </transfer>
 
     <transfer name="IteratorSettings">
@@ -16,7 +17,7 @@
 
     <transfer name="LoggerSettings">
         <property name="verboseLevel" type="int"/>
-        <property name="isQuite" type="bool"/>
+        <property name="isQuiet" type="bool"/>
     </transfer>
 
 </transfers>

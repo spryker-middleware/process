@@ -1,9 +1,11 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Communication;
 
+use Generated\Shared\Transfer\LoggerSettingsTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Iterator;
 use League\Pipeline\FingersCrossedProcessor;
+use Psr\Log\LoggerInterface;
 use Spryker\Shared\Log\Config\LoggerConfigInterface;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
@@ -27,16 +29,19 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      *
-     * @return \SprykerMiddleware\Zed\Process\Business\Process\ProcessInterface
+     * @return \SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface
      */
     public function createProcessor(ProcessSettingsTransfer $processSettingsTransfer): ProcessorInterface
     {
+
+        $stagesPluginsList = $this->getStagePluginsListForProcess($processSettingsTransfer->getName());
+        $logger = $this->getLogger($this->getProcessLoggerConfig($processSettingsTransfer));
         return new Processor(
             $this->getProcessIterator($processSettingsTransfer),
-            $this->createPipeline($this->getStagePluginsListForProcess($processSettingsTransfer->getName())),
+            $this->createPipeline($stagesPluginsList, $logger),
             $this->getPreProcessorStack($processSettingsTransfer->getName()),
-            $this->getPostProcessorStack($processSettingsTransfer->getName())
-            $this->getLogger($this->getProcessLogConfig($processSettingsTransfer))
+            $this->getPostProcessorStack($processSettingsTransfer->getName()),
+            $logger
         );
     }
 
@@ -72,27 +77,29 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
 
     /**
      * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface[] $stagePlugins
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
      */
-    protected function createPipeline(array $stagePlugins): PipelineInterface
+    protected function createPipeline(array $stagePlugins, LoggerInterface $logger): PipelineInterface
     {
         return new Pipeline(
             $this->createPipelineProcessor(),
-            $this->getStages($stagePlugins)
+            $this->getStages($stagePlugins, $logger)
         );
     }
 
     /**
      * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface[] $stagePlugins
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
      */
-    protected function getStages(array $stagePlugins): array
+    protected function getStages(array $stagePlugins, LoggerInterface $logger): array
     {
         $stages = [];
         foreach ($stagePlugins as $stagePlugin) {
-            $stages[] = $this->createStage($stagePlugin);
+            $stages[] = $this->createStage($stagePlugin, $logger);
         }
 
         return $stages;
@@ -100,12 +107,13 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
 
     /**
      * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface $stagePlugin
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface
      */
-    protected function createStage(StagePluginInterface $stagePlugin): StageInterface
+    protected function createStage(StagePluginInterface $stagePlugin, LoggerInterface $logger): StageInterface
     {
-        return new Stage($stagePlugin);
+        return new Stage($stagePlugin, $logger);
     }
 
     /**
@@ -165,28 +173,30 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
      *
      * @return \Spryker\Shared\Log\Config\LoggerConfigInterface
      */
-    protected function getProcessLogConfig(ProcessSettingsTransfer $processSettingsTransfer): LoggerConfigInterface
+    protected function getProcessLoggerConfig(ProcessSettingsTransfer $processSettingsTransfer): LoggerConfigInterface
     {
-        $configuration = $this->getProcessLoggerList();
+        $configuration = $this->getProcessLoggerConfigList();
         if (isset($configuration[$processSettingsTransfer->getName()])) {
-            return $configuration[$processSettingsTransfer->getName()];
+            return $configuration[$processSettingsTransfer->getName()]($processSettingsTransfer->getLoggerSettings());
         }
-        return $this->createMiddlewareLogConfig();
+        return $this->createMiddlewareLogConfig($processSettingsTransfer->getLoggerSettings());
     }
 
     /**
      * @return array
      */
-    protected function getProcessLoggerList(): array
+    protected function getProcessLoggerConfigList(): array
     {
         return [];
     }
 
     /**
+     * @param \Generated\Shared\Transfer\LoggerSettingsTransfer $loggerSettingsTransfer
+     *
      * @return \Spryker\Shared\Log\Config\LoggerConfigInterface
      */
-    protected function createMiddlewareLogConfig()
+    protected function createMiddlewareLogConfig(LoggerSettingsTransfer $loggerSettingsTransfer): LoggerConfigInterface
     {
-        return new MiddlewareLoggerConfig();
+        return new MiddlewareLoggerConfig($loggerSettingsTransfer);
     }
 }

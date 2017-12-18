@@ -2,9 +2,9 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Log\Config;
 
+use Generated\Shared\Transfer\LoggerSettingsTransfer;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Monolog\Processor\PsrLogMessageProcessor;
 use Spryker\Shared\Config\Config;
 use Spryker\Shared\Log\Config\LoggerConfigInterface;
@@ -12,31 +12,48 @@ use Spryker\Shared\Log\LogConstants;
 
 class MiddlewareLoggerConfig implements LoggerConfigInterface
 {
+    const NAME = 'SprykerMiddleware';
+
+    /**
+     * @var \Generated\Shared\Transfer\LoggerSettingsTransfer
+     */
+    protected $loggerSettings;
+
+    /**
+     * @param \Generated\Shared\Transfer\LoggerSettingsTransfer $loggerSettings
+     */
+    public function __construct(LoggerSettingsTransfer $loggerSettings)
+    {
+        $this->loggerSettings = $loggerSettings;
+    }
+
     /**
      * @return string
      */
-    public function getChannelName()
+    public function getChannelName(): string
     {
-        return 'SprykerMiddleware';
+        return static::NAME;
     }
 
     /**
      * @return \Monolog\Handler\HandlerInterface[]
      */
-    public function getHandlers()
+    public function getHandlers(): array
     {
-        $handler = [
+        $handlers = [
             $this->createStreamHandler(),
-            $this->createConsoleStreamHandler(),
         ];
+        if (!$this->loggerSettings->getIsQuiet()) {
+            $handlers[] = $this->createConsoleStreamHandler();
+        }
 
-        return $handler;
+        return $handlers;
     }
 
     /**
      * @return callable[]
      */
-    public function getProcessors()
+    public function getProcessors(): array
     {
         return [
             new PsrLogMessageProcessor(),
@@ -46,13 +63,13 @@ class MiddlewareLoggerConfig implements LoggerConfigInterface
     /**
      * @return \Monolog\Handler\StreamHandler
      */
-    protected function createStreamHandler()
+    protected function createStreamHandler(): StreamHandler
     {
         $streamHandler = new StreamHandler(
-            Config::get(LogConstants::LOG_FILE_PATH_ZED),
-            Config::get(LogConstants::LOG_LEVEL, Logger::INFO)
+            $this->getLogFilePath(),
+            $this->loggerSettings->getVerboseLevel()
         );
-        $formatter = new LogstashFormatter('SprykerMiddleware');
+        $formatter = new LogstashFormatter(static::NAME);
         $streamHandler->setFormatter($formatter);
 
         return $streamHandler;
@@ -61,15 +78,23 @@ class MiddlewareLoggerConfig implements LoggerConfigInterface
     /**
      * @return \Monolog\Handler\StreamHandler
      */
-    protected function createConsoleStreamHandler()
+    protected function createConsoleStreamHandler(): StreamHandler
     {
         $streamHandler = new StreamHandler(
             'php://stdout',
-            Config::get(LogConstants::LOG_LEVEL, Logger::INFO)
+            $this->loggerSettings->getVerboseLevel()
         );
-        $formatter = new LogstashFormatter('SprykerMiddleware');
+        $formatter = new LogstashFormatter(static::NAME);
         $streamHandler->setFormatter($formatter);
 
         return $streamHandler;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLogFilePath(): string
+    {
+        return Config::get(LogConstants::LOG_FILE_PATH_ZED);
     }
 }
