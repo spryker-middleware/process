@@ -14,4 +14,9 @@
         <property name="parseAsArray" type="bool"/>
     </transfer>
 
+    <transfer name="LoggerSettings">
+        <property name="verboseLevel" type="int"/>
+        <property name="isQuite" type="bool"/>
+    </transfer>
+
 </transfers>

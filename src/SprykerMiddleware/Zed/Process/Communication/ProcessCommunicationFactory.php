@@ -4,7 +4,10 @@ namespace SprykerMiddleware\Zed\Process\Communication;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Iterator;
 use League\Pipeline\FingersCrossedProcessor;
+use Spryker\Shared\Log\Config\LoggerConfigInterface;
+use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
+use SprykerMiddleware\Zed\Process\Business\Log\Config\MiddlewareLoggerConfig;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage;
@@ -19,6 +22,8 @@ use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
  */
 class ProcessCommunicationFactory extends AbstractCommunicationFactory
 {
+    use LoggerTrait;
+
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      *
@@ -28,7 +33,8 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     {
         return new Process(
             $this->getProcessIterator($processSettingsTransfer),
-            $this->createPipeline($this->getStagePluginsListForProcess($processSettingsTransfer->getName()))
+            $this->createPipeline($this->getStagePluginsListForProcess($processSettingsTransfer->getName())),
+            $this->getLogger($this->getProcessLogConfig($processSettingsTransfer))
         );
     }
 
@@ -103,8 +109,38 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \League\Pipeline\FingersCrossedProcessor
      */
-    public function createPipelineProcessor(): FingersCrossedProcessor
+    protected function createPipelineProcessor(): FingersCrossedProcessor
     {
         return new FingersCrossedProcessor();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
+     *
+     * @return \Spryker\Shared\Log\Config\LoggerConfigInterface
+     */
+    protected function getProcessLogConfig(ProcessSettingsTransfer $processSettingsTransfer): LoggerConfigInterface
+    {
+        $configuration = $this->getProcessLoggerList();
+        if (isset($configuration[$processSettingsTransfer->getName()])) {
+            return $configuration[$processSettingsTransfer->getName()];
+        }
+        return $this->createMiddlewareLogConfig();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getProcessLoggerList(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return \Spryker\Shared\Log\Config\LoggerConfigInterface
+     */
+    protected function createMiddlewareLogConfig()
+    {
+        return new MiddlewareLoggerConfig();
     }
 }
