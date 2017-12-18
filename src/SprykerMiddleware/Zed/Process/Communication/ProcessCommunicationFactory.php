@@ -9,8 +9,8 @@ use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface;
-use SprykerMiddleware\Zed\Process\Business\Process\Process;
-use SprykerMiddleware\Zed\Process\Business\Process\ProcessInterface;
+use SprykerMiddleware\Zed\Process\Business\Process\Processor;
+use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
@@ -22,13 +22,15 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      *
-     * @return \SprykerMiddleware\Zed\Process\Business\Process\ProcessInterface
+     * @return \SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface
      */
-    public function createProcess(ProcessSettingsTransfer $processSettingsTransfer): ProcessInterface
+    public function createProcessor(ProcessSettingsTransfer $processSettingsTransfer): ProcessorInterface
     {
-        return new Process(
+        return new Processor(
             $this->getProcessIterator($processSettingsTransfer),
-            $this->createPipeline($this->getStagePluginsListForProcess($processSettingsTransfer->getName()))
+            $this->createPipeline($this->getStagePluginsListForProcess($processSettingsTransfer->getName())),
+            $this->getPreProcessorStack($processSettingsTransfer->getName()),
+            $this->getPostProcessorStack($processSettingsTransfer->getName())
         );
     }
 
@@ -67,7 +69,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
      */
-    public function createPipeline(array $stagePlugins): PipelineInterface
+    protected function createPipeline(array $stagePlugins): PipelineInterface
     {
         return new Pipeline(
             $this->createPipelineProcessor(),
@@ -103,8 +105,52 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \League\Pipeline\FingersCrossedProcessor
      */
-    public function createPipelineProcessor(): FingersCrossedProcessor
+    protected function createPipelineProcessor(): FingersCrossedProcessor
     {
         return new FingersCrossedProcessor();
+    }
+
+    /**
+     * @param string $processName
+     *
+     * @return array
+     */
+    protected function getPreProcessorStack(string $processName): array
+    {
+        $hooks = $this->getRegisteredPreProcessorsList();
+        if (isset($hooks[$processName])) {
+            return $hooks[$processName];
+        }
+        return [];
+    }
+
+    /**
+     * @param string $processName
+     *
+     * @return array
+     */
+    protected function getPostProcessorStack(string $processName): array
+    {
+        $hooks = $this->getRegisteredPostProcessorsList();
+        if (isset($hooks[$processName])) {
+            return $hooks[$processName];
+        }
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRegisteredPreProcessorsList(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRegisteredPostProcessorsList(): array
+    {
+        return [];
     }
 }
