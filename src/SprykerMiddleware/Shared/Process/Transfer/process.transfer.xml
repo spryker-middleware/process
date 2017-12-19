@@ -6,12 +6,17 @@
     <transfer name="ProcessSettings">
         <property name="name" type="string"/>
         <property name="iteratorSettings" type="IteratorSettings"/>
+        <property name="aggregatorSettings" type="AggregatorSettings"/>
     </transfer>
 
     <transfer name="IteratorSettings">
         <property name="offset" type="int"/>
         <property name="limit" type="int"/>
         <property name="parseAsArray" type="bool"/>
+    </transfer>
+
+    <transfer name="AggregatorSettings">
+        <property name="sequenceSizeRelease" type="int"/>
     </transfer>
 
 </transfers>
