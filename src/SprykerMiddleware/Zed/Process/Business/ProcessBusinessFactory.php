@@ -23,14 +23,16 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
 {
     /**
      * @param \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface $map
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createMapper(MapInterface $map): MapperInterface
+    public function createMapper(MapInterface $map, LoggerInterface $logger): MapperInterface
     {
         return new Mapper(
             $map,
-            $this->createPayloadManager()
+            $this->createPayloadManager(),
+            $logger
         );
     }
     

@@ -10,10 +10,11 @@ interface ProcessFacadeInterface
     /**
      * @param array $payload
      * @param \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface $map
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function map(array $payload, MapInterface $map);
+    public function map(array $payload, MapInterface $map, LoggerInterface $logger): array;
 
     /**
      * @param array $payload
@@ -31,5 +32,5 @@ interface ProcessFacadeInterface
      *
      * @return array
      */
-    public function write(array $payload, string $writerName, string $destination);
+    public function write(array $payload, string $writerName, string $destination): array;
 }

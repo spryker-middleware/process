@@ -20,6 +20,7 @@ class ProcessConsole extends Console
     const OPTION_PROCESS_NAME = 'process';
     const OPTION_ITERATOR_OFFSET = 'offset';
     const OPTION_ITERATOR_LIMIT = 'limit';
+    const OPTION_LOG_LEVEL = 'flagLogLevel';
 
     /**
      * @var int
@@ -54,6 +55,13 @@ class ProcessConsole extends Console
             InputOption::VALUE_OPTIONAL,
             'Count of items that should be processed'
         );
+
+        $this->addOption(
+            static::OPTION_LOG_LEVEL,
+            'f',
+            InputOption::VALUE_OPTIONAL,
+            'Flag of Log level [Critical, Error, Warning, Info, Debug]'
+        );
     }
 
     /**
@@ -87,7 +95,7 @@ class ProcessConsole extends Console
         if ($input->getOption(self::OPTION_PROCESS_NAME)) {
             $processSettingsTransfer->setName($input->getOption(self::OPTION_PROCESS_NAME));
             $this->setIteratorOptions($input, $processSettingsTransfer);
-            $this->setLoggerOptions($output, $processSettingsTransfer);
+            $this->setLoggerOptions($input, $output, $processSettingsTransfer);
 
             return $processSettingsTransfer;
         }
@@ -120,17 +128,25 @@ class ProcessConsole extends Console
     }
 
     /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      *
      * @return void
      */
     protected function setLoggerOptions(
+        InputInterface $input,
         OutputInterface $output,
         ProcessSettingsTransfer $processSettingsTransfer
     ): void {
         $processSettingsTransfer->setLoggerSettings(new LoggerSettingsTransfer());
         $processSettingsTransfer->getLoggerSettings()->setIsQuiet($output->isQuiet());
+        $logLevel = $input->getOption(self::OPTION_LOG_LEVEL);
+        if ($logLevel) {
+            $verboseLevel = Logger::toMonologLevel($logLevel);
+            $processSettingsTransfer->getLoggerSettings()->setVerboseLevel($verboseLevel);
+            return;
+        }
         $verboseLevel = Logger::ERROR;
         if ($output->isVerbose()) {
             $verboseLevel = Logger::WARNING;

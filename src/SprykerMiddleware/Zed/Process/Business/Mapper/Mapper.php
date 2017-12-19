@@ -2,6 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
+use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Shared\Process\ProcessConstants;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
@@ -19,13 +20,23 @@ class Mapper implements MapperInterface
     protected $payloadManager;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface $map
      * @param \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface $payloadManager
+     * @param \Psr\Log\LoggerInterface $logger
      */
-    public function __construct(MapInterface $map, PayloadManagerInterface $payloadManager)
-    {
+    public function __construct(
+        MapInterface $map,
+        PayloadManagerInterface $payloadManager,
+        LoggerInterface $logger
+    ) {
         $this->map = $map;
         $this->payloadManager = $payloadManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -54,17 +65,36 @@ class Mapper implements MapperInterface
     protected function mapByRule(array $result, array $payload, string $key, $value): array
     {
         if (is_callable($value)) {
-            return $this->payloadManager->setValue($result, $key, $value($payload, $key));
+            return $this->mapCallable($result, $payload, $key, $value);
         }
         if (is_array($value)) {
             return $this->mapArray($result, $payload, $key, $value);
         }
         if (is_string($value) || is_int($value)) {
-            return $this->payloadManager
-                ->setValue($result, $key, $this->payloadManager->getValueByKey($payload, $value));
+            return $this->mapKey($result, $payload, $key, $value);
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param callable $value
+     *
+     * @return array
+     */
+    protected function mapCallable(array $result, array $payload, string $key, callable $value): array
+    {
+        $mappedValue = $value($payload, $key);
+        $this->logger->debug('Mapping', [
+            'operation' => 'Map callable',
+            'new_key' => $key,
+            'old_key' => $value,
+            'data' => $mappedValue,
+        ]);
+        return $this->payloadManager->setValue($result, $key, $mappedValue);
     }
 
     /**
@@ -92,8 +122,33 @@ class Mapper implements MapperInterface
             }
             $resultArray[$originItemKey] = $resultItem;
         }
-
+        $this->logger->debug('Mapping', [
+            'operation' => 'Map array',
+            'new_key' => $key,
+            'old_key' => $value,
+            'data' => $resultArray,
+        ]);
         return $this->payloadManager->setValue($result, $key, $resultArray);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param string $value
+     *
+     * @return array
+     */
+    protected function mapKey(array $result, array $payload, string $key, string $value): array
+    {
+        $mappedValue = $this->payloadManager->getValueByKey($payload, $value);
+        $this->logger->debug('Mapping', [
+            'operation' => 'Map key',
+            'new_key' => $key,
+            'old_key' => $value,
+            'data' => $mappedValue,
+        ]);
+        return $this->payloadManager->setValue($result, $key, $mappedValue);
     }
 
     /**
@@ -124,6 +179,10 @@ class Mapper implements MapperInterface
     protected function prepareResult(array $payload): array
     {
         if ($this->map->getStrategy() === ProcessConstants::MAPPER_STRATEGY_COPY_UNKNOWN) {
+            $this->logger->debug('Mapping', [
+                'operation' => 'Copy original data',
+                'strategy' => $this->map->getStrategy(),
+            ]);
             return $payload;
         }
 
