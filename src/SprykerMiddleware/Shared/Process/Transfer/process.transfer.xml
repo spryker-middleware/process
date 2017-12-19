@@ -17,6 +17,11 @@
 
     <transfer name="AggregatorSettings">
         <property name="threshold" type="int"/>
+        <property name="writerConfig" type="WriterConfig"/>
+    </transfer>
+
+    <transfer name="WriterConfig">
+        <property name="destination" type="string"/>
     </transfer>
 
 </transfers>

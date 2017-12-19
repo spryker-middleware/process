@@ -12,8 +12,6 @@ use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterfac
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
-use SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface;
-use SprykerMiddleware\Zed\Process\Business\Writer\WriterResolver;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\ProcessConfig getConfig()
@@ -48,16 +46,6 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @param string $writerName
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
-     */
-    public function createWriter(string $writerName): WriterInterface
-    {
-        return $this->createWriterResolver()->resolve($this, $writerName);
-    }
-
-    /**
      * @return \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface
      */
     public function createPayloadManager(): PayloadManagerInterface
@@ -71,13 +59,5 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function createTranslatorFunctionResolver(): AbstractClassResolver
     {
         return new TranslatorFunctionResolver();
-    }
-
-    /**
-     * @return \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver
-     */
-    protected function createWriterResolver(): AbstractClassResolver
-    {
-        return new WriterResolver();
     }
 }

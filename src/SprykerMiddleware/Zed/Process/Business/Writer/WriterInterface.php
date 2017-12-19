@@ -5,10 +5,9 @@ namespace SprykerMiddleware\Zed\Process\Business\Writer;
 interface WriterInterface
 {
     /**
-     * @param array $payload
-     * @param string $destination
+     * @param mixed $payload
      *
-     * @return array
+     * @return mixed
      */
-    public function write(array $payload, string $destination): array;
+    public function write($payload);
 }
