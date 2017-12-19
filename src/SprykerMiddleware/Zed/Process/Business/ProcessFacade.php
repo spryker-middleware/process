@@ -32,7 +32,7 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
      *
      * @return array
      */
-    public function translate(array $payload, array $dictionary, LoggerInterface $logger)
+    public function translate(array $payload, array $dictionary, LoggerInterface $logger): array
     {
         return $this->getFactory()
             ->createTranslator($dictionary, $logger)

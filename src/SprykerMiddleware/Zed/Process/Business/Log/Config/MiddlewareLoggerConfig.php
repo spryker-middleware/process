@@ -5,6 +5,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Log\Config;
 use Generated\Shared\Transfer\LoggerSettingsTransfer;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\StreamHandler;
+use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\PsrLogMessageProcessor;
 use Spryker\Shared\Config\Config;
 use Spryker\Shared\Log\Config\LoggerConfigInterface;
@@ -57,6 +58,7 @@ class MiddlewareLoggerConfig implements LoggerConfigInterface
     {
         return [
             new PsrLogMessageProcessor(),
+            new IntrospectionProcessor(),
         ];
     }
 

@@ -109,8 +109,7 @@ class Translator implements TranslatorInterface
     protected function translateByRule(array $result, array $payload, string $key, $translation): array
     {
         if (is_callable($translation)) {
-            return $this->payloadManager
-                ->setValue($result, $key, $translation($this->payloadManager->getValueByKey($payload, $key), $key, $payload));
+            return $this->translateCallable($result, $payload, $key, $translation);
         }
         if (is_array($translation)) {
             return $this->translateValue($result, $payload, $key, $translation);
@@ -120,6 +119,30 @@ class Translator implements TranslatorInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param callable $translation
+     *
+     * @return array
+     */
+    protected function translateCallable(array $result, array $payload, string $key, callable $translation): array
+    {
+        $inputValue = $this->payloadManager->getValueByKey($payload, $key);
+        $resultValue = $translation($inputValue, $key, $payload);
+        $this->logger->debug(
+            'Translation',
+            [
+                'key' => $key,
+                'operation_type' => $translation,
+                'affected_data' => $inputValue,
+                'resulted_data' => $resultValue,
+            ]
+        );
+        return $this->payloadManager->setValue($result, $key, $resultValue);
     }
 
     /**
@@ -139,8 +162,9 @@ class Translator implements TranslatorInterface
         $inputValue = $this->payloadManager->getValueByKey($payload, $key);
         $resultValue = $translateFunction->translate($inputValue);
         $this->logger->debug(
-            'Operation',
+            'Translation',
             [
+                'key' => $key,
                 'operation_type' => reset($translation),
                 'affected_data' => $inputValue,
                 'resulted_data' => $resultValue,

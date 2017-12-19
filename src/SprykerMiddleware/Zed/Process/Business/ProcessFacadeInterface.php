@@ -21,9 +21,9 @@ interface ProcessFacadeInterface
      * @param array $dictionary
      * @param \Psr\Log\LoggerInterface $logger
      *
-     * @return mixed
+     * @return array
      */
-    public function translate(array $payload, array $dictionary, LoggerInterface $logger);
+    public function translate(array $payload, array $dictionary, LoggerInterface $logger): array;
 
     /**
      * @param array $payload

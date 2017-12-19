@@ -60,8 +60,13 @@ class Processor implements ProcessorInterface
     {
         $this->preProcess();
         $this->logger->info('Middleware process is started.', ['process' => $this]);
+        $counter = 0;
         foreach ($this->iterator as $item) {
-            $this->logger->info('Start processing of item', ['item' => $item]);
+            $this->logger->info('Start processing of item', [
+                'item' => $item,
+                'itemKey' => $this->iterator->key(),
+                'itemNo' => $counter++,
+            ]);
             $this->pipeline->process($item);
         }
         $this->logger->info('Middleware process is finished.');
