@@ -16,7 +16,7 @@
     </transfer>
 
     <transfer name="AggregatorSettings">
-        <property name="sequenceSizeRelease" type="int"/>
+        <property name="threshold" type="int"/>
     </transfer>
 
 </transfers>
