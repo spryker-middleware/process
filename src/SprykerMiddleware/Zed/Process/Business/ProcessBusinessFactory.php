@@ -20,8 +20,8 @@ use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManager;
 use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
-use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage;
-use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface;
+use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilder;
+use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
 use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
@@ -29,7 +29,6 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Transla
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
 use SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface;
 use SprykerMiddleware\Zed\Process\Business\Writer\WriterResolver;
-use SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -132,23 +131,16 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     protected function getStages(array $stagePlugins, LoggerInterface $logger): array
     {
-        $stages = [];
-        foreach ($stagePlugins as $stagePlugin) {
-            $stages[] = $this->createStage($stagePlugin, $logger);
-        }
-
-        return $stages;
+        return $this->createStageListBuilder()
+            ->buildStageList($stagePlugins, $logger);
     }
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface $stagePlugin
-     * @param \Psr\Log\LoggerInterface $logger
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface
+     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface
      */
-    protected function createStage(StagePluginInterface $stagePlugin, LoggerInterface $logger): StageInterface
+    protected function createStageListBuilder(): StageListBuilderInterface
     {
-        return new Stage($stagePlugin, $logger);
+        return new StageListBuilder();
     }
 
     /**
