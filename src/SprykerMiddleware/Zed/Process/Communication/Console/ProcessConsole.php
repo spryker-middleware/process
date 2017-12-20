@@ -1,8 +1,10 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Communication\Console;
 
+use Generated\Shared\Transfer\AggregatorSettingsTransfer;
 use Generated\Shared\Transfer\IteratorSettingsTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
+use Generated\Shared\Transfer\WriterConfigTransfer;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -83,6 +85,8 @@ class ProcessConsole extends Console
     {
         $processSettingsTransfer = new ProcessSettingsTransfer();
         $processSettingsTransfer->setIteratorSettings(new IteratorSettingsTransfer());
+        $processSettingsTransfer->setAggregatorSettings(new AggregatorSettingsTransfer());
+        $processSettingsTransfer->getAggregatorSettings()->setWriterConfig(new WriterConfigTransfer());
         if ($input->getOption(self::OPTION_PROCESS_NAME)) {
             $processSettingsTransfer->setName($input->getOption(self::OPTION_PROCESS_NAME));
             $offset = $input->getOption(self::OPTION_ITERATOR_OFFSET) ?: 0;

@@ -5,6 +5,7 @@ use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Iterator;
 use League\Pipeline\FingersCrossedProcessor;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
+use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage;
@@ -29,6 +30,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
         return new Processor(
             $this->getProcessIterator($processSettingsTransfer),
             $this->createPipeline($this->getStagePluginsListForProcess($processSettingsTransfer->getName())),
+            $this->getProcessAggregator($processSettingsTransfer),
             $this->getPreProcessorStack($processSettingsTransfer->getName()),
             $this->getPostProcessorStack($processSettingsTransfer->getName())
         );
@@ -60,6 +62,25 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
      * @return array
      */
     protected function getProcessIteratorsList(): array
+    {
+        return [];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface
+     */
+    protected function getProcessAggregator(ProcessSettingsTransfer $processSettingsTransfer): AggregatorInterface
+    {
+        $aggregators = $this->getProcessAggregatorsList();
+        return $aggregators[$processSettingsTransfer->getName()]($processSettingsTransfer->getAggregatorSettings());
+    }
+
+    /**
+     * @return array
+     */
+    protected function getProcessAggregatorsList(): array
     {
         return [];
     }

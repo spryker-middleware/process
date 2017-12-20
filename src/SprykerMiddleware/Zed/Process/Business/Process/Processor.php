@@ -2,6 +2,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Process;
 
 use Iterator;
+use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 
 class Processor implements ProcessorInterface
@@ -10,6 +11,11 @@ class Processor implements ProcessorInterface
      * @var \Iterator
      */
     protected $iterator;
+
+    /**
+     * @var \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface
+     */
+    protected $aggregator;
 
     /**
      * @var \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
@@ -25,21 +31,26 @@ class Processor implements ProcessorInterface
      * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookInterface[]
      */
     protected $postProcessStack;
-
+    
     /**
+     * Processor constructor.
+     *
      * @param \Iterator $iterator
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
-     * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookInterface[] $preProcessStack
-     * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookInterface[] $postProcessStack
+     * @param \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface $aggregator
+     * @param array $preProcessStack
+     * @param array $postProcessStack
      */
     public function __construct(
         Iterator $iterator,
         PipelineInterface $pipeline,
+        AggregatorInterface $aggregator,
         array $preProcessStack,
         array $postProcessStack
     ) {
         $this->iterator = $iterator;
         $this->pipeline = $pipeline;
+        $this->aggregator = $aggregator;
         $this->preProcessStack = $preProcessStack;
         $this->postProcessStack = $postProcessStack;
     }
@@ -51,8 +62,11 @@ class Processor implements ProcessorInterface
     {
         $this->preProcess();
         foreach ($this->iterator as $item) {
-            $this->pipeline->process($item);
+            $this->aggregator->accept(
+                $this->pipeline->process($item)
+            );
         }
+        $this->aggregator->flush();
         $this->postProcess();
     }
 
