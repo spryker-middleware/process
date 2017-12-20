@@ -4,7 +4,6 @@ namespace SprykerMiddleware\Zed\Process\Dependency\Service;
 
 class ProcessToUtilEncodingBridge implements ProcessToUtilEncodingInterface
 {
-
     /**
      * @var \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
      */
@@ -42,5 +41,4 @@ class ProcessToUtilEncodingBridge implements ProcessToUtilEncodingInterface
     {
         return $this->utilEncodingService->decodeJson($jsonValue, $assoc, $depth, $options);
     }
-
 }

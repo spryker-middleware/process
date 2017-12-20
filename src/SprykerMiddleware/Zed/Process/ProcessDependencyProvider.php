@@ -23,16 +23,6 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
             return $this->registerProcessStages();
         };
 
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    public function provideBusinessLayerDependencies(Container $container)
-    {
         $container[self::SERVICE_UTIL_ENCODING] = function (Container $container) {
             return new ProcessToUtilEncodingBridge($container->getLocator()->utilEncoding()->service());
         };
