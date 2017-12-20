@@ -16,6 +16,6 @@ abstract class AbstractMapperStagePlugin extends AbstractPlugin implements Mappe
     public function process($payload, LoggerInterface $logger)
     {
         return $this->getFacade()
-            ->map($payload, $this->getMap(), $logger);
+            ->map($payload, $this->getMapperConfig(), $logger);
     }
 }

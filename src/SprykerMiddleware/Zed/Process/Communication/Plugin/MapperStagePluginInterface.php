@@ -2,12 +2,12 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
-use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
+use Generated\Shared\Transfer\MapperConfigTransfer;
 
 interface MapperStagePluginInterface extends StagePluginInterface
 {
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface
+     * @return \Generated\Shared\Transfer\MapperConfigTransfer
      */
-    public function getMap(): MapInterface;
+    public function getMapperConfig(): MapperConfigTransfer;
 }

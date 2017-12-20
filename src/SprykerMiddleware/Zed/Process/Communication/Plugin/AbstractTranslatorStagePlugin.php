@@ -16,6 +16,6 @@ abstract class AbstractTranslatorStagePlugin extends AbstractPlugin implements T
     public function process($payload, LoggerInterface $logger)
     {
         return $this->getFacade()
-            ->translate($payload, $this->getDictionary(), $logger);
+            ->translate($payload, $this->getTranslatorConfig(), $logger);
     }
 }

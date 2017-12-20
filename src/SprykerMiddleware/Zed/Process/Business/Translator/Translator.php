@@ -2,6 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
+use Generated\Shared\Transfer\TranslatorConfigTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
@@ -10,9 +11,9 @@ class Translator implements TranslatorInterface
 {
     const KEY_OPTIONS = 'options';
     /**
-     * @var array
+     * @var \Generated\Shared\Transfer\TranslatorConfigTransfer
      */
-    protected $dictionary;
+    protected $translatorConfigTransfer;
 
     /**
      * @var \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver
@@ -30,18 +31,18 @@ class Translator implements TranslatorInterface
     protected $logger;
 
     /**
-     * @param array $dictionary
+     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      * @param \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver $translatorFunctionResolver
      * @param \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface $payloadManager
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        array $dictionary,
+        TranslatorConfigTransfer $translatorConfigTransfer,
         AbstractClassResolver $translatorFunctionResolver,
         PayloadManagerInterface $payloadManager,
         LoggerInterface $logger
     ) {
-        $this->dictionary = $dictionary;
+        $this->translatorConfigTransfer = $translatorConfigTransfer;
         $this->translatorFunctionResolver = $translatorFunctionResolver;
         $this->payloadManager = $payloadManager;
         $this->logger = $logger;
@@ -55,7 +56,7 @@ class Translator implements TranslatorInterface
     public function translate(array $payload): array
     {
         $result = $payload;
-        foreach ($this->dictionary as $key => $translations) {
+        foreach ($this->translatorConfigTransfer->getDictionary() as $key => $translations) {
             $result = $this->translateKey($result, $payload, $key, $translations);
         }
 

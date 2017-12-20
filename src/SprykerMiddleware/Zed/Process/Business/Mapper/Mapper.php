@@ -2,17 +2,17 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
+use Generated\Shared\Transfer\MapperConfigTransfer;
 use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Shared\Process\ProcessConstants;
-use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
 
 class Mapper implements MapperInterface
 {
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface
+     * @var \Generated\Shared\Transfer\MapperConfigTransfer
      */
-    protected $map;
+    protected $mapperConfigTransfer;
 
     /**
      * @var \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface
@@ -25,16 +25,16 @@ class Mapper implements MapperInterface
     protected $logger;
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface $map
+     * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface $payloadManager
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        MapInterface $map,
+        MapperConfigTransfer $mapperConfigTransfer,
         PayloadManagerInterface $payloadManager,
         LoggerInterface $logger
     ) {
-        $this->map = $map;
+        $this->mapperConfigTransfer = $mapperConfigTransfer;
         $this->payloadManager = $payloadManager;
         $this->logger = $logger;
     }
@@ -47,7 +47,7 @@ class Mapper implements MapperInterface
     public function map(array $payload): array
     {
         $result = $this->prepareResult($payload);
-        foreach ($this->map->getMap() as $key => $value) {
+        foreach ($this->mapperConfigTransfer->getMap() as $key => $value) {
             $result = $this->mapByRule($result, $payload, $key, $value);
         }
 
@@ -178,7 +178,7 @@ class Mapper implements MapperInterface
      */
     protected function prepareResult(array $payload): array
     {
-        if ($this->map->getStrategy() === ProcessConstants::MAPPER_STRATEGY_COPY_UNKNOWN) {
+        if ($this->mapperConfigTransfer->getStrategy() === ProcessConstants::MAPPER_STRATEGY_COPY_UNKNOWN) {
             $this->logger->debug('Mapping', [
                 'operation' => 'Copy original data',
                 'strategy' => $this->map->getStrategy(),

@@ -2,15 +2,12 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper\Map;
 
+use Generated\Shared\Transfer\MapperConfigTransfer;
+
 interface MapInterface
 {
     /**
-     * @return array
+     * @return \Generated\Shared\Transfer\MaperConfig
      */
-    public function getMap(): array;
-
-    /**
-     * @return string
-     */
-    public function getStrategy(): string;
+    public function getMapperConfig(): MapperConfigTransfer;
 }

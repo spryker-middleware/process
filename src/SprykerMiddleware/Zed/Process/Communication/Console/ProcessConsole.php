@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
+ * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacade getFacade()
  */
 class ProcessConsole extends Console
 {
@@ -76,9 +77,8 @@ class ProcessConsole extends Console
         if ($this->hasError()) {
             return $this->exitCode;
         }
-        $this->getFactory()
-            ->createProcessor($processSettingsTransfer)
-            ->process();
+        $this->getFacade()
+            ->process($processSettingsTransfer);
 
         return $this->exitCode;
     }

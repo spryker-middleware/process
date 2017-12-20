@@ -2,10 +2,12 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator\Dictionary;
 
+use Generated\Shared\Transfer\TranslatorConfigTransfer;
+
 interface DictionaryInterface
 {
     /**
-     * @return array
+     * @return \Generated\Shared\Transfer\TranslatorConfigTransfer
      */
-    public function getDictionary(): array;
+    public function getTranslatorConfig(): TranslatorConfigTransfer;
 }

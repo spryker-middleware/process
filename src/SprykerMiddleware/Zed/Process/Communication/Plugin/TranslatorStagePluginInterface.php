@@ -1,12 +1,13 @@
 <?php
 
-
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
+
+use Generated\Shared\Transfer\TranslatorConfigTransfer;
 
 interface TranslatorStagePluginInterface extends StagePluginInterface
 {
     /**
-     * @return array
+     * @return \Generated\Shared\Transfer\TranslatorConfigTransfer
      */
-    public function getDictionary(): array;
+    public function getTranslatorConfig(): TranslatorConfigTransfer;
 }

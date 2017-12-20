@@ -18,12 +18,12 @@ class Processor implements ProcessorInterface
     protected $pipeline;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookInterface[]
+     * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookPluginInterface[]
      */
     protected $preProcessStack;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookInterface[]
+     * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookPluginInterface[]
      */
     protected $postProcessStack;
 
@@ -35,8 +35,8 @@ class Processor implements ProcessorInterface
     /**
      * @param \Iterator $iterator
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
-     * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookInterface[] $preProcessStack
-     * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookInterface[] $postProcessStack
+     * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookPluginInterface[] $preProcessStack
+     * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookPluginInterface[] $postProcessStack
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(

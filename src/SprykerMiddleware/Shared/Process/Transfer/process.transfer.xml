@@ -20,4 +20,13 @@
         <property name="isQuiet" type="bool"/>
     </transfer>
 
+    <transfer name="MapperConfig">
+        <property name="map" type="array"/>
+        <property name="strategy" type="string"/>
+    </transfer>
+
+    <transfer name="TranslatorConfig">
+        <property name="dictionary" type="array"/>
+    </transfer>
+
 </transfers>
