@@ -64,8 +64,19 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     protected function getStagePluginsListForProcess(string $processName): array
     {
-        $stages = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESS_STAGES);
-        return $stages[$processName];
+        $processes = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
+        return $this->getPipelineStagePluginsList($processes[$processName][ProcessDependencyProvider::PIPELINE]);
+    }
+
+    /**
+     * @param string $pipelineName
+     *
+     * @return array
+     */
+    private function getPipelineStagePluginsList($pipelineName)
+    {
+        $pipelines = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PIPELINES);
+        return $pipelines[$pipelineName];
     }
 
     /**
@@ -82,7 +93,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @param string $processName
      *
-     * @return array
+     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage[]
      */
     protected function getPostProcessHookStack(string $processName): array
     {

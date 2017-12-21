@@ -7,12 +7,15 @@ use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingBridge
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
 {
-    const MIDDLEWARE_PROCESS_STAGES = 'MIDDLEWARE_PROCESS_STAGES';
+    const MIDDLEWARE_PROCESSES = 'MIDDLEWARE_PROCESSES';
+    const MIDDLEWARE_PIPELINES = 'MIDDLEWARE_PIPELINES';
     const MIDDLEWARE_PROCESS_ITERATORS = 'MIDDLEWARE_PROCESS_ITERATORS';
     const MIDDLEWARE_PROCESS_LOGGERS = 'MIDDLEWARE_PROCESS_LOGGERS';
     const MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK';
     const MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK';
     const SERVICE_UTIL_ENCODING = 'util encoding service';
+
+    const PIPELINE = 'PIPELINE';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -23,8 +26,12 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = parent::provideBusinessLayerDependencies($container);
 
-        $container[self::MIDDLEWARE_PROCESS_STAGES] = function () {
-            return $this->registerProcessStages();
+        $container[self::MIDDLEWARE_PROCESSES] = function () {
+            return $this->registerProcesses();
+        };
+
+        $container[self::MIDDLEWARE_PIPELINES] = function () {
+            return $this->registerPipelines();
         };
 
         $container[self::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK] = function () {
@@ -45,7 +52,15 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return array
      */
-    public function registerProcessStages(): array
+    public function registerProcesses(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function registerPipelines(): array
     {
         return [];
     }
