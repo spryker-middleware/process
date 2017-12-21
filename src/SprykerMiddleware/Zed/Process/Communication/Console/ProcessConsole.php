@@ -1,6 +1,7 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Communication\Console;
 
+use Exception;
 use Generated\Shared\Transfer\AggregatorSettingsTransfer;
 use Generated\Shared\Transfer\IteratorSettingsTransfer;
 use Generated\Shared\Transfer\LoggerSettingsTransfer;
@@ -21,14 +22,26 @@ class ProcessConsole extends Console
     const COMMAND_NAME = 'middleware:process:run';
     const DESCRIPTION = 'Run middleware process';
     const OPTION_PROCESS_NAME = 'process';
-    const OPTION_ITERATOR_OFFSET = 'offset';
+    const OPTION_ITERATOR_OFFSET = 'skip';
     const OPTION_ITERATOR_LIMIT = 'limit';
     const OPTION_LOG_LEVEL = 'flagLogLevel';
+    const OPTION_INPUT = 'input';
+    const OPTION_OUTPUT = 'output';
 
     /**
      * @var int
      */
     protected $exitCode = self::CODE_SUCCESS;
+
+    /**
+     * @var resource
+     */
+    protected $inputStream;
+
+    /**
+     * @var resource
+     */
+    protected $outputStream;
 
     /**
      * @return void
@@ -47,7 +60,7 @@ class ProcessConsole extends Console
 
         $this->addOption(
             static::OPTION_ITERATOR_OFFSET,
-            'o',
+            's',
             InputOption::VALUE_OPTIONAL,
             'Count of items that should be skipped during processing'
         );
@@ -65,6 +78,20 @@ class ProcessConsole extends Console
             InputOption::VALUE_OPTIONAL,
             'Flag of Log level [Critical, Error, Warning, Info, Debug]'
         );
+
+        $this->addOption(
+            static::OPTION_INPUT,
+            'i',
+            InputOption::VALUE_REQUIRED,
+            'Input Stream'
+        );
+
+        $this->addOption(
+            static::OPTION_OUTPUT,
+            'o',
+            InputOption::VALUE_REQUIRED,
+            'Output Stream'
+        );
     }
 
     /**
@@ -79,9 +106,14 @@ class ProcessConsole extends Console
         if ($this->hasError()) {
             return $this->exitCode;
         }
-        $this->getFacade()
-            ->process($processSettingsTransfer);
-
+        try {
+            $this->processStreamArgs($input);
+            $this->getFacade()
+                ->process($processSettingsTransfer);
+        } catch (Exception $e) {
+        } finally {
+            $this->closeStreams();
+        }
         return $this->exitCode;
     }
 
@@ -162,5 +194,33 @@ class ProcessConsole extends Console
             $verboseLevel = Logger::DEBUG;
         }
         $processSettingsTransfer->getLoggerSettings()->setVerboseLevel($verboseLevel);
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return void
+     */
+    protected function processStreamArgs(InputInterface $input): void
+    {
+        $inputStream = 'php://stdin';
+        $outputStream = 'php://stdout';
+        if ($input->getOption(self::OPTION_INPUT)) {
+            $inputStream = $input->getOption(self::OPTION_INPUT);
+        }
+        if ($input->getOption(self::OPTION_OUTPUT)) {
+            $outputStream = $input->getOption(self::OPTION_OUTPUT);
+        }
+        $this->inputStream = fopen($inputStream, 'r');
+        $this->outputStream = fopen($outputStream, 'w');
+    }
+
+    /**
+     * @return void
+     */
+    protected function closeStreams()
+    {
+        fclose($this->inputStream);
+        fclose($this->outputStream);
     }
 }
