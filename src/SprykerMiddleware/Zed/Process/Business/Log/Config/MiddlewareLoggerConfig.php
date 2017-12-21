@@ -7,9 +7,7 @@ use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\PsrLogMessageProcessor;
-use Spryker\Shared\Config\Config;
 use Spryker\Shared\Log\Config\LoggerConfigInterface;
-use Spryker\Shared\Log\LogConstants;
 
 class MiddlewareLoggerConfig implements LoggerConfigInterface
 {
@@ -41,11 +39,9 @@ class MiddlewareLoggerConfig implements LoggerConfigInterface
      */
     public function getHandlers(): array
     {
-        $handlers = [
-            $this->createStreamHandler(),
-        ];
+        $handlers = [];
         if (!$this->loggerSettings->getIsQuiet()) {
-            $handlers[] = $this->createConsoleStreamHandler();
+            $handlers[] = $this->createStdErrStreamHandler();
         }
 
         return $handlers;
@@ -65,38 +61,15 @@ class MiddlewareLoggerConfig implements LoggerConfigInterface
     /**
      * @return \Monolog\Handler\StreamHandler
      */
-    protected function createStreamHandler(): StreamHandler
+    protected function createStdErrStreamHandler(): StreamHandler
     {
         $streamHandler = new StreamHandler(
-            $this->getLogFilePath(),
+            'php://stderr',
             $this->loggerSettings->getVerboseLevel()
         );
         $formatter = new LogstashFormatter(static::NAME);
         $streamHandler->setFormatter($formatter);
 
         return $streamHandler;
-    }
-
-    /**
-     * @return \Monolog\Handler\StreamHandler
-     */
-    protected function createConsoleStreamHandler(): StreamHandler
-    {
-        $streamHandler = new StreamHandler(
-            'php://stdout',
-            $this->loggerSettings->getVerboseLevel()
-        );
-        $formatter = new LogstashFormatter(static::NAME);
-        $streamHandler->setFormatter($formatter);
-
-        return $streamHandler;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getLogFilePath(): string
-    {
-        return Config::get(LogConstants::LOG_FILE_PATH_ZED);
     }
 }
