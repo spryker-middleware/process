@@ -101,7 +101,7 @@ class Translator implements TranslatorInterface
     {
         if (is_callable($translation)) {
             return $this->payloadManager
-                ->setValue($result, $key, $translation($this->payloadManager->getValueByKey($payload, $key), $key, $payload));
+                ->setValue($result, $key, $translation($this->payloadManager->getValueByKey($payload, $key), $key, $result));
         }
         if (is_array($translation)) {
             return $this->translateValue($result, $payload, $key, $translation);
