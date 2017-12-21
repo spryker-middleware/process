@@ -51,7 +51,7 @@ class BatchAggregator implements AggregatorInterface
     {
         $this->storage[] = $payload;
 
-        if ($this->settings->getThreshold() >= count($this->storage)) {
+        if (count($this->storage) >= $this->settings->getThreshold()) {
             $this->flush();
         }
     }
