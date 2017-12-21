@@ -1,6 +1,6 @@
 <?php
 
-namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
+namespace SprykerMiddleware\Zed\Process\Dependency\Plugin;
 
 use Generated\Shared\Transfer\MapperConfigTransfer;
 

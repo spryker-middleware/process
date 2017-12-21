@@ -3,7 +3,7 @@
 namespace  SprykerMiddleware\Zed\Process\Business\Pipeline\Stage;
 
 use Psr\Log\LoggerInterface;
-use SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 class Stage implements StageInterface
 {

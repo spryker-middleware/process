@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 class StageListBuilder implements StageListBuilderInterface
 {
     /**
-     * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface[] $stagePluginList
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[] $stagePluginList
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage[]
