@@ -2,8 +2,18 @@
 
 namespace SprykerMiddleware\Zed\Process\Business;
 
+use Generated\Shared\Transfer\LoggerSettingsTransfer;
+use Generated\Shared\Transfer\MapperConfigTransfer;
+use Generated\Shared\Transfer\ProcessSettingsTransfer;
+use Generated\Shared\Transfer\TranslatorConfigTransfer;
+use Iterator;
+use League\Pipeline\FingersCrossedProcessor;
+use Psr\Log\LoggerInterface;
+use Spryker\Shared\Log\Config\LoggerConfigInterface;
+use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
+use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
 use SprykerMiddleware\Zed\Process\Business\Log\Config\MiddlewareLoggerConfig;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
@@ -40,6 +50,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         return new Processor(
             $this->getProcessIterator($processSettingsTransfer),
             $this->createPipeline($stagesPluginsList, $logger),
+            $this->getProcessAggregator($processSettingsTransfer),
             $this->getPreProcessHookStack($processSettingsTransfer->getName()),
             $this->getPostProcessHookStack($processSettingsTransfer->getName()),
             $logger
@@ -94,6 +105,25 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      * @return array
      */
     protected function getProcessIteratorsList(): array
+    {
+        return [];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface
+     */
+    protected function getProcessAggregator(ProcessSettingsTransfer $processSettingsTransfer): AggregatorInterface
+    {
+        $aggregators = $this->getProcessAggregatorsList();
+        return $aggregators[$processSettingsTransfer->getName()]($processSettingsTransfer->getAggregatorSettings());
+    }
+
+    /**
+     * @return array
+     */
+    protected function getProcessAggregatorsList(): array
     {
         return [];
     }
@@ -178,25 +208,28 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createMapper(MapInterface $map): MapperInterface
+    public function createMapper(MapperConfigTransfer $mapperConfigTransfer, LoggerInterface $logger): MapperInterface
     {
         return new Mapper(
-            $map,
-            $this->createPayloadManager()
+            $mapperConfigTransfer,
+            $this->createPayloadManager(),
+            $logger
         );
     }
 
     /**
-     * @param array $dictionary
+     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface
      */
-    public function createTranslator(array $dictionary): TranslatorInterface
+    public function createTranslator(TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): TranslatorInterface
     {
         return new Translator(
-            $dictionary,
+            $translatorConfigTransfer,
             $this->createTranslatorFunctionResolver(),
-            $this->createPayloadManager()
+            $this->createPayloadManager(),
+            $logger
         );
     }
 
