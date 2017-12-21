@@ -3,6 +3,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 
 use Iterator;
 use Psr\Log\LoggerInterface;
+use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 
 class Processor implements ProcessorInterface
@@ -11,6 +12,11 @@ class Processor implements ProcessorInterface
      * @var \Iterator
      */
     protected $iterator;
+
+    /**
+     * @var \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface
+     */
+    protected $aggregator;
 
     /**
      * @var \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
@@ -28,13 +34,11 @@ class Processor implements ProcessorInterface
     protected $postProcessStack;
 
     /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    /**
+     * Processor constructor.
+     *
      * @param \Iterator $iterator
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
+     * @param \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface $aggregator
      * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookPluginInterface[] $preProcessStack
      * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookPluginInterface[] $postProcessStack
      * @param \Psr\Log\LoggerInterface $logger
@@ -42,16 +46,23 @@ class Processor implements ProcessorInterface
     public function __construct(
         Iterator $iterator,
         PipelineInterface $pipeline,
+        AggregatorInterface $aggregator,
         array $preProcessStack,
         array $postProcessStack,
         LoggerInterface $logger
     ) {
         $this->iterator = $iterator;
         $this->pipeline = $pipeline;
+        $this->aggregator = $aggregator;
         $this->preProcessStack = $preProcessStack;
         $this->postProcessStack = $postProcessStack;
         $this->logger = $logger;
     }
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
 
     /**
      * @return void
@@ -67,8 +78,11 @@ class Processor implements ProcessorInterface
                 'itemKey' => $this->iterator->key(),
                 'itemNo' => $counter++,
             ]);
-            $this->pipeline->process($item);
+            $this->aggregator->accept(
+                $this->pipeline->process($item)
+            );
         }
+        $this->aggregator->flush();
         $this->logger->info('Middleware process is finished.');
         $this->postProcess();
     }

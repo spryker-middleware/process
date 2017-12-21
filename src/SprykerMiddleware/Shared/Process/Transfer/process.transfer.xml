@@ -6,6 +6,7 @@
     <transfer name="ProcessSettings">
         <property name="name" type="string"/>
         <property name="iteratorSettings" type="IteratorSettings"/>
+        <property name="aggregatorSettings" type="AggregatorSettings"/>
         <property name="loggerSettings" type="LoggerSettings"/>
     </transfer>
 
@@ -13,6 +14,15 @@
         <property name="offset" type="int"/>
         <property name="limit" type="int"/>
         <property name="parseAsArray" type="bool"/>
+    </transfer>
+
+    <transfer name="AggregatorSettings">
+        <property name="threshold" type="int"/>
+        <property name="writerConfig" type="WriterConfig"/>
+    </transfer>
+
+    <transfer name="WriterConfig">
+        <property name="destination" type="string"/>
     </transfer>
 
     <transfer name="LoggerSettings">

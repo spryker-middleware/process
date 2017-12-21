@@ -42,20 +42,6 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     }
 
     /**
-     * @param array $payload
-     * @param string $writerName
-     * @param string $destination
-     *
-     * @return array
-     */
-    public function write(array $payload, string $writerName, string $destination): array
-    {
-        return $this->getFactory()
-            ->createWriter($writerName)
-            ->write($payload, $destination);
-    }
-
-    /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer $processSettingsTransfer
      *
      * @return void

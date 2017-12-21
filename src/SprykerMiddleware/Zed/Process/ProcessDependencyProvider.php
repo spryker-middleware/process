@@ -3,6 +3,7 @@ namespace SprykerMiddleware\Zed\Process;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
+use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingBridge;
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
 {
@@ -11,6 +12,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const MIDDLEWARE_PROCESS_LOGGERS = 'MIDDLEWARE_PROCESS_LOGGERS';
     const MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK';
     const MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK';
+    const SERVICE_UTIL_ENCODING = 'util encoding service';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -33,13 +35,17 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
             return $this->registerPostProcessorHooks();
         };
 
+        $container[self::SERVICE_UTIL_ENCODING] = function (Container $container) {
+            return new ProcessToUtilEncodingBridge($container->getLocator()->utilEncoding()->service());
+        };
+
         return $container;
     }
 
     /**
      * @return array
      */
-    public function registerProcessorStages(): array
+    public function registerProcessStages(): array
     {
         return [];
     }

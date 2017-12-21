@@ -2,15 +2,6 @@
 
 namespace SprykerMiddleware\Zed\Process\Business;
 
-use Generated\Shared\Transfer\LoggerSettingsTransfer;
-use Generated\Shared\Transfer\MapperConfigTransfer;
-use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use Iterator;
-use League\Pipeline\FingersCrossedProcessor;
-use Psr\Log\LoggerInterface;
-use Spryker\Shared\Log\Config\LoggerConfigInterface;
-use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Zed\Process\Business\Log\Config\MiddlewareLoggerConfig;
@@ -27,8 +18,6 @@ use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
-use SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface;
-use SprykerMiddleware\Zed\Process\Business\Writer\WriterResolver;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -189,39 +178,26 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createMapper(MapperConfigTransfer $mapperConfigTransfer, LoggerInterface $logger): MapperInterface
+    public function createMapper(MapInterface $map): MapperInterface
     {
         return new Mapper(
-            $mapperConfigTransfer,
-            $this->createPayloadManager(),
-            $logger
-        );
-    }
-    
-    /**
-     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
-     * @param \Psr\Log\LoggerInterface $logger
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface
-     */
-    public function createTranslator(TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): TranslatorInterface
-    {
-        return new Translator(
-            $translatorConfigTransfer,
-            $this->createTranslatorFunctionResolver(),
-            $this->createPayloadManager(),
-            $logger
+            $map,
+            $this->createPayloadManager()
         );
     }
 
     /**
-     * @param string $writerName
+     * @param array $dictionary
      *
-     * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
+     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface
      */
-    public function createWriter(string $writerName): WriterInterface
+    public function createTranslator(array $dictionary): TranslatorInterface
     {
-        return $this->createWriterResolver()->resolve($this, $writerName);
+        return new Translator(
+            $dictionary,
+            $this->createTranslatorFunctionResolver(),
+            $this->createPayloadManager()
+        );
     }
 
     /**
@@ -238,13 +214,5 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function createTranslatorFunctionResolver(): AbstractClassResolver
     {
         return new TranslatorFunctionResolver();
-    }
-
-    /**
-     * @return \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver
-     */
-    protected function createWriterResolver(): AbstractClassResolver
-    {
-        return new WriterResolver();
     }
 }
