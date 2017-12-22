@@ -2,16 +2,19 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
+use Generated\Shared\Transfer\TranslatorConfigTransfer;
+use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
 
 class Translator implements TranslatorInterface
 {
     const KEY_OPTIONS = 'options';
+
     /**
-     * @var array
+     * @var \Generated\Shared\Transfer\TranslatorConfigTransfer
      */
-    protected $dictionary;
+    protected $translatorConfigTransfer;
 
     /**
      * @var \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver
@@ -24,18 +27,26 @@ class Translator implements TranslatorInterface
     protected $payloadManager;
 
     /**
-     * @param array $dictionary
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      * @param \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver $translatorFunctionResolver
      * @param \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface $payloadManager
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        array $dictionary,
+        TranslatorConfigTransfer $translatorConfigTransfer,
         AbstractClassResolver $translatorFunctionResolver,
-        PayloadManagerInterface $payloadManager
+        PayloadManagerInterface $payloadManager,
+        LoggerInterface $logger
     ) {
-        $this->dictionary = $dictionary;
+        $this->translatorConfigTransfer = $translatorConfigTransfer;
         $this->translatorFunctionResolver = $translatorFunctionResolver;
         $this->payloadManager = $payloadManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -46,7 +57,7 @@ class Translator implements TranslatorInterface
     public function translate(array $payload): array
     {
         $result = $payload;
-        foreach ($this->dictionary as $key => $translations) {
+        foreach ($this->translatorConfigTransfer->getDictionary() as $key => $translations) {
             $result = $this->translateKey($result, $payload, $key, $translations);
         }
 
@@ -100,8 +111,7 @@ class Translator implements TranslatorInterface
     protected function translateByRule(array $result, array $payload, string $key, $translation): array
     {
         if (is_callable($translation)) {
-            return $this->payloadManager
-                ->setValue($result, $key, $translation($this->payloadManager->getValueByKey($payload, $key), $key, $result));
+            return $this->translateCallable($result, $payload, $key, $translation);
         }
         if (is_array($translation)) {
             return $this->translateValue($result, $payload, $key, $translation);
@@ -117,6 +127,30 @@ class Translator implements TranslatorInterface
      * @param array $result
      * @param array $payload
      * @param string $key
+     * @param callable $translation
+     *
+     * @return array
+     */
+    protected function translateCallable(array $result, array $payload, string $key, callable $translation): array
+    {
+        $inputValue = $this->payloadManager->getValueByKey($payload, $key);
+        $resultValue = $translation($inputValue, $key, $result);
+        $this->logger->debug(
+            'Translation',
+            [
+                'key' => $key,
+                'operation_type' => $translation,
+                'affected_data' => $inputValue,
+                'resulted_data' => $resultValue,
+            ]
+        );
+        return $this->payloadManager->setValue($result, $key, $resultValue);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
      * @param array $translation
      *
      * @return array
@@ -126,9 +160,20 @@ class Translator implements TranslatorInterface
         $options = isset($translation[self::KEY_OPTIONS]) ? $translation[self::KEY_OPTIONS] : [];
         /** @var \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface $translateFunction */
         $translateFunction = $this->translatorFunctionResolver->resolve($this, reset($translation), $options);
-        $value = $translateFunction->translate($this->payloadManager->getValueByKey($result, $key));
 
-        return $this->payloadManager->setValue($result, $key, $value);
+        $inputValue = $this->payloadManager->getValueByKey($result, $key);
+        $resultValue = $translateFunction->translate($inputValue);
+        $this->logger->debug(
+            'Translation',
+            [
+                'key' => $key,
+                'operation_type' => reset($translation),
+                'affected_data' => $inputValue,
+                'resulted_data' => $resultValue,
+            ]
+        );
+
+        return $this->payloadManager->setValue($result, $key, $resultValue);
     }
 
     /**

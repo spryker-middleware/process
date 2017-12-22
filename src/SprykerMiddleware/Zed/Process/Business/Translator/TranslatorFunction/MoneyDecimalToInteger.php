@@ -4,7 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException;
 
-class MoneyDecimalToInteger extends TranslatorFunctionAbstract
+class MoneyDecimalToInteger extends AbstractTranslatorFunction
 {
     const PRICE_PRECISION = 100;
 

@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
-class BoolToString extends TranslatorFunctionAbstract implements TranslatorFunctionInterface
+class BoolToString extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
     /**
      * @param bool $value

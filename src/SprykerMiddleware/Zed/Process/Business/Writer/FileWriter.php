@@ -7,13 +7,11 @@ use Generated\Shared\Transfer\WriterConfigTransfer;
 class FileWriter implements WriterInterface
 {
     /**
-     * @var string
+     * @var \Generated\Shared\Transfer\WriterConfigTransfer
      */
     protected $config;
 
     /**
-     * FileWriter constructor.
-     *
      * @param \Generated\Shared\Transfer\WriterConfigTransfer $writerConfigTransfer
      */
     public function __construct(WriterConfigTransfer $writerConfigTransfer)

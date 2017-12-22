@@ -1,10 +1,10 @@
 <?php
 
-namespace SprykerMiddleware\Zed\Process\Business\Translator\Dictionary;
+namespace SprykerMiddleware\Zed\Process\Dependency\Plugin;
 
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
 
-interface DictionaryInterface
+interface TranslatorStagePluginInterface extends StagePluginInterface
 {
     /**
      * @return \Generated\Shared\Transfer\TranslatorConfigTransfer

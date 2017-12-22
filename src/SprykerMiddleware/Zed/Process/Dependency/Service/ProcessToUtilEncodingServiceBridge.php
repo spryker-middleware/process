@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Dependency\Service;
 
-class ProcessToUtilEncodingBridge implements ProcessToUtilEncodingInterface
+class ProcessToUtilEncodingServiceBridge implements ProcessToUtilEncodingServiceInterface
 {
     /**
      * @var \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface

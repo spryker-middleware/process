@@ -5,7 +5,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 use DateTime;
 use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException;
 
-class DateTimeToString extends TranslatorFunctionAbstract implements TranslatorFunctionInterface
+class DateTimeToString extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
     /**
      * @var array

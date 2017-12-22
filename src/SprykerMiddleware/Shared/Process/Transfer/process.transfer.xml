@@ -7,6 +7,7 @@
         <property name="name" type="string"/>
         <property name="iteratorSettings" type="IteratorSettings"/>
         <property name="aggregatorSettings" type="AggregatorSettings"/>
+        <property name="loggerSettings" type="LoggerSettings"/>
     </transfer>
 
     <transfer name="IteratorSettings">
@@ -22,6 +23,20 @@
 
     <transfer name="WriterConfig">
         <property name="destination" type="string"/>
+    </transfer>
+
+    <transfer name="LoggerSettings">
+        <property name="verboseLevel" type="int"/>
+        <property name="isQuiet" type="bool"/>
+    </transfer>
+
+    <transfer name="MapperConfig">
+        <property name="map" type="array"/>
+        <property name="strategy" type="string"/>
+    </transfer>
+
+    <transfer name="TranslatorConfig">
+        <property name="dictionary" type="array"/>
     </transfer>
 
 </transfers>

@@ -28,8 +28,6 @@ class CombinedIterator implements OuterIterator
     protected $innerIteratorArgs;
 
     /**
-     * CombinedIterator constructor.
-     *
      * @param \Iterator $iterator
      * @param string $innerIteratorClassName
      * @param array $innerIteratorArgs

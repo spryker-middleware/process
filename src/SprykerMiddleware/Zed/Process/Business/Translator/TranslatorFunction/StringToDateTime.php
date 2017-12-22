@@ -4,7 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 use DateTime;
 
-class StringToDateTime extends TranslatorFunctionAbstract implements TranslatorFunctionInterface
+class StringToDateTime extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
     /**
      * @param string $value

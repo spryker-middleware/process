@@ -2,6 +2,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Process;
 
 use Iterator;
+use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 
@@ -23,36 +24,42 @@ class Processor implements ProcessorInterface
     protected $pipeline;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookInterface[]
+     * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookPluginInterface[]
      */
     protected $preProcessStack;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookInterface[]
+     * @var \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookPluginInterface[]
      */
     protected $postProcessStack;
-    
+
     /**
-     * Processor constructor.
-     *
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param \Iterator $iterator
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface $aggregator
-     * @param array $preProcessStack
-     * @param array $postProcessStack
+     * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PreProcessorHookPluginInterface[] $preProcessStack
+     * @param \SprykerMiddleware\Zed\Process\Business\Process\Hook\PostProcessorHookPluginInterface[] $postProcessStack
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Iterator $iterator,
         PipelineInterface $pipeline,
         AggregatorInterface $aggregator,
         array $preProcessStack,
-        array $postProcessStack
+        array $postProcessStack,
+        LoggerInterface $logger
     ) {
         $this->iterator = $iterator;
         $this->pipeline = $pipeline;
         $this->aggregator = $aggregator;
         $this->preProcessStack = $preProcessStack;
         $this->postProcessStack = $postProcessStack;
+        $this->logger = $logger;
     }
 
     /**
@@ -61,12 +68,20 @@ class Processor implements ProcessorInterface
     public function process()
     {
         $this->preProcess();
+        $this->logger->info('Middleware process is started.', ['process' => $this]);
+        $counter = 0;
         foreach ($this->iterator as $item) {
+            $this->logger->info('Start processing of item', [
+                'item' => $item,
+                'itemKey' => $this->iterator->key(),
+                'itemNo' => $counter++,
+            ]);
             $this->aggregator->accept(
                 $this->pipeline->process($item)
             );
         }
         $this->aggregator->flush();
+        $this->logger->info('Middleware process is finished.');
         $this->postProcess();
     }
 
