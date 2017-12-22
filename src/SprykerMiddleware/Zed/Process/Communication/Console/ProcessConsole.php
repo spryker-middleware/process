@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
- * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacade getFacade()
+ * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
  */
 class ProcessConsole extends Console
 {

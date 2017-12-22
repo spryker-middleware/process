@@ -3,7 +3,7 @@ namespace SprykerMiddleware\Zed\Process;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
-use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingBridge;
+use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
 {
@@ -13,7 +13,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const MIDDLEWARE_PROCESS_LOGGERS = 'MIDDLEWARE_PROCESS_LOGGERS';
     const MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK';
     const MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK';
-    const SERVICE_UTIL_ENCODING = 'util encoding service';
+    const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
 
     const PIPELINE = 'PIPELINE';
 
@@ -25,25 +25,80 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     public function provideBusinessLayerDependencies(Container $container)
     {
         $container = parent::provideBusinessLayerDependencies($container);
+        $container = $this->addProcesses($container);
+        $container = $this->addPipelines($container);
+        $container = $this->addPreProcessorHooks($container);
+        $container = $this->addPostProcessorHooks($container);
+        $container = $this->addServiceUtils($container);
 
-        $container[self::MIDDLEWARE_PROCESSES] = function () {
-            return $this->registerProcesses();
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addProcesses(Container $container): Container
+    {
+        $container[static::MIDDLEWARE_PROCESSES] = function () {
+            return $this->getProcesses();
         };
 
-        $container[self::MIDDLEWARE_PIPELINES] = function () {
-            return $this->registerPipelines();
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addPipelines(Container $container): Container
+    {
+        $container[static::MIDDLEWARE_PIPELINES] = function () {
+            return $this->getPipelines();
         };
 
-        $container[self::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK] = function () {
-            return $this->registerPreProcessorHooks();
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addPreProcessorHooks(Container $container): Container
+    {
+        $container[static::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK] = function () {
+            return $this->getPreProcessorHooks();
         };
 
-        $container[self::MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK] = function () {
-            return $this->registerPostProcessorHooks();
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addPostProcessorHooks(Container $container): Container
+    {
+        $container[static::MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK] = function () {
+            return $this->getPostProcessorHooks();
         };
 
-        $container[self::SERVICE_UTIL_ENCODING] = function (Container $container) {
-            return new ProcessToUtilEncodingBridge($container->getLocator()->utilEncoding()->service());
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addServiceUtils(Container $container): Container
+    {
+        $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
+            return new ProcessToUtilEncodingServiceBridge($container->getLocator()->utilEncoding()->service());
         };
 
         return $container;
@@ -52,7 +107,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return array
      */
-    public function registerProcesses(): array
+    public function getProcesses(): array
     {
         return [];
     }
@@ -60,7 +115,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return array
      */
-    public function registerPipelines(): array
+    public function getPipelines(): array
     {
         return [];
     }
@@ -68,7 +123,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return array
      */
-    public function registerPreProcessorHooks(): array
+    public function getPreProcessorHooks(): array
     {
         return [];
     }
@@ -76,7 +131,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return array
      */
-    public function registerPostProcessHooks(): array
+    public function getPostProcessHooks(): array
     {
         return [];
     }

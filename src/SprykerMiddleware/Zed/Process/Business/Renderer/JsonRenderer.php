@@ -2,19 +2,19 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Renderer;
 
-use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceInterface;
 
 class JsonRenderer implements RendererInterface
 {
     /**
-     * @var \SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingInterface
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceInterface
      */
     protected $utilEncoding;
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingInterface $utilEncoding
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceInterface $utilEncoding
      */
-    public function __construct(ProcessToUtilEncodingInterface $utilEncoding)
+    public function __construct(ProcessToUtilEncodingServiceInterface $utilEncoding)
     {
         $this->utilEncoding = $utilEncoding;
     }

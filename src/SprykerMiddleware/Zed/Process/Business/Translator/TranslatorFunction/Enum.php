@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
-class Enum extends TranslatorFunctionAbstract implements TranslatorFunctionInterface
+class Enum extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
     /**
      * @var array

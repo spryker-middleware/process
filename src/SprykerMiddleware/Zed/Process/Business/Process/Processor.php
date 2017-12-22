@@ -34,8 +34,11 @@ class Processor implements ProcessorInterface
     protected $postProcessStack;
 
     /**
-     * Processor constructor.
-     *
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param \Iterator $iterator
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface $aggregator
@@ -58,11 +61,6 @@ class Processor implements ProcessorInterface
         $this->postProcessStack = $postProcessStack;
         $this->logger = $logger;
     }
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
 
     /**
      * @return void

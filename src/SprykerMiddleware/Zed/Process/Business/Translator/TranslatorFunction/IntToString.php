@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
-class IntToString extends TranslatorFunctionAbstract implements TranslatorFunctionInterface
+class IntToString extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
     /**
      * @param int $value
