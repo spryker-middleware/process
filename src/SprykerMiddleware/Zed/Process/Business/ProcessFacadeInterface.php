@@ -11,10 +11,12 @@ interface ProcessFacadeInterface
 {
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer $processSettingsTransfer
+     * @param resource $inStream
+     * @param resource $outStream
      *
      * @return void
      */
-    public function process(ProcessSettingsTransfer $processSettingsTransfer): void;
+    public function process(ProcessSettingsTransfer $processSettingsTransfer, $inStream, $outStream): void;
 
     /**
      * @param array $payload
@@ -33,4 +35,21 @@ interface ProcessFacadeInterface
      * @return array
      */
     public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): array;
+
+    /**
+     * @param array $payload
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return array
+     */
+    public function readJson($payload, LoggerInterface $logger): array;
+
+    /**
+     * @param resource $outStream
+     * @param array $payload
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return array
+     */
+    public function writeJson($outStream, $payload, $logger);
 }

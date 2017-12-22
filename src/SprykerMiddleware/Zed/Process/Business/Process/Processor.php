@@ -73,14 +73,13 @@ class Processor implements ProcessorInterface
         $this->logger->info('Middleware process is started.', ['process' => $this]);
         $counter = 0;
         foreach ($this->iterator as $item) {
+//            var_dump($item); die;
             $this->logger->info('Start processing of item', [
-                'item' => $item,
-                'itemKey' => $this->iterator->key(),
+//                'item' => $item,
+//                'itemKey' => $this->iterator->key(),
                 'itemNo' => $counter++,
             ]);
-            $this->aggregator->accept(
-                $this->pipeline->process($item)
-            );
+            $this->pipeline->process($item);
         }
         $this->aggregator->flush();
         $this->logger->info('Middleware process is finished.');

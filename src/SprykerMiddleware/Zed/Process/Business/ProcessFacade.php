@@ -43,13 +43,42 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer $processSettingsTransfer
+     * @param resource $inStream
+     * @param resource $outStream
      *
      * @return void
      */
-    public function process(ProcessSettingsTransfer $processSettingsTransfer): void
+    public function process(ProcessSettingsTransfer $processSettingsTransfer, $inStream, $outStream): void
     {
          $this->getFactory()
-            ->createProcessor($processSettingsTransfer)
+            ->createProcessor($processSettingsTransfer, $inStream, $outStream)
             ->process();
+    }
+
+    /**
+     * @param array $payload
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return array
+     */
+    public function readJson($payload, LoggerInterface $logger): array
+    {
+        return $this->getFactory()
+            ->createJsonReader($logger)
+            ->read($payload);
+    }
+
+    /**
+     * @param resource $outStream
+     * @param array $payload
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return array
+     */
+    public function writeJson($outStream, $payload, $logger)
+    {
+        return $this->getFactory()
+            ->createJsonWriter($outStream, $logger)
+            ->write($payload);
     }
 }

@@ -16,6 +16,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const SERVICE_UTIL_ENCODING = 'util encoding service';
 
     const PIPELINE = 'PIPELINE';
+    const ITERATOR = 'ITERATOR';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container

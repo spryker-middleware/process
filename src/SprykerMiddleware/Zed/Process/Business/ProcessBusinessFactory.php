@@ -25,6 +25,8 @@ use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilder;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
 use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
+use SprykerMiddleware\Zed\Process\Business\Reader\JsonReader;
+use SprykerMiddleware\Zed\Process\Business\Reader\ReaderInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
@@ -39,22 +41,91 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
+     * @param resource $inStream
+     * @param resource $outStream
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface
      */
-    public function createProcessor(ProcessSettingsTransfer $processSettingsTransfer): ProcessorInterface
-    {
+    public function createProcessor(
+        ProcessSettingsTransfer $processSettingsTransfer,
+        $inStream,
+        $outStream
+    ): ProcessorInterface {
 
         $stagesPluginsList = $this->getStagePluginsListForProcess($processSettingsTransfer->getName());
         $logger = $this->getLogger($this->getProcessLoggerConfig($processSettingsTransfer));
         return new Processor(
-            $this->getProcessIterator($processSettingsTransfer),
+            $this->createProcessIterator($processSettingsTransfer, $inStream),
             $this->createPipeline($stagesPluginsList, $logger),
             $this->getProcessAggregator($processSettingsTransfer),
             $this->getPreProcessHookStack($processSettingsTransfer->getName()),
             $this->getPostProcessHookStack($processSettingsTransfer->getName()),
             $logger
         );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
+     */
+    public function createMapper(MapperConfigTransfer $mapperConfigTransfer, LoggerInterface $logger): MapperInterface
+    {
+        return new Mapper(
+            $mapperConfigTransfer,
+            $this->createPayloadManager(),
+            $logger
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface
+     */
+    public function createTranslator(TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): TranslatorInterface
+    {
+        return new Translator(
+            $translatorConfigTransfer,
+            $this->createTranslatorFunctionResolver(),
+            $this->createPayloadManager(),
+            $logger
+        );
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface
+     */
+    public function createPayloadManager(): PayloadManagerInterface
+    {
+        return new PayloadManager();
+    }
+
+    /**
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Reader\ReaderInterface
+     */
+    public function createJsonReader(LoggerInterface $logger): ReaderInterface
+    {
+        return new JsonReader($logger);
+    }
+
+    /**
+     * @return void
+     */
+    public function createJsonWriter($outStream, $logger)
+    {
+    }
+
+    /**
+     * @return array
+     */
+    protected function getProcessIteratorsList(): array
+    {
+        return [];
     }
 
     /**
@@ -73,7 +144,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      *
      * @return array
      */
-    private function getPipelineStagePluginsList($pipelineName)
+    protected function getPipelineStagePluginsList($pipelineName)
     {
         $pipelines = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PIPELINES);
         return $pipelines[$pipelineName];
@@ -103,21 +174,15 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
+     * @param resource $inStream
      *
      * @return \Iterator
      */
-    protected function getProcessIterator(ProcessSettingsTransfer $processSettingsTransfer): Iterator
+    protected function createProcessIterator(ProcessSettingsTransfer $processSettingsTransfer, $inStream): Iterator
     {
-        $iterators = $this->getProcessIteratorsList();
-        return $iterators[$processSettingsTransfer->getName()]($processSettingsTransfer->getIteratorSettings());
-    }
-
-    /**
-     * @return array
-     */
-    protected function getProcessIteratorsList(): array
-    {
-        return [];
+        $processes = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
+        $iteratorClassName = $processes[$processSettingsTransfer->getName()][ProcessDependencyProvider::ITERATOR];
+        return new $iteratorClassName($inStream);
     }
 
     /**
@@ -211,45 +276,6 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function createMiddlewareLogConfig(LoggerSettingsTransfer $loggerSettingsTransfer): LoggerConfigInterface
     {
         return new MiddlewareLoggerConfig($loggerSettingsTransfer);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
-     * @param \Psr\Log\LoggerInterface $logger
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
-     */
-    public function createMapper(MapperConfigTransfer $mapperConfigTransfer, LoggerInterface $logger): MapperInterface
-    {
-        return new Mapper(
-            $mapperConfigTransfer,
-            $this->createPayloadManager(),
-            $logger
-        );
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
-     * @param \Psr\Log\LoggerInterface $logger
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface
-     */
-    public function createTranslator(TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): TranslatorInterface
-    {
-        return new Translator(
-            $translatorConfigTransfer,
-            $this->createTranslatorFunctionResolver(),
-            $this->createPayloadManager(),
-            $logger
-        );
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface
-     */
-    public function createPayloadManager(): PayloadManagerInterface
-    {
-        return new PayloadManager();
     }
 
     /**
