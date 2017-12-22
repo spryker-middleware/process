@@ -113,7 +113,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return array
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[][]
      */
     public function getPipelines(): array
     {
@@ -121,7 +121,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return array
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[][]
      */
     public function getPreProcessorHooks(): array
     {
@@ -129,9 +129,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return array
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PostProcessorHookPluginInterface[][]
      */
-    public function getPostProcessHooks(): array
+    public function getPostProcessorHooks(): array
     {
         return [];
     }
