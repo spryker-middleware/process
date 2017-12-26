@@ -8,7 +8,7 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
  */
-class JsonWriterStagePlugin implements StagePluginInterface
+class JsonWriterStagePlugin extends AbstractStagePlugin implements StagePluginInterface
 {
     /**
      * Process the payload.
@@ -20,8 +20,7 @@ class JsonWriterStagePlugin implements StagePluginInterface
      */
     public function process($payload, LoggerInterface $logger)
     {
-        $outStream = null;
         return $this->getFacade()
-            ->writeJson($outStream, $payload, $logger);
+            ->writeJson($this->outStream, $payload, $logger);
     }
 }

@@ -3,13 +3,12 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
 use Psr\Log\LoggerInterface;
-use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorStagePluginInterface;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
  */
-abstract class AbstractTranslatorStagePlugin extends AbstractPlugin implements TranslatorStagePluginInterface
+abstract class AbstractTranslatorStagePlugin extends AbstractStagePlugin implements TranslatorStagePluginInterface
 {
     /**
      * @inheritdoc

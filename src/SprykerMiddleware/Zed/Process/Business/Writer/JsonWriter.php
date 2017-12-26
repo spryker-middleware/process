@@ -17,12 +17,13 @@ class JsonWriter implements WriterInterface
     protected $outStream;
 
     /**
-     * @param resource
+     * @param resource $outStream
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct($outStream, LoggerInterface $logger)
     {
         $this->logger = $logger;
+        $this->outStream = $outStream;
     }
 
     /**

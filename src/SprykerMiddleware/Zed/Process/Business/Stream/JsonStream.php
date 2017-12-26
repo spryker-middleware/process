@@ -2,27 +2,48 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
+// @codingStandardsIgnoreFile
 class JsonStream
 {
+    /**
+     * @var resource
+     */
     protected $subhandle;
 
+    /**
+     * @var array
+     */
     protected $data = [];
 
+    /**
+     * @var string
+     */
     protected $mode = '';
 
+    /**
+     * @var int
+     */
     protected $position;
 
+    /**
+     * @return bool
+     */
     public function stream_close()
     {
         return fclose($this->subhandle);
     }
 
+    /**
+     * @return bool
+     */
     public function stream_eof()
     {
-///feof($this->subhandle) ||
         return $this->position >= count($this->data);
     }
 
+    /**
+     * @return bool
+     */
     public function stream_flush()
     {
         fwrite($this->subhandle, json_encode($this->data));
@@ -30,13 +51,18 @@ class JsonStream
     }
 
     /**
+     * @param string $data
+     *
      * @return void
      */
     public function stream_write($data)
     {
-        $this->data[] = $data;
+        $this->data[] = json_decode($data);
     }
 
+    /**
+     * @return bool|string
+     */
     public function stream_read()
     {
         if (!$this->stream_eof()) {
@@ -46,11 +72,22 @@ class JsonStream
         return false;
     }
 
+    /**
+     * @return array
+     */
     public function stream_stat()
     {
         return fstat($this->subhandle);
     }
 
+    /**
+     * @param string $path
+     * @param string $mode
+     * @param int $options
+     * @param string $opened_path
+     *
+     * @return bool
+     */
     public function stream_open($path, $mode, $options, &$opened_path)
     {
         $parts = parse_url($path);
@@ -69,6 +106,12 @@ class JsonStream
         return true;
     }
 
+    /**
+     * @param int $offset
+     * @param int $whence
+     *
+     * @return int
+     */
     public function stream_seek($offset, $whence = SEEK_SET)
     {
         fseek($this->subhandle, 0, SEEK_SET);

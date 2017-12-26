@@ -8,9 +8,11 @@ interface StageListBuilderInterface
 {
     /**
      * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface[] $stagePluginList
+     * @param resource $inStream
+     * @param resource $outStream
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage[]
      */
-    public function buildStageList(array $stagePluginList, LoggerInterface $logger): array;
+    public function buildStageList(array $stagePluginList, $inStream, $outStream, LoggerInterface $logger): array;
 }

@@ -14,4 +14,18 @@ interface StagePluginInterface
      * @return mixed
      */
     public function process($payload, LoggerInterface $logger);
+
+    /**
+     * @param resource $inStream
+     *
+     * @return void
+     */
+    public function setInStream($inStream): void;
+
+    /**
+     * @param resource $outStream
+     *
+     * @return void
+     */
+    public function setOutStream($outStream): void;
 }

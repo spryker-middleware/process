@@ -30,6 +30,7 @@ use SprykerMiddleware\Zed\Process\Business\Reader\ReaderInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
+use SprykerMiddleware\Zed\Process\Business\Writer\JsonWriter;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -56,10 +57,10 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         $logger = $this->getLogger($this->getProcessLoggerConfig($processSettingsTransfer));
         return new Processor(
             $this->createProcessIterator($processSettingsTransfer, $inStream),
-            $this->createPipeline($stagesPluginsList, $logger),
-            $this->getProcessAggregator($processSettingsTransfer),
+            $this->createPipeline($stagesPluginsList, $inStream, $outStream, $logger),
             $this->getPreProcessHookStack($processSettingsTransfer->getName()),
             $this->getPostProcessHookStack($processSettingsTransfer->getName()),
+            $outStream,
             $logger
         );
     }
@@ -114,10 +115,14 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return void
+     * @param resource $outStream
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
      */
     public function createJsonWriter($outStream, $logger)
     {
+        return new JsonWriter($outStream, $logger);
     }
 
     /**
@@ -206,28 +211,32 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
 
     /**
      * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface[] $stagePlugins
+     * @param resource $inStream
+     * @param resource $outStream
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
      */
-    protected function createPipeline(array $stagePlugins, LoggerInterface $logger): PipelineInterface
+    protected function createPipeline(array $stagePlugins, $inStream, $outStream, LoggerInterface $logger): PipelineInterface
     {
         return new Pipeline(
             $this->createPipelineProcessor(),
-            $this->getStages($stagePlugins, $logger)
+            $this->getStages($stagePlugins, $inStream, $outStream, $logger)
         );
     }
 
     /**
      * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface[] $stagePlugins
+     * @param resource $inStream
+     * @param resource $outStream
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
      */
-    protected function getStages(array $stagePlugins, LoggerInterface $logger): array
+    protected function getStages(array $stagePlugins, $inStream, $outStream, LoggerInterface $logger): array
     {
         return $this->createStageListBuilder()
-            ->buildStageList($stagePlugins, $logger);
+            ->buildStageList($stagePlugins, $inStream, $outStream, $logger);
     }
 
     /**
