@@ -24,6 +24,10 @@ class ProcessConsole extends Console
     const OPTION_ITERATOR_OFFSET = 'offset';
     const OPTION_ITERATOR_LIMIT = 'limit';
     const OPTION_LOG_LEVEL = 'flagLogLevel';
+    const OPTION_PROCESS_NAME_SHORTCUT = 'p';
+    const OPTION_ITERATOR_OFFSET_SHORTCUT = 'o';
+    const OPTION_ITERATOR_LIMIT_SHORTCUT = 'l';
+    const OPTION_LOG_LEVEL_SHORTCUT = 'f';
 
     /**
      * @var int
@@ -40,28 +44,28 @@ class ProcessConsole extends Console
 
         $this->addOption(
             static::OPTION_PROCESS_NAME,
-            'p',
+            static::OPTION_PROCESS_NAME_SHORTCUT,
             InputOption::VALUE_REQUIRED,
             'Name of middleware process.'
         );
 
         $this->addOption(
             static::OPTION_ITERATOR_OFFSET,
-            'o',
+            static::OPTION_ITERATOR_OFFSET_SHORTCUT,
             InputOption::VALUE_OPTIONAL,
             'Count of items that should be skipped during processing'
         );
 
         $this->addOption(
             static::OPTION_ITERATOR_LIMIT,
-            'l',
+            static::OPTION_ITERATOR_LIMIT_SHORTCUT,
             InputOption::VALUE_OPTIONAL,
             'Count of items that should be processed'
         );
 
         $this->addOption(
             static::OPTION_LOG_LEVEL,
-            'f',
+            static::OPTION_LOG_LEVEL,
             InputOption::VALUE_OPTIONAL,
             'Flag of Log level [Critical, Error, Warning, Info, Debug]'
         );
@@ -96,14 +100,14 @@ class ProcessConsole extends Console
         $processSettingsTransfer = new ProcessSettingsTransfer();
         $processSettingsTransfer->setAggregatorSettings(new AggregatorSettingsTransfer());
         $processSettingsTransfer->getAggregatorSettings()->setWriterConfig(new WriterConfigTransfer());
-        if ($input->getOption(self::OPTION_PROCESS_NAME)) {
-            $processSettingsTransfer->setName($input->getOption(self::OPTION_PROCESS_NAME));
+        if ($input->getOption(static::OPTION_PROCESS_NAME)) {
+            $processSettingsTransfer->setName($input->getOption(static::OPTION_PROCESS_NAME));
             $this->setIteratorOptions($input, $processSettingsTransfer);
             $this->setLoggerOptions($input, $output, $processSettingsTransfer);
 
             return $processSettingsTransfer;
         }
-        $this->exitCode = self::CODE_ERROR;
+        $this->exitCode = static::CODE_ERROR;
         $this->error('Process name is required.');
         return $processSettingsTransfer;
     }
@@ -113,7 +117,7 @@ class ProcessConsole extends Console
      */
     protected function hasError()
     {
-        return $this->exitCode !== self::CODE_SUCCESS;
+        return $this->exitCode !== static::CODE_SUCCESS;
     }
 
     /**
@@ -125,8 +129,8 @@ class ProcessConsole extends Console
     protected function setIteratorOptions(InputInterface $input, ProcessSettingsTransfer $processSettingsTransfer): void
     {
         $processSettingsTransfer->setIteratorSettings(new IteratorSettingsTransfer());
-        $offset = $input->getOption(self::OPTION_ITERATOR_OFFSET) ?: 0;
-        $limit = $input->getOption(self::OPTION_ITERATOR_LIMIT) ?: -1;
+        $offset = $input->getOption(static::OPTION_ITERATOR_OFFSET) ?: 0;
+        $limit = $input->getOption(static::OPTION_ITERATOR_LIMIT) ?: -1;
         $processSettingsTransfer->getIteratorSettings()->setOffset($offset);
         $processSettingsTransfer->getIteratorSettings()->setLimit($limit);
     }
@@ -145,7 +149,7 @@ class ProcessConsole extends Console
     ): void {
         $processSettingsTransfer->setLoggerSettings(new LoggerSettingsTransfer());
         $processSettingsTransfer->getLoggerSettings()->setIsQuiet($output->isQuiet());
-        $logLevel = $input->getOption(self::OPTION_LOG_LEVEL);
+        $logLevel = $input->getOption(static::OPTION_LOG_LEVEL);
         if ($logLevel) {
             $verboseLevel = Logger::toMonologLevel($logLevel);
             $processSettingsTransfer->getLoggerSettings()->setVerboseLevel($verboseLevel);

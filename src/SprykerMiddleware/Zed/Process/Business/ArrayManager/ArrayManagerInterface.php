@@ -1,9 +1,9 @@
 <?php
 
 
-namespace SprykerMiddleware\Zed\Process\Business\PayloadManager;
+namespace SprykerMiddleware\Zed\Process\Business\ArrayManager;
 
-interface PayloadManagerInterface
+interface ArrayManagerInterface
 {
     /**
      * @param array $payload
@@ -20,7 +20,7 @@ interface PayloadManagerInterface
      *
      * @return array
      */
-    public function setValue(array $payload, string $key, $value): array;
+    public function putValue(array $payload, string $key, $value): array;
 
     /**
      * @param array $payload

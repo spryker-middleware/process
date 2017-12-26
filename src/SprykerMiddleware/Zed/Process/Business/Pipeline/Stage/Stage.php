@@ -30,10 +30,10 @@ class Stage implements StageInterface
     /**
      * @inheritdoc
      */
-    public function __invoke($payload)
+    public function __invoke($payload): array
     {
         $this->logger->info('Input Data', [
-            'stage' => get_class($this->stagePlugin),
+            'stage' => $this->getStagePluginClass(),
             'input' => $payload,
         ]);
 
@@ -41,10 +41,18 @@ class Stage implements StageInterface
             ->process($payload, $this->logger);
 
         $this->logger->info('Result Data', [
-           'stage' => get_class($this->stagePlugin),
+           'stage' => $this->getStagePluginClass(),
            'output' => $processedPayload,
         ]);
 
         return $processedPayload;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getStagePluginClass(): string
+    {
+        return get_class($this->stagePlugin);
     }
 }

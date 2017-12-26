@@ -5,19 +5,33 @@ namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Shared\Process\Config\ProcessConfig;
-use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
+use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 
 class Mapper implements MapperInterface
 {
+    const OPERATION = 'Mapping';
+    const OPERATION_COPY_ORIGINAL_DATA = 'Copy original data';
+    const OPERATION_MAP_ARRAY = 'Map array';
+    const OPERATION_MAP_CALLABLE = 'Map callable';
+    const OPERATION_MAP_KEY = 'Map key';
+
+    const KEY_DATA = 'data';
+    const KEY_NEW_KEY = 'new_key';
+    const KEY_OLD_KEY = 'old_key';
+    const KEY_OPERATION = 'operation';
+    const KEY_STRATEGY = 'strategy';
+
+    const OPTION_ITEM_MAP = 'itemMap';
+    const OPTION_EXCEPT = 'except';
     /**
      * @var \Generated\Shared\Transfer\MapperConfigTransfer
      */
     protected $mapperConfigTransfer;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface
+     * @var \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface
      */
-    protected $payloadManager;
+    protected $arrayManager;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -26,16 +40,16 @@ class Mapper implements MapperInterface
 
     /**
      * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
-     * @param \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface $payloadManager
+     * @param \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface $arrayManager
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         MapperConfigTransfer $mapperConfigTransfer,
-        PayloadManagerInterface $payloadManager,
+        ArrayManagerInterface $arrayManager,
         LoggerInterface $logger
     ) {
         $this->mapperConfigTransfer = $mapperConfigTransfer;
-        $this->payloadManager = $payloadManager;
+        $this->arrayManager = $arrayManager;
         $this->logger = $logger;
     }
 
@@ -88,13 +102,13 @@ class Mapper implements MapperInterface
     protected function mapCallable(array $result, array $payload, string $key, callable $value): array
     {
         $mappedValue = $value($payload, $key);
-        $this->logger->debug('Mapping', [
-            'operation' => 'Map callable',
-            'new_key' => $key,
-            'old_key' => $value,
-            'data' => $mappedValue,
+        $this->logger->debug(static::OPERATION, [
+            static::KEY_OPERATION => static::OPERATION_MAP_CALLABLE,
+            static::KEY_NEW_KEY => $key,
+            static::KEY_OLD_KEY => $value,
+            static::KEY_DATA => $mappedValue,
         ]);
-        return $this->payloadManager->setValue($result, $key, $mappedValue);
+        return $this->arrayManager->putValue($result, $key, $mappedValue);
     }
 
     /**
@@ -108,13 +122,13 @@ class Mapper implements MapperInterface
     protected function mapArray(array $result, array $payload, string $key, array $value): array
     {
         $originKey = reset($value);
-        $originArray = $this->payloadManager->getValueByKey($payload, $originKey);
+        $originArray = $this->arrayManager->getValueByKey($payload, $originKey);
         $originArray = $this->filterArray($originArray, $value);
-        if (!isset($value['itemMap'])) {
-            return $this->payloadManager->setValue($result, $key, $originArray);
+        if (!isset($value[static::OPTION_ITEM_MAP])) {
+            return $this->arrayManager->putValue($result, $key, $originArray);
         }
         $resultArray = [];
-        $rules = $value['itemMap'];
+        $rules = $value[static::OPTION_ITEM_MAP];
         foreach ($originArray as $originItemKey => $item) {
             $resultItem = [];
             foreach ($rules as $itemKey => $itemValue) {
@@ -122,13 +136,13 @@ class Mapper implements MapperInterface
             }
             $resultArray[$originItemKey] = $resultItem;
         }
-        $this->logger->debug('Mapping', [
-            'operation' => 'Map array',
-            'new_key' => $key,
-            'old_key' => $value,
-            'data' => $resultArray,
+        $this->logger->debug(static::OPERATION, [
+            static::KEY_OPERATION => static::OPERATION_MAP_ARRAY,
+            static::KEY_NEW_KEY => $key,
+            static::KEY_OLD_KEY => $value,
+            static::KEY_DATA => $resultArray,
         ]);
-        return $this->payloadManager->setValue($result, $key, $resultArray);
+        return $this->arrayManager->putValue($result, $key, $resultArray);
     }
 
     /**
@@ -141,14 +155,14 @@ class Mapper implements MapperInterface
      */
     protected function mapKey(array $result, array $payload, string $key, string $value): array
     {
-        $mappedValue = $this->payloadManager->getValueByKey($payload, $value);
-        $this->logger->debug('Mapping', [
-            'operation' => 'Map key',
-            'new_key' => $key,
-            'old_key' => $value,
-            'data' => $mappedValue,
+        $mappedValue = $this->arrayManager->getValueByKey($payload, $value);
+        $this->logger->debug(static::OPERATION, [
+            static::KEY_OPERATION => static::OPERATION_MAP_KEY,
+            static::KEY_NEW_KEY => $key,
+            static::KEY_OLD_KEY => $value,
+            static::KEY_DATA => $mappedValue,
         ]);
-        return $this->payloadManager->setValue($result, $key, $mappedValue);
+        return $this->arrayManager->putValue($result, $key, $mappedValue);
     }
 
     /**
@@ -159,11 +173,11 @@ class Mapper implements MapperInterface
      */
     protected function filterArray(array $array, array $value): array
     {
-        if (!isset($value['except'])) {
+        if (!isset($value[static::OPTION_EXCEPT])) {
             return $array;
         }
 
-        $exceptKeys = $value['except'];
+        $exceptKeys = $value[static::OPTION_EXCEPT];
         if (!is_array($exceptKeys)) {
             $exceptKeys = [$exceptKeys];
         }
@@ -179,9 +193,9 @@ class Mapper implements MapperInterface
     protected function prepareResult(array $payload): array
     {
         if ($this->mapperConfigTransfer->getStrategy() === ProcessConfig::MAPPER_STRATEGY_COPY_UNKNOWN) {
-            $this->logger->debug('Mapping', [
-                'operation' => 'Copy original data',
-                'strategy' => $this->map->getStrategy(),
+            $this->logger->debug(static::OPERATION, [
+                static::KEY_OPERATION => static::OPERATION_COPY_ORIGINAL_DATA,
+                static::KEY_STRATEGY => $this->map->getStrategy(),
             ]);
             return $payload;
         }
