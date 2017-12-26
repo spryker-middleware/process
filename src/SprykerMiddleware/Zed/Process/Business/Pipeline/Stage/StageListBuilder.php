@@ -12,7 +12,7 @@ class StageListBuilder implements StageListBuilderInterface
      * @param resource $outStream
      * @param \Psr\Log\LoggerInterface $logger
      *
-     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage[]
+     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
      */
     public function buildStageList(array $stagePluginList, $inStream, $outStream, LoggerInterface $logger): array
     {

@@ -8,6 +8,7 @@ use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
 use Iterator;
 use League\Pipeline\FingersCrossedProcessor;
+use League\Pipeline\ProcessorInterface as LeagueProcessorInterface;
 use Psr\Log\LoggerInterface;
 use Spryker\Shared\Log\Config\LoggerConfigInterface;
 use Spryker\Shared\Log\LoggerTrait;
@@ -248,9 +249,9 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \League\Pipeline\FingersCrossedProcessor
+     * @return \League\Pipeline\ProcessorInterface
      */
-    protected function createPipelineProcessor(): FingersCrossedProcessor
+    protected function createPipelineProcessor(): LeagueProcessorInterface
     {
         return new FingersCrossedProcessor();
     }

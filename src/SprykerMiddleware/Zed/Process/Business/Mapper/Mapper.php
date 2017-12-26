@@ -4,7 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Psr\Log\LoggerInterface;
-use SprykerMiddleware\Shared\Process\ProcessConstants;
+use SprykerMiddleware\Shared\Process\Config\ProcessConfig;
 use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
 
 class Mapper implements MapperInterface
@@ -178,7 +178,7 @@ class Mapper implements MapperInterface
      */
     protected function prepareResult(array $payload): array
     {
-        if ($this->mapperConfigTransfer->getStrategy() === ProcessConstants::MAPPER_STRATEGY_COPY_UNKNOWN) {
+        if ($this->mapperConfigTransfer->getStrategy() === ProcessConfig::MAPPER_STRATEGY_COPY_UNKNOWN) {
             $this->logger->debug('Mapping', [
                 'operation' => 'Copy original data',
                 'strategy' => $this->map->getStrategy(),

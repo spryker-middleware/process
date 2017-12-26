@@ -10,6 +10,7 @@ use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterfac
 class Translator implements TranslatorInterface
 {
     const KEY_OPTIONS = 'options';
+
     /**
      * @var \Generated\Shared\Transfer\TranslatorConfigTransfer
      */
@@ -133,7 +134,7 @@ class Translator implements TranslatorInterface
     protected function translateCallable(array $result, array $payload, string $key, callable $translation): array
     {
         $inputValue = $this->payloadManager->getValueByKey($payload, $key);
-        $resultValue = $translation($inputValue, $key, $payload);
+        $resultValue = $translation($inputValue, $key, $result);
         $this->logger->debug(
             'Translation',
             [
@@ -160,7 +161,7 @@ class Translator implements TranslatorInterface
         /** @var \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface $translateFunction */
         $translateFunction = $this->translatorFunctionResolver->resolve($this, reset($translation), $options);
 
-        $inputValue = $this->payloadManager->getValueByKey($payload, $key);
+        $inputValue = $this->payloadManager->getValueByKey($result, $key);
         $resultValue = $translateFunction->translate($inputValue);
         $this->logger->debug(
             'Translation',

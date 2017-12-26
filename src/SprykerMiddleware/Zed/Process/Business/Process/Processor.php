@@ -33,8 +33,11 @@ class Processor implements ProcessorInterface
     protected $outstream;
 
     /**
-     * Processor constructor.
-     *
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param \Iterator $iterator
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[] $preProcessStack
@@ -57,11 +60,6 @@ class Processor implements ProcessorInterface
         $this->logger = $logger;
         $this->outstream = $outstream;
     }
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
 
     /**
      * @return void

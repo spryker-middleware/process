@@ -4,7 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException;
 
-class StringToArray extends TranslatorFunctionAbstract
+class StringToArray extends AbstractTranslatorFunction
 {
     const OPTION_DELIMITER = 'delimiter';
 

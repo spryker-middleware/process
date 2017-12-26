@@ -19,7 +19,7 @@ class BatchAggregator implements AggregatorInterface
     protected $renderer;
 
     /**
-     * @var \Generated\Shared\Transfer\AggregatorSettingsTransfer|\Generated\Shared\Transfer\IteratorSettingsTransfer|null
+     * @var \Generated\Shared\Transfer\AggregatorSettingsTransfer
      */
     protected $settings;
 
@@ -29,8 +29,6 @@ class BatchAggregator implements AggregatorInterface
     protected $storage = [];
 
     /**
-     * BatchAggregator constructor.
-     *
      * @param \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface $writer
      * @param \SprykerMiddleware\Zed\Process\Business\Renderer\RendererInterface $renderer
      * @param \Generated\Shared\Transfer\AggregatorSettingsTransfer $settings
@@ -51,7 +49,7 @@ class BatchAggregator implements AggregatorInterface
     {
         $this->storage[] = $payload;
 
-        if ($this->settings->getThreshold() >= count($this->storage)) {
+        if (count($this->storage) >= $this->settings->getThreshold()) {
             $this->flush();
         }
     }

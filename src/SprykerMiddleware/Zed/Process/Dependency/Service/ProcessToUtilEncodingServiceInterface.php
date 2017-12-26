@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Dependency\Service;
 
-interface ProcessToUtilEncodingInterface
+interface ProcessToUtilEncodingServiceInterface
 {
     /**
      * @param mixed $value

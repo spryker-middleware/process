@@ -4,7 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Exception\MissingRequiredOptionsTranslatorException;
 
-abstract class TranslatorFunctionAbstract implements TranslatorFunctionInterface
+abstract class AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
     /**
      * @var array

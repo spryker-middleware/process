@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
-class FloatToInt extends TranslatorFunctionAbstract implements TranslatorFunctionInterface
+class FloatToInt extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
     /**
      * @param float $value

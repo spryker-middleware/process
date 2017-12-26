@@ -4,7 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException;
 
-class ArrayToString extends TranslatorFunctionAbstract
+class ArrayToString extends AbstractTranslatorFunction
 {
     const OPTION_GLUE = 'glue';
 

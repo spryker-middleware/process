@@ -2,6 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
+use Generated\Shared\Transfer\MapperConfigTransfer;
 use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\MapperStagePluginInterface;
 
@@ -18,4 +19,9 @@ abstract class AbstractMapperStagePlugin extends AbstractStagePlugin implements 
         return $this->getFacade()
             ->map($payload, $this->getMapperConfig(), $logger);
     }
+
+    /**
+     * @return \Generated\Shared\Transfer\MapperConfigTransfer
+     */
+    abstract public function getMapperConfig(): MapperConfigTransfer;
 }
