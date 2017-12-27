@@ -4,7 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Psr\Log\LoggerInterface;
-use SprykerMiddleware\Shared\Process\Config\ProcessConfig;
+use SprykerMiddleware\Shared\Process\ProcessConfig;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 
 class Mapper implements MapperInterface
