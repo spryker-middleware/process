@@ -1,6 +1,6 @@
 <?php
 
-namespace SprykerMiddleware\Shared\Process\Config;
+namespace SprykerMiddleware\Shared\Process;
 
 interface ProcessConfig
 {
