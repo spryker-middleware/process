@@ -107,9 +107,6 @@ class ProcessConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        stream_wrapper_register('jsonstreamwriter', JsonStream::class);
-        stream_wrapper_register('jsonstreamreader', JsonStream::class);
-
         $processSettingsTransfer = $this->processArgs($input, $output);
         if ($this->hasError()) {
             return $this->exitCode;
@@ -228,7 +225,11 @@ class ProcessConsole extends Console
      */
     protected function closeStreams()
     {
-        fclose($this->inputStream);
-        fclose($this->outputStream);
+        if ($this->inputStream) {
+            fclose($this->inputStream);
+        }
+        if ($this->outputStream) {
+            fclose($this->outputStream);
+        }
     }
 }
