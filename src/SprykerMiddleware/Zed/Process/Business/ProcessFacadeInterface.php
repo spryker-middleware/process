@@ -10,6 +10,8 @@ use Psr\Log\LoggerInterface;
 interface ProcessFacadeInterface
 {
     /**
+     * @api
+     *
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer $processSettingsTransfer
      * @param resource $inStream
      * @param resource $outStream
@@ -19,6 +21,8 @@ interface ProcessFacadeInterface
     public function process(ProcessSettingsTransfer $processSettingsTransfer, $inStream, $outStream): void;
 
     /**
+     * @api
+     *
      * @param array $payload
      * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
      * @param \Psr\Log\LoggerInterface $logger
@@ -28,6 +32,8 @@ interface ProcessFacadeInterface
     public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer, LoggerInterface $logger): array;
 
     /**
+     * @api
+     *
      * @param array $payload
      * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      * @param \Psr\Log\LoggerInterface $logger

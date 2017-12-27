@@ -14,6 +14,10 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
 {
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param array $payload
      * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
      * @param \Psr\Log\LoggerInterface $logger
@@ -28,6 +32,10 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param array $payload
      * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      * @param \Psr\Log\LoggerInterface $logger
@@ -42,6 +50,10 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer $processSettingsTransfer
      * @param resource $inStream
      * @param resource $outStream
