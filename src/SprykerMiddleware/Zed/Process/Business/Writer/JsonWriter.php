@@ -3,6 +3,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Writer;
 
 use Psr\Log\LoggerInterface;
+use SprykerMiddleware\Service\Process\ProcessServiceInterface;
 
 class JsonWriter implements WriterInterface
 {
@@ -12,27 +13,28 @@ class JsonWriter implements WriterInterface
     protected $logger;
 
     /**
-     * @var resource
+     * @var \SprykerMiddleware\Service\Process\ProcessServiceInterface
      */
-    protected $outStream;
+    protected $streamService;
 
     /**
-     * @param resource $outStream
+     * @param \SprykerMiddleware\Service\Process\ProcessServiceInterface $streamService
      * @param \Psr\Log\LoggerInterface $logger
      */
-    public function __construct($outStream, LoggerInterface $logger)
+    public function __construct(ProcessServiceInterface $streamService, LoggerInterface $logger)
     {
         $this->logger = $logger;
-        $this->outStream = $outStream;
+        $this->streamService = $streamService;
     }
 
     /**
+     * @param resource $outStream
      * @param mixed $payload
      *
-     * @return mixed
+     * @return bool|int
      */
-    public function write($payload)
+    public function write($outStream, $payload)
     {
-        fwrite($this->outStream, json_encode($payload));
+        return $this->streamService->writeJson($outStream, $payload);
     }
 }

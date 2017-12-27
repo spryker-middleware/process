@@ -56,16 +56,16 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     }
 
     /**
-     * @param array $payload
+     * @param resource $inStream
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function readJson($payload, LoggerInterface $logger): array
+    public function readJson($inStream, LoggerInterface $logger): array
     {
         return $this->getFactory()
             ->createJsonReader($logger)
-            ->read($payload);
+            ->read($inStream);
     }
 
     /**
@@ -78,7 +78,7 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     public function writeJson($outStream, $payload, $logger)
     {
         return $this->getFactory()
-            ->createJsonWriter($outStream, $logger)
-            ->write($payload);
+            ->createJsonWriter($logger)
+            ->write($outStream, $payload);
     }
 }

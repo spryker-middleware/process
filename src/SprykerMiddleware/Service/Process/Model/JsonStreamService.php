@@ -1,27 +1,24 @@
 <?php
 
-namespace SprykerMiddleware\Service\Model;
+namespace SprykerMiddleware\Service\Process\Model;
 
 class JsonStreamService implements StreamServiceInterface
 {
-    const READ_LENGTH = 1;
-
     /**
      * @param resource $stream
-     * @param int $length
      *
-     * @return mixed
+     * @return array
      */
-    public function read($stream, $length)
+    public function read($stream)
     {
-        return json_decode(fread($stream, static::READ_LENGTH), true);
+        return json_decode(fgets($stream), true);
     }
 
     /**
      * @param resource $stream
-     * @param mixed $data
+     * @param array $data
      *
-     * @return mixed
+     * @return bool|int
      */
     public function write($stream, $data)
     {

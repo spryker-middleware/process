@@ -14,6 +14,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK';
     const MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK';
     const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
+    const SERVICE_PROCESS = 'PROCESS_SERVICE';
 
     const PIPELINE = 'PIPELINE';
     const ITERATOR = 'ITERATOR';
@@ -30,7 +31,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addPipelines($container);
         $container = $this->addPreProcessorHooks($container);
         $container = $this->addPostProcessorHooks($container);
-        $container = $this->addServiceUtils($container);
+        $container = $this->addServices($container);
 
         return $container;
     }
@@ -96,10 +97,14 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addServiceUtils(Container $container): Container
+    protected function addServices(Container $container): Container
     {
         $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
             return new ProcessToUtilEncodingServiceBridge($container->getLocator()->utilEncoding()->service());
+        };
+
+        $container[static::SERVICE_PROCESS] = function (Container $container) {
+            return $container->getLocator()->process()->service();
         };
 
         return $container;

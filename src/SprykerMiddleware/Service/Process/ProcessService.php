@@ -1,32 +1,31 @@
 <?php
 
-namespace SprykerMiddleware\Service;
+namespace SprykerMiddleware\Service\Process;
 
 use Spryker\Service\Kernel\AbstractService;
 
 /**
- * @method \SprykerMiddleware\Service\ProcessServiceFactory getFactory();
+ * @method \SprykerMiddleware\Service\Process\ProcessServiceFactory getFactory();
  */
 class ProcessService extends AbstractService implements ProcessServiceInterface
 {
     /**
      * @param resource $stream
-     * @param int $length
      *
-     * @return mixed
+     * @return array
      */
-    public function readJson($stream, $length = 1)
+    public function readJson($stream)
     {
         return $this->getFactory()
             ->createJsonStreamService()
-            ->read($stream, $length);
+            ->read($stream);
     }
 
     /**
      * @param resource $stream
-     * @param mixed $data
+     * @param array $data
      *
-     * @return mixed
+     * @return bool|int
      */
     public function writeJson($stream, $data)
     {

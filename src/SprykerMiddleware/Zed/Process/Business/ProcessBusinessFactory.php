@@ -14,6 +14,7 @@ use Spryker\Shared\Log\Config\LoggerConfigInterface;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
+use SprykerMiddleware\Service\Process\ProcessServiceInterface;
 use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
 use SprykerMiddleware\Zed\Process\Business\Log\Config\MiddlewareLoggerConfig;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
@@ -112,18 +113,17 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     public function createJsonReader(LoggerInterface $logger): ReaderInterface
     {
-        return new JsonReader($logger);
+        return new JsonReader($this->getProcessService(), $logger);
     }
 
     /**
-     * @param resource $outStream
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
      */
-    public function createJsonWriter($outStream, $logger)
+    public function createJsonWriter($logger)
     {
-        return new JsonWriter($outStream, $logger);
+        return new JsonWriter($this->getProcessService(), $logger);
     }
 
     /**
@@ -294,5 +294,13 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function createTranslatorFunctionResolver(): AbstractClassResolver
     {
         return new TranslatorFunctionResolver();
+    }
+
+    /**
+     * @return \SprykerMiddleware\Service\Process\ProcessServiceInterface
+     */
+    protected function getProcessService(): ProcessServiceInterface
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::SERVICE_PROCESS);
     }
 }

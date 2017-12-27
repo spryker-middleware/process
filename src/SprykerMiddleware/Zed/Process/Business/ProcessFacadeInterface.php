@@ -37,12 +37,12 @@ interface ProcessFacadeInterface
     public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): array;
 
     /**
-     * @param array $payload
+     * @param resource $inStream
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function readJson($payload, LoggerInterface $logger): array;
+    public function readJson($inStream, LoggerInterface $logger): array;
 
     /**
      * @param resource $outStream

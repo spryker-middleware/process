@@ -1,6 +1,6 @@
 <?php
 
-namespace SprykerMiddleware\Service;
+namespace SprykerMiddleware\Service\Process;
 
 use Spryker\Service\Kernel\AbstractBundleDependencyProvider;
 

@@ -3,6 +3,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Reader;
 
 use Psr\Log\LoggerInterface;
+use SprykerMiddleware\Service\Process\ProcessServiceInterface;
 
 class JsonReader implements ReaderInterface
 {
@@ -12,13 +13,18 @@ class JsonReader implements ReaderInterface
     protected $logger;
 
     /**
-     * JsonReader constructor.
-     *
+     * @var \SprykerMiddleware\Service\Process\ProcessServiceInterface
+     */
+    protected $streamService;
+
+    /**
+     * @param \SprykerMiddleware\Service\Process\ProcessServiceInterface $streamService
      * @param \Psr\Log\LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(ProcessServiceInterface $streamService, LoggerInterface $logger)
     {
         $this->logger = $logger;
+        $this->streamService = $streamService;
     }
 
     /**
@@ -28,6 +34,7 @@ class JsonReader implements ReaderInterface
      */
     public function read($inStream): array
     {
-        return json_decode(fgets($inStream), 1);
+        return $this->streamService
+            ->readJson($inStream);
     }
 }

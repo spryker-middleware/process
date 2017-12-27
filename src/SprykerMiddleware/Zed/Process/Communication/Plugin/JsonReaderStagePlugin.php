@@ -22,6 +22,6 @@ class JsonReaderStagePlugin extends AbstractStagePlugin implements StagePluginIn
     public function process($payload, LoggerInterface $logger)
     {
         return $this->getFacade()
-            ->readJson($payload, $logger);
+            ->readJson($this->inStream, $logger);
     }
 }

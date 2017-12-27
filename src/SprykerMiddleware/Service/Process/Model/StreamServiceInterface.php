@@ -1,16 +1,15 @@
 <?php
 
-namespace SprykerMiddleware\Service\Model;
+namespace SprykerMiddleware\Service\Process\Model;
 
 interface StreamServiceInterface
 {
     /**
      * @param resource $stream
-     * @param int $length
      *
      * @return mixed
      */
-    public function read($stream, $length);
+    public function read($stream);
 
     /**
      * @param resource $stream

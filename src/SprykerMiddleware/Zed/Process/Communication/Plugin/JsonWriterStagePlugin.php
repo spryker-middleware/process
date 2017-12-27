@@ -20,7 +20,8 @@ class JsonWriterStagePlugin extends AbstractStagePlugin implements StagePluginIn
      */
     public function process($payload, LoggerInterface $logger)
     {
-        return $this->getFacade()
+        $this->getFacade()
             ->writeJson($this->outStream, $payload, $logger);
+        return $payload;
     }
 }
