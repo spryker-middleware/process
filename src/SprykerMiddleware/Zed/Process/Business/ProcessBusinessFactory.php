@@ -15,7 +15,6 @@ use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Service\Process\ProcessServiceInterface;
-use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
 use SprykerMiddleware\Zed\Process\Business\Log\Config\MiddlewareLoggerConfig;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
@@ -54,12 +53,10 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         $inStream,
         $outStream
     ): ProcessorInterface {
-
-        $stagesPluginsList = $this->getStagePluginsListForProcess($processSettingsTransfer->getName());
         $logger = $this->getLogger($this->getProcessLoggerConfig($processSettingsTransfer));
         return new Processor(
             $this->createProcessIterator($processSettingsTransfer, $inStream),
-            $this->createPipeline($stagesPluginsList, $inStream, $outStream, $logger),
+            $this->createPipeline($processSettingsTransfer, $inStream, $outStream, $logger),
             $this->getPreProcessHookStack($processSettingsTransfer->getName()),
             $this->getPostProcessHookStack($processSettingsTransfer->getName()),
             $outStream,
@@ -129,42 +126,25 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return array
      */
+    protected function getProcesses(): array
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[][]
+     */
+    protected function getPipelines(): array
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PIPELINES);
+    }
+
+    /**
+     * @return array
+     */
     protected function getProcessIteratorsList(): array
     {
         return [];
-    }
-
-    /**
-     * @param string $processName
-     *
-     * @return array
-     */
-    protected function getStagePluginsListForProcess(string $processName): array
-    {
-        $processes = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
-        return $this->getPipelineStagePluginsList($processes[$processName][ProcessDependencyProvider::PIPELINE]);
-    }
-
-    /**
-     * @param string $pipelineName
-     *
-     * @return array
-     */
-    protected function getPipelineStagePluginsList($pipelineName)
-    {
-        $pipelines = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PIPELINES);
-        return $pipelines[$pipelineName];
-    }
-
-    /**
-     * @param string $processName
-     *
-     * @return array
-     */
-    protected function getPreProcessHookStack(string $processName): array
-    {
-        $preProcessHooks = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK);
-        return $preProcessHooks[$processName];
     }
 
     /**
@@ -176,6 +156,17 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     {
         $postProcessHooks = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK);
         return $postProcessHooks[$processName]?:[];
+    }
+
+    /**
+     * @param string $processName
+     *
+     * @return array
+     */
+    protected function getPreProcessHookStack(string $processName): array
+    {
+        $preProcessHooks = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK);
+        return $preProcessHooks[$processName];
     }
 
     /**
@@ -193,51 +184,41 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface
-     */
-    protected function getProcessAggregator(ProcessSettingsTransfer $processSettingsTransfer): AggregatorInterface
-    {
-        $aggregators = $this->getProcessAggregatorsList();
-        return $aggregators[$processSettingsTransfer->getName()]($processSettingsTransfer->getAggregatorSettings());
-    }
-
-    /**
-     * @return array
-     */
-    protected function getProcessAggregatorsList(): array
-    {
-        return [];
-    }
-
-    /**
-     * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface[] $stagePlugins
      * @param resource $inStream
      * @param resource $outStream
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
      */
-    protected function createPipeline(array $stagePlugins, $inStream, $outStream, LoggerInterface $logger): PipelineInterface
-    {
+    protected function createPipeline(
+        ProcessSettingsTransfer $processSettingsTransfer,
+        $inStream,
+        $outStream,
+        LoggerInterface $logger
+    ): PipelineInterface {
         return new Pipeline(
             $this->createPipelineProcessor(),
-            $this->getStages($stagePlugins, $inStream, $outStream, $logger)
+            $this->getStages($processSettingsTransfer, $inStream, $outStream, $logger)
         );
     }
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface[] $stagePlugins
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param resource $inStream
      * @param resource $outStream
      * @param \Psr\Log\LoggerInterface $logger
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
      */
-    protected function getStages(array $stagePlugins, $inStream, $outStream, LoggerInterface $logger): array
-    {
+    protected function getStages(
+        ProcessSettingsTransfer $processSettingsTransfer,
+        $inStream,
+        $outStream,
+        LoggerInterface $logger
+    ): array {
+
         return $this->createStageListBuilder()
-            ->buildStageList($stagePlugins, $inStream, $outStream, $logger);
+            ->buildStageList($processSettingsTransfer, $inStream, $outStream, $logger);
     }
 
     /**
@@ -245,7 +226,10 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     protected function createStageListBuilder(): StageListBuilderInterface
     {
-        return new StageListBuilder();
+        return new StageListBuilder(
+            $this->getProcesses(),
+            $this->getPipelines()
+        );
     }
 
     /**
