@@ -11,7 +11,7 @@ use Spryker\Shared\Log\Config\LoggerConfigInterface;
 
 class MiddlewareLoggerConfig implements LoggerConfigInterface
 {
-    const NAME = 'SprykerMiddleware';
+    const CHANNEL_NAME = 'SprykerMiddleware';
 
     /**
      * @var \Generated\Shared\Transfer\LoggerSettingsTransfer
@@ -31,7 +31,7 @@ class MiddlewareLoggerConfig implements LoggerConfigInterface
      */
     public function getChannelName(): string
     {
-        return static::NAME;
+        return static::CHANNEL_NAME;
     }
 
     /**

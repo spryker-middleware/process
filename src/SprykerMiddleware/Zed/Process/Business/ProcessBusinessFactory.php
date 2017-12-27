@@ -15,11 +15,11 @@ use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
+use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
+use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Log\Config\MiddlewareLoggerConfig;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
-use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManager;
-use SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilder;
@@ -224,7 +224,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     {
         return new Mapper(
             $mapperConfigTransfer,
-            $this->createPayloadManager(),
+            $this->createArrayManager(),
             $logger
         );
     }
@@ -240,17 +240,17 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         return new Translator(
             $translatorConfigTransfer,
             $this->createTranslatorFunctionResolver(),
-            $this->createPayloadManager(),
+            $this->createArrayManager(),
             $logger
         );
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\PayloadManager\PayloadManagerInterface
+     * @return \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface
      */
-    public function createPayloadManager(): PayloadManagerInterface
+    public function createArrayManager(): ArrayManagerInterface
     {
-        return new PayloadManager();
+        return new ArrayManager();
     }
 
     /**

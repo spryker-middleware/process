@@ -1,9 +1,8 @@
 <?php
 
+namespace SprykerMiddleware\Zed\Process\Business\ArrayManager;
 
-namespace SprykerMiddleware\Zed\Process\Business\PayloadManager;
-
-class PayloadManager implements PayloadManagerInterface
+class ArrayManager implements ArrayManagerInterface
 {
     /**
      * @param array $payload
@@ -32,7 +31,7 @@ class PayloadManager implements PayloadManagerInterface
      *
      * @return array
      */
-    public function setValue(array $payload, string $key, $value): array
+    public function putValue(array $payload, string $key, $value): array
     {
         $keys = explode('.', $key);
         $temp = &$payload;
