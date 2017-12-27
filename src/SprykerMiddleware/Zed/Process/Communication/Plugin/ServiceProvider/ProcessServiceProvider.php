@@ -7,9 +7,12 @@ use Silex\ServiceProviderInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerMiddleware\Zed\Process\Business\Stream\JsonStream;
 
+/**
+ * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
+ * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
+ */
 class ProcessServiceProvider extends AbstractPlugin implements ServiceProviderInterface
 {
-
     /**
      * @param \Silex\Application $app
      *

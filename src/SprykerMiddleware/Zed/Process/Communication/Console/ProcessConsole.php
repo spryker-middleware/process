@@ -9,7 +9,6 @@ use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\WriterConfigTransfer;
 use Monolog\Logger;
 use Spryker\Zed\Kernel\Communication\Console\Console;
-use SprykerMiddleware\Zed\Process\Business\Stream\JsonStream;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
