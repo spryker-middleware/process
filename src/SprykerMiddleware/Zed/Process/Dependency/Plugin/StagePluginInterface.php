@@ -16,6 +16,11 @@ interface StagePluginInterface
     public function process($payload, LoggerInterface $logger);
 
     /**
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * @param resource $inStream
      *
      * @return void

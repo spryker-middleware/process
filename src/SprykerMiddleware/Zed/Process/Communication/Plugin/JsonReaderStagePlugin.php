@@ -11,6 +11,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
  */
 class JsonReaderStagePlugin extends AbstractStagePlugin implements StagePluginInterface
 {
+    const PLUGIN_NAME = 'SPRYKER_MIDDLEWARE_JSON_READER_STAGE_PLUGIN';
+
     /**
      * Process the payload.
      *

@@ -4,28 +4,21 @@ namespace SprykerMiddleware\Zed\Process\Business\Pipeline\Stage;
 
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Psr\Log\LoggerInterface;
+use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
 
 class StageListBuilder implements StageListBuilderInterface
 {
-    const PIPELINE = 'PIPELINE';
     /**
-     * @var array
+     * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface
      */
-    protected $processes;
+    protected $pluginFinder;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[][]
+     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface $pluginFinder
      */
-    protected $pipelines;
-
-    /**
-     * @param array $processes
-     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[][] $pipelines
-     */
-    public function __construct(array $processes, array $pipelines)
+    public function __construct(PluginFinderInterface $pluginFinder)
     {
-        $this->processes = $processes;
-        $this->pipelines = $pipelines;
+        $this->pluginFinder = $pluginFinder;
     }
 
     /**
@@ -38,7 +31,7 @@ class StageListBuilder implements StageListBuilderInterface
      */
     public function buildStageList(ProcessSettingsTransfer $processSettingsTransfer, $inStream, $outStream, LoggerInterface $logger): array
     {
-        $stagePluginList = $this->getStagePluginsListForProcess($processSettingsTransfer->getName());
+        $stagePluginList = $this->pluginFinder->getStagePluginsByProcessName($processSettingsTransfer->getName());
         $stages = [];
         foreach ($stagePluginList as $stagePlugin) {
             $stagePlugin->setInStream($inStream);
@@ -46,26 +39,5 @@ class StageListBuilder implements StageListBuilderInterface
             $stages[] = new Stage($stagePlugin, $logger);
         }
         return $stages;
-    }
-
-    /**
-     * @param string $processName
-     *
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[]
-     */
-    protected function getStagePluginsListForProcess($processName)
-    {
-        $pipelineName = $this->processes[$processName][static::PIPELINE];
-        return $this->getPipelineStagePluginsList($pipelineName);
-    }
-
-    /**
-     * @param string $pipelineName
-     *
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[]
-     */
-    protected function getPipelineStagePluginsList($pipelineName)
-    {
-        return $this->pipelines[$pipelineName];
     }
 }

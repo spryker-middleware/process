@@ -1,12 +1,19 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Business\Process;
 
+use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Iterator;
 use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
+use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
 
 class Processor implements ProcessorInterface
 {
+    /**
+     * @var \Generated\Shared\Transfer\ProcessSettingsTransfer
+     */
+    protected $processSettingsTransfer;
+
     /**
      * @var \Iterator
      */
@@ -38,25 +45,27 @@ class Processor implements ProcessorInterface
     protected $logger;
 
     /**
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \Iterator $iterator
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
-     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[] $preProcessStack
-     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PostProcessorHookPluginInterface[] $postProcessStack
+     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface $pluginFinder
      * @param resource $outstream
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
+        ProcessSettingsTransfer $processSettingsTransfer,
         Iterator $iterator,
         PipelineInterface $pipeline,
-        array $preProcessStack,
-        array $postProcessStack,
+        PluginFinderInterface $pluginFinder,
         $outstream,
         LoggerInterface $logger
     ) {
+        $this->processSettingsTransfer = $processSettingsTransfer;
         $this->iterator = $iterator;
         $this->pipeline = $pipeline;
-        $this->preProcessStack = $preProcessStack;
-        $this->postProcessStack = $postProcessStack;
+        $this->preProcessStack = $pluginFinder->getPreProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
+        $this->postProcessStack = $pluginFinder->getPostProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
+        ;
         $this->logger = $logger;
         $this->outstream = $outstream;
     }

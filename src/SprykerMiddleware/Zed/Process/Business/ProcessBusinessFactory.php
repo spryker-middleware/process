@@ -24,6 +24,8 @@ use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilder;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface;
+use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinder;
+use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
 use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
 use SprykerMiddleware\Zed\Process\Business\Reader\JsonReader;
@@ -53,14 +55,28 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         $inStream,
         $outStream
     ): ProcessorInterface {
+
         $logger = $this->getLogger($this->getProcessLoggerConfig($processSettingsTransfer));
         return new Processor(
+            $processSettingsTransfer,
             $this->createProcessIterator($processSettingsTransfer, $inStream),
             $this->createPipeline($processSettingsTransfer, $inStream, $outStream, $logger),
-            $this->getPreProcessHookStack($processSettingsTransfer->getName()),
-            $this->getPostProcessHookStack($processSettingsTransfer->getName()),
+            $this->createPluginFinder(),
             $outStream,
             $logger
+        );
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface
+     */
+    public function createPluginFinder(): PluginFinderInterface
+    {
+        return new PluginFinder(
+            $this->getConfig(),
+            $this->getStagePluginsStack(),
+            $this->getPreProcessHookStack(),
+            $this->getPostProcessHookStack()
         );
     }
 
@@ -126,47 +142,25 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return array
      */
-    protected function getProcesses(): array
-    {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[][]
-     */
-    protected function getPipelines(): array
-    {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PIPELINES);
-    }
-
-    /**
-     * @return array
-     */
     protected function getProcessIteratorsList(): array
     {
         return [];
     }
 
     /**
-     * @param string $processName
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\Stage[]
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[]
      */
-    protected function getPostProcessHookStack(string $processName): array
+    protected function getPreProcessHookStack(): array
     {
-        $postProcessHooks = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK);
-        return $postProcessHooks[$processName]?:[];
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK);
     }
 
     /**
-     * @param string $processName
-     *
-     * @return array
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PostProcessorHookPluginInterface[]
      */
-    protected function getPreProcessHookStack(string $processName): array
+    protected function getPostProcessHookStack(): array
     {
-        $preProcessHooks = $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK);
-        return $preProcessHooks[$processName];
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK);
     }
 
     /**
@@ -227,8 +221,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function createStageListBuilder(): StageListBuilderInterface
     {
         return new StageListBuilder(
-            $this->getProcesses(),
-            $this->getPipelines()
+            $this->createPluginFinder()
         );
     }
 
@@ -286,5 +279,13 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function getProcessService(): ProcessServiceInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::SERVICE_PROCESS);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[]
+     */
+    protected function getStagePluginsStack(): array
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_STAGE_PLUGINS);
     }
 }
