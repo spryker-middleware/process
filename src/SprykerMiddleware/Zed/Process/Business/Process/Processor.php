@@ -4,6 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 use Iterator;
 use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Zed\Process\Business\Aggregator\AggregatorInterface;
+use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 
 class Processor implements ProcessorInterface
@@ -76,9 +77,13 @@ class Processor implements ProcessorInterface
                 'itemKey' => $this->iterator->key(),
                 'itemNo' => $counter++,
             ]);
-            $this->aggregator->accept(
-                $this->pipeline->process($item)
-            );
+            try {
+                $this->aggregator->accept(
+                    $this->pipeline->process($item)
+                );
+            } catch (TolerableProcessException $exception) {
+                $this->logger->error('Experienced tolerable process error in ' . $exception->getFile());
+            }
         }
         $this->aggregator->flush();
         $this->logger->info('Middleware process is finished.');
