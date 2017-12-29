@@ -17,6 +17,14 @@ class ProcessConfig extends AbstractBundleConfig
     /**
      * @return array
      */
+    public function getProcessIteratorsConfig()
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
     public function getPreProcessorHooksConfig()
     {
         return [];

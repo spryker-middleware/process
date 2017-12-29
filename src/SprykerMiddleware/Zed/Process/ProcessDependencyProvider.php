@@ -27,6 +27,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addProcesses($container);
+        $container = $this->addIterators($container);
         $container = $this->addStagePluginsStack($container);
         $container = $this->addPreProcessorHooks($container);
         $container = $this->addPostProcessorHooks($container);
@@ -44,6 +45,20 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container[static::MIDDLEWARE_PROCESSES] = function () {
             return $this->getProcesses();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addIterators($container)
+    {
+        $container[static::MIDDLEWARE_PROCESS_ITERATORS] = function () {
+            return $this->getIteratorsStack();
         };
 
         return $container;
@@ -137,6 +152,14 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[]
      */
     public function getStagePluginsStack()
+    {
+        return [];
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface[]
+     */
+    public function getIteratorsStack()
     {
         return [];
     }

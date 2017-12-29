@@ -55,13 +55,12 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         $inStream,
         $outStream
     ): ProcessorInterface {
-
         $logger = $this->getLogger($this->getProcessLoggerConfig($processSettingsTransfer));
         return new Processor(
             $processSettingsTransfer,
-            $this->createProcessIterator($processSettingsTransfer, $inStream),
             $this->createPipeline($processSettingsTransfer, $inStream, $outStream, $logger),
             $this->createPluginFinder(),
+            $inStream,
             $outStream,
             $logger
         );
@@ -75,6 +74,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         return new PluginFinder(
             $this->getConfig(),
             $this->getStagePluginsStack(),
+            $this->getIteratorsStack(),
             $this->getPreProcessHookStack(),
             $this->getPostProcessHookStack()
         );
@@ -137,14 +137,6 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     public function createJsonWriter($logger)
     {
         return new JsonWriter($this->getProcessService(), $logger);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getProcessIteratorsList(): array
-    {
-        return [];
     }
 
     /**
@@ -287,5 +279,13 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function getStagePluginsStack(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_STAGE_PLUGINS);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface[]
+     */
+    protected function getIteratorsStack()
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESS_ITERATORS);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\PluginFinder;
 
-use SprykerMiddleware\Zed\Process\Business\Exception\StagePluginsForProcessNotConfiguredException;
+use SprykerMiddleware\Zed\Process\Business\Exception\IteratorNotConfiguredException;
+use SprykerMiddleware\Zed\Process\Business\Exception\StagePluginsNotConfiguredException;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface;
 use SprykerMiddleware\Zed\Process\ProcessConfig;
 
 class PluginFinder implements PluginFinderInterface
@@ -18,6 +20,11 @@ class PluginFinder implements PluginFinderInterface
     protected $stagePluginsStack;
 
     /**
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface[]
+     */
+    protected $iteratorPluginsStack;
+
+    /**
      * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[]
      */
     protected $preProcessorHookPluginsStack;
@@ -30,17 +37,20 @@ class PluginFinder implements PluginFinderInterface
     /**
      * @param \SprykerMiddleware\Zed\Process\ProcessConfig $config
      * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[] $stagePluginsStack
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface[] $iteratorPluginsStack
      * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[] $preProcessorHookPluginsStack
      * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PostProcessorHookPluginInterface[] $postProcessorHookPluginsStack
      */
     public function __construct(
         ProcessConfig $config,
         array $stagePluginsStack,
+        array $iteratorPluginsStack,
         array $preProcessorHookPluginsStack,
         array $postProcessorHookPluginsStack
     ) {
         $this->config = $config;
         $this->stagePluginsStack = $stagePluginsStack;
+        $this->iteratorPluginsStack = $iteratorPluginsStack;
         $this->preProcessorHookPluginsStack = $preProcessorHookPluginsStack;
         $this->postProcessorHookPluginsStack = $postProcessorHookPluginsStack;
         $this->init();
@@ -57,8 +67,18 @@ class PluginFinder implements PluginFinderInterface
     }
 
     /**
-    /**
+     * @param string $processName
      *
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface
+     */
+    public function getIteratorPluginByProcessName(string $processName): ProcessIteratorPluginInterface
+    {
+        $iteratorName = $this->getProcessIteratorPluginName($processName);
+
+        return $this->iteratorPluginsStack[$iteratorName];
+    }
+
+    /**
      * @param string $processName
      *
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[]
@@ -89,6 +109,12 @@ class PluginFinder implements PluginFinderInterface
         }
         $this->stagePluginsStack = $stagePluginsStack;
 
+        $iteratorPluginsStack = [];
+        foreach ($this->iteratorPluginsStack as $iteratorPlugin) {
+            $iteratorPluginsStack[$iteratorPlugin->getName()] = $iteratorPlugin;
+        }
+        $this->iteratorPluginsStack = $iteratorPluginsStack;
+
         $preProcessorHookPluginsStack = [];
         foreach ($this->preProcessorHookPluginsStack as $preProcessorHookPlugin) {
             $preProcessorHookPluginsStack[$preProcessorHookPlugin->getName()] = $preProcessorHookPlugin;
@@ -105,7 +131,7 @@ class PluginFinder implements PluginFinderInterface
     /**
      * @param string $processName
      *
-     * @throws \SprykerMiddleware\Zed\Process\Business\Exception\StagePluginsForProcessNotConfiguredException
+     * @throws \SprykerMiddleware\Zed\Process\Business\Exception\StagePluginsNotConfiguredException
      *
      * @return string[]
      */
@@ -116,7 +142,7 @@ class PluginFinder implements PluginFinderInterface
             return $processConfiguration[$processName];
         }
 
-        throw new StagePluginsForProcessNotConfiguredException($processName);
+        throw new StagePluginsNotConfiguredException($processName);
     }
 
     /**
@@ -163,5 +189,22 @@ class PluginFinder implements PluginFinderInterface
         }
 
         return $filteredPlugins;
+    }
+
+    /**
+     * @param string $processName
+     *
+     * @throws \SprykerMiddleware\Zed\Process\Business\Exception\IteratorNotConfiguredException
+     *
+     * @return string
+     */
+    protected function getProcessIteratorPluginName(string $processName): string
+    {
+        $processIteratorConfig = $this->config->getProcessIteratorsConfig();
+        if (isset($processIteratorConfig[$processName])) {
+            return $processIteratorConfig[$processName];
+        }
+
+        throw new IteratorNotConfiguredException($processName);
     }
 }
