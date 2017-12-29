@@ -103,6 +103,7 @@ class Translator implements TranslatorInterface
             }
             return $result;
         }
+
         return $this->translateByRule($result, $payload, $key, $translation);
     }
 
@@ -150,6 +151,7 @@ class Translator implements TranslatorInterface
                 static::KEY_RESULTED_DATA => $resultValue,
             ]
         );
+
         return $this->arrayManager->putValue($result, $key, $resultValue);
     }
 
