@@ -67,7 +67,7 @@ class MiddlewareLoggerConfig implements LoggerConfigInterface
             'php://stderr',
             $this->loggerSettings->getVerboseLevel()
         );
-        $formatter = new LogstashFormatter(static::NAME);
+        $formatter = new LogstashFormatter(static::CHANNEL_NAME);
         $streamHandler->setFormatter($formatter);
 
         return $streamHandler;
