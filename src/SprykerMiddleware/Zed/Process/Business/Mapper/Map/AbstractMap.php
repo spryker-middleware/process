@@ -7,19 +7,6 @@ use Generated\Shared\Transfer\MapperConfigTransfer;
 abstract class AbstractMap implements MapInterface
 {
     /**
-     * @var string
-     */
-    protected $preGeneratedMapPath;
-
-    /**
-     * @param string $preGeneratedMapPath
-     */
-    public function __construct(string $preGeneratedMapPath = '')
-    {
-        $this->preGeneratedMapPath = $preGeneratedMapPath;
-    }
-
-    /**
      * @return \Generated\Shared\Transfer\MapperConfigTransfer
      */
     public function getMapperConfig(): MapperConfigTransfer
@@ -32,11 +19,13 @@ abstract class AbstractMap implements MapInterface
     }
 
     /**
+     * @param string $mapFilePath
+     *
      * @return array
      */
-    protected function readMapFromFile(): array
+    protected function readMapFromFile(string $mapFilePath): array
     {
-        return ($this->preGeneratedMapPath != '') ? json_decode(file_get_contents($this->preGeneratedMapPath), true) : [];
+        return json_decode(file_get_contents($mapFilePath), true);
     }
 
     /**
