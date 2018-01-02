@@ -4,7 +4,6 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Iterator;
 
 use Generated\Shared\Transfer\IteratorSettingsTransfer;
 use Iterator;
-use SprykerMiddleware\Zed\Process\Business\Iterator\NullIterator;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
@@ -22,6 +21,8 @@ class NullIteratorPlugin extends AbstractProcessIteratorPlugin
      */
     public function getIterator($inStream, IteratorSettingsTransfer $iteratorSettingsTransfer): Iterator
     {
-        return new NullIterator($inStream);
+        return $this->getFactory()
+            ->createIteratorFactory()
+            ->createNullIterator($inStream);
     }
 }
