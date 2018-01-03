@@ -194,7 +194,7 @@ class Translator implements TranslatorInterface
      */
     protected function translateNestedKeys(array $result, array $payload, string $key, $translation): array
     {
-        $keys = $this->arrayManager->getAllNestedKeys($payload, $key);
+        $keys = $this->arrayManager->getAllNestedKeys($result, $key);
         foreach ($keys as $key) {
             $result = $this->translateByRuleSet($result, $payload, $key, $translation);
         }
