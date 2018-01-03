@@ -5,7 +5,6 @@ namespace SprykerMiddleware\Zed\Process\Business;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -20,14 +19,13 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
      *
      * @param array $payload
      * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer, LoggerInterface $logger): array
+    public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array
     {
         return $this->getFactory()
-            ->createMapper($mapperConfigTransfer, $logger)
+            ->createMapper($mapperConfigTransfer)
             ->map($payload);
     }
 
@@ -42,10 +40,10 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
      *
      * @return array
      */
-    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): array
+    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array
     {
         return $this->getFactory()
-            ->createTranslator($translatorConfigTransfer, $logger)
+            ->createTranslator($translatorConfigTransfer)
             ->translate($payload);
     }
 
@@ -69,28 +67,26 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
 
     /**
      * @param resource $inStream
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function readJson($inStream, LoggerInterface $logger): array
+    public function readJson($inStream): array
     {
         return $this->getFactory()
-            ->createJsonReader($logger)
+            ->createJsonReader()
             ->read($inStream);
     }
 
     /**
      * @param resource $outStream
      * @param array $payload
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function writeJson($outStream, $payload, $logger)
+    public function writeJson($outStream, $payload)
     {
         return $this->getFactory()
-            ->createJsonWriter($logger)
+            ->createJsonWriter()
             ->write($outStream, $payload);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
-use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 /**
@@ -16,14 +15,13 @@ class JsonWriterStagePlugin extends AbstractStagePlugin implements StagePluginIn
      * Process the payload.
      *
      * @param mixed $payload
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return mixed
      */
-    public function process($payload, LoggerInterface $logger)
+    public function process($payload)
     {
         $this->getFacade()
-            ->writeJson($this->outStream, $payload, $logger);
+            ->writeJson($this->outStream, $payload);
         return $payload;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
-use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
@@ -24,11 +23,10 @@ abstract class AbstractStagePlugin extends AbstractPlugin implements StagePlugin
      * Process the payload.
      *
      * @param mixed $payload
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return mixed
      */
-    abstract public function process($payload, LoggerInterface $logger);
+    abstract public function process($payload);
 
     /**
      * @param resource $inStream

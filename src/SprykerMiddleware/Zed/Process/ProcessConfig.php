@@ -37,4 +37,12 @@ class ProcessConfig extends AbstractBundleConfig
     {
         return [];
     }
+
+    /**
+     * @return array
+     */
+    public function getProcessLoggersConfig()
+    {
+        return [];
+    }
 }

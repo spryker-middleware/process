@@ -3,12 +3,15 @@
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use Psr\Log\LoggerInterface;
+
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
+use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 
 class Translator implements TranslatorInterface
 {
+    use LoggerTrait;
+
     const OPERATION = 'Translation';
 
     const KEY_OPTIONS = 'options';
@@ -33,26 +36,18 @@ class Translator implements TranslatorInterface
     protected $arrayManager;
 
     /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      * @param \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver $translatorFunctionResolver
      * @param \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface $arrayManager
-     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         TranslatorConfigTransfer $translatorConfigTransfer,
         AbstractClassResolver $translatorFunctionResolver,
-        ArrayManagerInterface $arrayManager,
-        LoggerInterface $logger
+        ArrayManagerInterface $arrayManager
     ) {
         $this->translatorConfigTransfer = $translatorConfigTransfer;
         $this->translatorFunctionResolver = $translatorFunctionResolver;
         $this->arrayManager = $arrayManager;
-        $this->logger = $logger;
     }
 
     /**
@@ -141,7 +136,7 @@ class Translator implements TranslatorInterface
     {
         $inputValue = $this->arrayManager->getValueByKey($payload, $key);
         $resultValue = $translation($inputValue, $key, $result);
-        $this->logger->debug(
+        $this->getLogger()->debug(
             static::OPERATION,
             [
                 static::KEY_KEY => $key,
@@ -169,7 +164,7 @@ class Translator implements TranslatorInterface
 
         $inputValue = $this->arrayManager->getValueByKey($result, $key);
         $resultValue = $translateFunction->translate($inputValue);
-        $this->logger->debug(
+        $this->getLogger()->debug(
             static::OPERATION,
             [
                 static::KEY_KEY => $key,

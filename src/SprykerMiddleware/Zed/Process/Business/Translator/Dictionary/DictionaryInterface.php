@@ -6,6 +6,8 @@ use Generated\Shared\Transfer\TranslatorConfigTransfer;
 
 interface DictionaryInterface
 {
+    const OPTIONS = 'options';
+
     /**
      * @return \Generated\Shared\Transfer\TranslatorConfigTransfer
      */
