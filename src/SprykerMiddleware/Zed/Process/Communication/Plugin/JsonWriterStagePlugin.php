@@ -24,4 +24,12 @@ class JsonWriterStagePlugin extends AbstractStagePlugin implements StagePluginIn
             ->writeJson($this->outStream, $payload);
         return $payload;
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return static::PLUGIN_NAME;
+    }
 }

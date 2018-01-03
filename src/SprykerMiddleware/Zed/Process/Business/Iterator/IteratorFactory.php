@@ -3,9 +3,8 @@
 namespace SprykerMiddleware\Zed\Process\Business\Iterator;
 
 use Iterator;
-use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
-class IteratorFactory extends AbstractBusinessFactory
+class IteratorFactory
 {
     /**
      * @param resource $inStream

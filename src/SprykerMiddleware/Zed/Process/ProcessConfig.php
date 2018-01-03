@@ -7,6 +7,8 @@ use Spryker\Zed\Kernel\AbstractBundleConfig;
 class ProcessConfig extends AbstractBundleConfig
 {
     /**
+     * @example array('processName' => array('StagePlugin1Name', 'StagePlugin2Name'))
+     *
      * @return array
      */
     public function getProcessesConfig()
@@ -15,6 +17,8 @@ class ProcessConfig extends AbstractBundleConfig
     }
 
     /**
+     * @example array('processName' => 'IteratorPluginName')
+     *
      * @return array
      */
     public function getProcessIteratorsConfig()
@@ -23,6 +27,8 @@ class ProcessConfig extends AbstractBundleConfig
     }
 
     /**
+     * @example array('processName' => array('PreProcessorHooksPlugin1Name', 'PreProcessorHooksPlugin2Name'))
+     *
      * @return array
      */
     public function getPreProcessorHooksConfig()
@@ -31,6 +37,8 @@ class ProcessConfig extends AbstractBundleConfig
     }
 
     /**
+     * @example array('processName' => array('PostProcessorHooksPlugin1Name', 'PostProcessorHooksPlugin2Name'))
+     *
      * @return array
      */
     public function getPostProcessorHooksConfig()
@@ -39,6 +47,8 @@ class ProcessConfig extends AbstractBundleConfig
     }
 
     /**
+     * @example array('processName' => 'LoggerConfigPluginName')
+     *
      * @return array
      */
     public function getProcessLoggersConfig()

@@ -3,7 +3,9 @@
 namespace SprykerMiddleware\Zed\Process\Business\Exception;
 
 use Exception;
+use Spryker\Shared\Config\Config;
 use Spryker\Shared\Kernel\Exception\Backtrace;
+use Spryker\Shared\Kernel\KernelConstants;
 
 class StagePluginsNotConfiguredException extends Exception
 {
@@ -23,9 +25,12 @@ class StagePluginsNotConfiguredException extends Exception
     protected function buildMessage(string $processName)
     {
         $message = 'Spryker Middleware Exception' . PHP_EOL;
-        $message .= 'List of stage plugins for process ' . $processName . ' does not configured' . PHP_EOL;
-        $message .= 'You can fix this by adding the missing configuration to .' . PHP_EOL;
-        $message .= 'Pyz\\Zed\\Process\\ProcessConfig::getProcessesConfig()' . PHP_EOL . PHP_EOL;
+        $message .= 'List of stage plugins for process ' . $processName . ' is not configured' . PHP_EOL;
+        $message .= 'You can fix this by adding the missing configuration to' . PHP_EOL;
+        $message .= sprintf(
+            '%s\\Zed\\Process\\ProcessConfig::getProcessIteratorsConfig()' . PHP_EOL . PHP_EOL,
+            Config::getInstance()->get(KernelConstants::PROJECT_NAMESPACE)
+        );
         $message .= new Backtrace();
 
         return $message;

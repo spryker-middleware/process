@@ -7,8 +7,6 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 abstract class AbstractStagePlugin extends AbstractPlugin implements StagePluginInterface
 {
-    const PLUGIN_NAME = 'SPRYKER_MIDDLEWARE_ABSTRACT_STAGE_PLUGIN';
-
     /**
      * @var resource
      */
@@ -29,6 +27,11 @@ abstract class AbstractStagePlugin extends AbstractPlugin implements StagePlugin
     abstract public function process($payload);
 
     /**
+     * @return string
+     */
+    abstract public function getName(): string;
+
+    /**
      * @param resource $inStream
      *
      * @return void
@@ -46,13 +49,5 @@ abstract class AbstractStagePlugin extends AbstractPlugin implements StagePlugin
     public function setOutStream($outStream): void
     {
         $this->outStream = $outStream;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return static::PLUGIN_NAME;
     }
 }

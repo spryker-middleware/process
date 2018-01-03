@@ -24,4 +24,12 @@ class JsonReaderStagePlugin extends AbstractStagePlugin implements StagePluginIn
         return $this->getFacade()
             ->readJson($this->inStream);
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return static::PLUGIN_NAME;
+    }
 }
