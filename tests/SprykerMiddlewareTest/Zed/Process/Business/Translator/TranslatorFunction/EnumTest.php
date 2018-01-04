@@ -67,7 +67,7 @@ class EnumTest extends Unit
     public function testEnumWithReturnArray()
     {
         $map = [
-            ['foo']
+            ['foo'],
         ];
 
         $converter = new Enum();

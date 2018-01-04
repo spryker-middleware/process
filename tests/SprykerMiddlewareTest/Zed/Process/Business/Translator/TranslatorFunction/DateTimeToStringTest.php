@@ -8,6 +8,7 @@
 namespace SprykerMiddlewareTest\Zed\Process\Business\Translator\TranslatorFunction;
 
 use Codeception\Test\Unit;
+use DateTime;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\DateTimeToString;
 
 /**
@@ -34,7 +35,7 @@ class DateTimeToStringTest extends Unit
         $converter->setOptions(
             ['format' => $format]
         );
-        $data = new \DateTime();
+        $data = new DateTime();
 
         $this->assertEquals($data->format($format), $converter->translate($data));
     }
