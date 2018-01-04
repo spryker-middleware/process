@@ -51,7 +51,8 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addStagePluginsStack($container);
         $container = $this->addPreProcessorHooks($container);
         $container = $this->addPostProcessorHooks($container);
-        $container = $this->addServices($container);
+        $container = $this->addEncodingService($container);
+        $container = $this->addProcessService($container);
         $container = $this->addLogConfigPlugins($container);
         $container = $this->addDefaultLoggerConfigPlugin($container);
 
@@ -119,12 +120,22 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addServices(Container $container): Container
+    protected function addEncodingService(Container $container): Container
     {
         $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
             return new ProcessToUtilEncodingServiceBridge($container->getLocator()->utilEncoding()->service());
         };
 
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addProcessService(Container $container): Container
+    {
         $container[static::SERVICE_PROCESS] = function (Container $container) {
             return $container->getLocator()->process()->service();
         };

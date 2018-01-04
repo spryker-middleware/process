@@ -31,6 +31,8 @@ class ProcessConsole extends Console
     const OPTION_ITERATOR_OFFSET_SHORTCUT = 's';
     const OPTION_ITERATOR_LIMIT_SHORTCUT = 'l';
     const OPTION_LOG_LEVEL_SHORTCUT = 'f';
+    const OPTION_INPUT_SHORTCUT = 'i';
+    const OPTION_OUTPUT_SHORTCUT = 'o';
 
     /**
      * @var int
@@ -85,14 +87,14 @@ class ProcessConsole extends Console
 
         $this->addOption(
             static::OPTION_INPUT,
-            'i',
+            static::OPTION_INPUT_SHORTCUT,
             InputOption::VALUE_REQUIRED,
             'Input Stream'
         );
 
         $this->addOption(
             static::OPTION_OUTPUT,
-            'o',
+            static::OPTION_OUTPUT_SHORTCUT,
             InputOption::VALUE_REQUIRED,
             'Output Stream'
         );
