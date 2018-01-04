@@ -139,9 +139,6 @@ class Mapper implements MapperInterface
                 $resultArray[$originItemKey] = $resultItem;
             }
         }
-        foreach ($resultArray as $index => $resultItem) {
-            $resultArray[$index] = $this->filterArray($resultItem, $value, static::OPTION_ITEM_EXCEPT);
-        }
         $this->logger->debug(static::OPERATION, [
             static::KEY_OPERATION => static::OPERATION_MAP_ARRAY,
             static::KEY_NEW_KEY => $key,
