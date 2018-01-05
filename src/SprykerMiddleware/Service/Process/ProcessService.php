@@ -3,6 +3,7 @@
 namespace SprykerMiddleware\Service\Process;
 
 use Spryker\Service\Kernel\AbstractService;
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 
 /**
  * @method \SprykerMiddleware\Service\Process\ProcessServiceFactory getFactory();
@@ -10,11 +11,11 @@ use Spryker\Service\Kernel\AbstractService;
 class ProcessService extends AbstractService implements ProcessServiceInterface
 {
     /**
-     * @param resource $stream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $stream
      *
      * @return array
      */
-    public function readJson($stream)
+    public function readJson(StreamInterface $stream)
     {
         return $this->getFactory()
             ->createJsonStreamService()
@@ -22,12 +23,12 @@ class ProcessService extends AbstractService implements ProcessServiceInterface
     }
 
     /**
-     * @param resource $stream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $stream
      * @param array $data
      *
      * @return bool|int
      */
-    public function writeJson($stream, $data)
+    public function writeJson(StreamInterface $stream, $data)
     {
         return $this->getFactory()
             ->createJsonStreamService()

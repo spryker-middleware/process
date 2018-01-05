@@ -4,7 +4,7 @@ namespace SprykerMiddleware\Service\Process\Model;
 
 use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 
-class JsonStreamService implements StreamServiceInterface
+class JsonStreamService implements JsonStreamServiceInterface
 {
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $stream
