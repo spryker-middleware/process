@@ -1,9 +1,10 @@
 <?php
+
 namespace SprykerMiddleware\Zed\Process\Business\Pipeline;
 
-use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface;
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 
-interface PipelineInterface extends StageInterface
+interface PipelineInterface
 {
     /**
      * Create a new pipeline with an appended stage.
@@ -22,4 +23,21 @@ interface PipelineInterface extends StageInterface
      * @return mixed
      */
     public function process($payload);
+
+    /**
+     * Process the payload.
+     *
+     * @param mixed $payload
+     *
+     * @return mixed
+     */
+    public function __invoke($payload);
+
+    /**
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inputStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outputStream
+     *
+     * @return void
+     */
+    public function setStreams(StreamInterface $inputStream, StreamInterface $outputStream);
 }

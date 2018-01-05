@@ -9,15 +9,15 @@ use Generated\Shared\Transfer\TranslatorConfigTransfer;
 interface ProcessFacadeInterface
 {
     /**
+     * {@inheritdoc}
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer $processSettingsTransfer
-     * @param resource $inStream
-     * @param resource $outStream
      *
      * @return void
      */
-    public function process(ProcessSettingsTransfer $processSettingsTransfer, $inStream, $outStream): void;
+    public function process(ProcessSettingsTransfer $processSettingsTransfer): void;
 
     /**
      * @api

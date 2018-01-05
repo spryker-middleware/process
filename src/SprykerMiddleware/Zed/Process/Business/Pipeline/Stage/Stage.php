@@ -50,4 +50,12 @@ class Stage implements StageInterface
     {
         return get_class($this->stagePlugin);
     }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface
+     */
+    public function getStagePlugin(): StagePluginInterface
+    {
+        return $this->stagePlugin;
+    }
 }

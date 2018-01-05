@@ -2,26 +2,30 @@
 
 namespace SprykerMiddleware\Service\Process\Model;
 
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+
 class JsonStreamService implements StreamServiceInterface
 {
     /**
-     * @param resource $stream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $stream
      *
      * @return array
      */
-    public function read($stream)
+    public function read(StreamInterface $stream)
     {
-        return json_decode(fgets($stream), true);
+        $data = $stream->get();
+        return json_decode($data, true);
     }
 
     /**
-     * @param resource $stream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $stream
      * @param array $data
      *
      * @return bool|int
      */
-    public function write($stream, $data)
+    public function write(StreamInterface $stream, $data)
     {
-        return fwrite($stream, json_encode($data));
+        $data = json_encode($data);
+        return $stream->write($data);
     }
 }

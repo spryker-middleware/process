@@ -3,6 +3,7 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 abstract class AbstractStagePlugin extends AbstractPlugin implements StagePluginInterface
@@ -32,21 +33,21 @@ abstract class AbstractStagePlugin extends AbstractPlugin implements StagePlugin
     abstract public function getName(): string;
 
     /**
-     * @param resource $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
      *
      * @return void
      */
-    public function setInStream($inStream): void
+    public function setInStream(StreamInterface $inStream): void
     {
         $this->inStream = $inStream;
     }
 
     /**
-     * @param resource $outStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outStream
      *
      * @return void
      */
-    public function setOutStream($outStream): void
+    public function setOutStream(StreamInterface $outStream): void
     {
         $this->outStream = $outStream;
     }

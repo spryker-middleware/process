@@ -22,18 +22,14 @@ class StageListBuilder implements StageListBuilderInterface
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
-     * @param resource $inStream
-     * @param resource $outStream
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
      */
-    public function buildStageList(ProcessSettingsTransfer $processSettingsTransfer, $inStream, $outStream): array
+    public function buildStageList(ProcessSettingsTransfer $processSettingsTransfer): array
     {
         $stagePluginList = $this->pluginFinder->getStagePluginsByProcessName($processSettingsTransfer->getName());
         $stages = [];
         foreach ($stagePluginList as $stagePlugin) {
-            $stagePlugin->setInStream($inStream);
-            $stagePlugin->setOutStream($outStream);
             $stages[] = new Stage($stagePlugin);
         }
         return $stages;

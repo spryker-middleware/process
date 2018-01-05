@@ -5,7 +5,7 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\ServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use SprykerMiddleware\Zed\Process\Business\Stream\JsonStream;
+use SprykerMiddleware\Zed\Process\Business\StreamWrapper\JsonStreamWrapper;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
@@ -20,8 +20,7 @@ class ProcessServiceProvider extends AbstractPlugin implements ServiceProviderIn
      */
     public function register(Application $app)
     {
-        stream_wrapper_register('jsonstreamwriter', JsonStream::class);
-        stream_wrapper_register('jsonstreamreader', JsonStream::class);
+        stream_wrapper_register(JsonStreamWrapper::STREAM_PROTOCOL, JsonStreamWrapper::class);
     }
 
     /**

@@ -9,6 +9,7 @@ use Monolog\Processor\IntrospectionProcessor;
 use Psr\Log\LogLevel;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use SprykerMiddleware\Zed\Process\Business\Iterator\IteratorFactory;
+use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -22,6 +23,22 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     public function createIteratorFactory(): IteratorFactory
     {
         return new IteratorFactory();
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory
+     */
+    public function createStreamFactory(): StreamFactory
+    {
+        return new StreamFactory();
+    }
+
+    /**
+     * @return callable
+     */
+    public function createIntrospectionProcessor(): callable
+    {
+        return new IntrospectionProcessor();
     }
 
     /**
@@ -61,13 +78,5 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     protected function createLogstashFormatter(): FormatterInterface
     {
         return new LogstashFormatter(APPLICATION);
-    }
-
-    /**
-     * @return callable
-     */
-    public function createIntrospectionProcessor(): callable
-    {
-        return new IntrospectionProcessor();
     }
 }

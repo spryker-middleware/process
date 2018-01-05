@@ -2,6 +2,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Pipeline;
 
 use League\Pipeline\ProcessorInterface;
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 
 class Pipeline implements PipelineInterface
 {
@@ -58,5 +59,19 @@ class Pipeline implements PipelineInterface
     public function __invoke($payload)
     {
         return $this->process($payload);
+    }
+
+    /**
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inputStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outputStream
+     *
+     * @return void
+     */
+    public function setStreams(StreamInterface $inputStream, StreamInterface $outputStream)
+    {
+        foreach ($this->stages as $stage) {
+            $stage->getStagePlugin()->setInStream($inputStream);
+            $stage->getStagePlugin()->setOutStream($outputStream);
+        }
     }
 }

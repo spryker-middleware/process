@@ -1,6 +1,8 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Dependency\Plugin;
 
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+
 interface StagePluginInterface
 {
     /**
@@ -18,16 +20,16 @@ interface StagePluginInterface
     public function getName(): string;
 
     /**
-     * @param resource $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
      *
      * @return void
      */
-    public function setInStream($inStream): void;
+    public function setInStream(StreamInterface $inStream): void;
 
     /**
-     * @param resource $outStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outStream
      *
      * @return void
      */
-    public function setOutStream($outStream): void;
+    public function setOutStream(StreamInterface $outStream): void;
 }
