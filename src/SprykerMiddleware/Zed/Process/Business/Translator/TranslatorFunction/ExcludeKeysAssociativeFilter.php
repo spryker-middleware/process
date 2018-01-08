@@ -6,11 +6,12 @@ use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorExc
 
 class ExcludeKeysAssociativeFilter extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
+    const OPTION_EXCLUDE_KEYS = 'excludeKeys';
     /**
      * @var array
      */
     protected $requiredOptions = [
-        'excludeKeys',
+        self::OPTION_EXCLUDE_KEYS,
     ];
 
     /**
@@ -26,6 +27,6 @@ class ExcludeKeysAssociativeFilter extends AbstractTranslatorFunction implements
             throw new WrongTypeValueTranslatorException();
         }
 
-        return array_diff_key($value, array_flip($this->options['excludeKeys']));
+        return array_diff_key($value, array_flip($this->options[self::OPTION_EXCLUDE_KEYS]));
     }
 }

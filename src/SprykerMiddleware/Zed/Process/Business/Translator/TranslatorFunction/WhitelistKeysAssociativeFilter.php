@@ -6,11 +6,12 @@ use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorExc
 
 class WhitelistKeysAssociativeFilter extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
+    const OPTION_WHITELIST_KEYS = 'whitelistKeys';
     /**
      * @var array
      */
     protected $requiredOptions = [
-        'whitelistKeys',
+        self::OPTION_WHITELIST_KEYS,
     ];
 
     /**
@@ -26,6 +27,6 @@ class WhitelistKeysAssociativeFilter extends AbstractTranslatorFunction implemen
             throw new WrongTypeValueTranslatorException();
         }
 
-        return array_intersect_key($value, array_flip($this->options['whitelistKeys']));
+        return array_intersect_key($value, array_flip($this->options[self::OPTION_WHITELIST_KEYS]));
     }
 }
