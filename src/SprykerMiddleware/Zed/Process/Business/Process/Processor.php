@@ -4,8 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
-use SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface;
-use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
+use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 
 class Processor implements ProcessorInterface
 {
@@ -47,37 +46,34 @@ class Processor implements ProcessorInterface
     protected $outStream;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface
      */
-    protected $pluginFinder;
+    protected $processPlugin;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface
+     * @var \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface
      */
-    protected $loggerConfigPluginFinder;
+    protected $processPluginResolver;
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
-     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface $pluginFinder
-     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface $loggerConfigPluginFinder
+     * @param \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface $processPluginResolver
      * @param resource $inStream
      * @param resource $outStream
      */
     public function __construct(
         ProcessSettingsTransfer $processSettingsTransfer,
         PipelineInterface $pipeline,
-        PluginFinderInterface $pluginFinder,
-        LoggerConfigPluginFinderInterface $loggerConfigPluginFinder,
+        ProcessPluginResolverInterface $processPluginResolver,
         $inStream,
         $outStream
     ) {
         $this->processSettingsTransfer = $processSettingsTransfer;
         $this->pipeline = $pipeline;
-        $this->pluginFinder = $pluginFinder;
+        $this->processPluginResolver = $processPluginResolver;
         $this->inStream = $inStream;
         $this->outStream = $outStream;
-        $this->loggerConfigPluginFinder = $loggerConfigPluginFinder;
         $this->init();
     }
 
@@ -125,16 +121,24 @@ class Processor implements ProcessorInterface
      */
     protected function init(): void
     {
-        $this->iterator = $this->pluginFinder
-            ->getIteratorPluginByProcessName($this->processSettingsTransfer->getName())
+        $this->processPlugin = $this->processPluginResolver
+            ->getProcessConfigurationPluginByProcessName($this->processSettingsTransfer->getName());
+
+        $this->iterator = $this->processPlugin
+            ->getIteratorPlugin()
             ->getIterator($this->inStream, $this->processSettingsTransfer->getIteratorSettings());
-        $this->preProcessStack = $this->pluginFinder
-            ->getPreProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
-        $this->postProcessStack = $this->pluginFinder
-            ->getPostProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
-        $loggerConfig = $this->loggerConfigPluginFinder
-            ->getLoggerConfigPluginByProcessName($this->processSettingsTransfer->getName());
+
+        $this->preProcessStack = $this->processPlugin
+            ->getPreProcessorHookPlugins();
+
+        $this->postProcessStack = $this->processPlugin
+            ->getPostProcessorHookPlugins();
+
+        $loggerConfig = $this->processPlugin
+            ->getLoggerPlugin();
+
         $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerSettings()->getVerboseLevel());
+
         $this->initLogger($loggerConfig);
     }
 }

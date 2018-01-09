@@ -14,9 +14,4 @@ interface ProcessIteratorPluginInterface
      * @return \Iterator
      */
     public function getIterator($inStream, IteratorSettingsTransfer $iteratorSettingsTransfer): Iterator;
-
-    /**
-     * @return string
-     */
-    public function getName(): string;
 }
