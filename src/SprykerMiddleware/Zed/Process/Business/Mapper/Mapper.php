@@ -80,7 +80,7 @@ class Mapper implements MapperInterface
             return $this->mapCallable($result, $payload, $key, $value);
         }
         if (is_array($value)) {
-            return $this->mapArray($result, $payload, $key, $value);
+            return $this->mapKey($result, $payload, $key, reset($value));
         }
         if (is_string($value) || is_int($value)) {
             return $this->mapKey($result, $payload, $key, $value);
@@ -108,28 +108,6 @@ class Mapper implements MapperInterface
         ]);
 
         return $this->arrayManager->putValue($result, $key, $mappedValue);
-    }
-
-    /**
-     * @param array $result
-     * @param array $payload
-     * @param string $key
-     * @param array $value
-     *
-     * @return array
-     */
-    protected function mapArray(array $result, array $payload, string $key, array $value): array
-    {
-        $originKey = reset($value);
-        $resultArray = $this->arrayManager->getValueByKey($payload, $originKey);
-        $this->logger->debug(static::OPERATION, [
-            static::KEY_OPERATION => static::OPERATION_MAP_ARRAY,
-            static::KEY_NEW_KEY => $key,
-            static::KEY_OLD_KEY => $value,
-            static::KEY_DATA => $resultArray,
-        ]);
-
-        return $this->arrayManager->putValue($result, $key, $resultArray);
     }
 
     /**
