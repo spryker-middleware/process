@@ -21,9 +21,6 @@ class Mapper implements MapperInterface
     const KEY_OPERATION = 'operation';
     const KEY_STRATEGY = 'strategy';
 
-    const OPTION_EXCEPT = 'except';
-    const OPTION_ITEM_MAP = 'itemMap';
-    const OPTION_ITEM_EXCEPT = 'itemExcept';
     /**
      * @var \Generated\Shared\Transfer\MapperConfigTransfer
      */
@@ -83,7 +80,7 @@ class Mapper implements MapperInterface
             return $this->mapCallable($result, $payload, $key, $value);
         }
         if (is_array($value)) {
-            return $this->mapArray($result, $payload, $key, $value);
+            return $this->mapKey($result, $payload, $key, reset($value));
         }
         if (is_string($value) || is_int($value)) {
             return $this->mapKey($result, $payload, $key, $value);
@@ -117,45 +114,6 @@ class Mapper implements MapperInterface
      * @param array $result
      * @param array $payload
      * @param string $key
-     * @param array $value
-     *
-     * @return array
-     */
-    protected function mapArray(array $result, array $payload, string $key, array $value): array
-    {
-        $originKey = reset($value);
-        $originArray = $this->arrayManager->getValueByKey($payload, $originKey);
-        $originArray = $this->filterArray($originArray, $value, static::OPTION_EXCEPT);
-        $resultArray = $originArray;
-        if (isset($value[static::OPTION_ITEM_MAP])) {
-            $resultArray = [];
-            $rules = $value[static::OPTION_ITEM_MAP];
-            foreach ($originArray as $originItemKey => $item) {
-                $resultItem = $this->prepareResult($item);
-                $resultItem = $this->filterArray($resultItem, $value, static::OPTION_ITEM_EXCEPT);
-                foreach ($rules as $itemKey => $itemValue) {
-                    $resultItem = $this->mapByRule($resultItem, $item, $itemKey, $itemValue);
-                }
-                $resultArray[$originItemKey] = $resultItem;
-            }
-        }
-        foreach ($resultArray as $index => $resultItem) {
-            $resultArray[$index] = $this->filterArray($resultItem, $value, static::OPTION_ITEM_EXCEPT);
-        }
-        $this->logger->debug(static::OPERATION, [
-            static::KEY_OPERATION => static::OPERATION_MAP_ARRAY,
-            static::KEY_NEW_KEY => $key,
-            static::KEY_OLD_KEY => $value,
-            static::KEY_DATA => $resultArray,
-        ]);
-
-        return $this->arrayManager->putValue($result, $key, $resultArray);
-    }
-
-    /**
-     * @param array $result
-     * @param array $payload
-     * @param string $key
      * @param string $value
      *
      * @return array
@@ -171,27 +129,6 @@ class Mapper implements MapperInterface
         ]);
 
         return $this->arrayManager->putValue($result, $key, $mappedValue);
-    }
-
-    /**
-     * @param array $array
-     * @param array $rule
-     * @param string $exceptKey
-     *
-     * @return array
-     */
-    protected function filterArray(array $array, array $rule, string $exceptKey): array
-    {
-        if (!isset($rule[$exceptKey])) {
-            return $array;
-        }
-
-        $exceptKeys = $rule[$exceptKey];
-        if (!is_array($exceptKeys)) {
-            $exceptKeys = [$exceptKeys];
-        }
-
-        return array_diff_key($array, array_flip($exceptKeys));
     }
 
     /**

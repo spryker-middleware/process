@@ -8,7 +8,7 @@
 namespace SprykerMiddlewareTest\Zed\Process\Business\Translator\TranslatorFunction;
 
 use Codeception\Test\Unit;
-use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\ArrayToString;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\MoneyIntegerToDecimal;
 
 /**
  * Auto-generated group annotations
@@ -18,45 +18,44 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\ArrayTo
  * @group Business
  * @group Translator
  * @group TranslatorFunction
- * @group ArrayToStringTest
+ * @group MoneyIntegerToDecimalTest
  * Add your own group annotations below this line
  */
-class ArrayToStringTest extends Unit
+class MoneyIntegerToDecimalTest extends Unit
 {
     /**
      * @return void
      */
-    public function testArrayToString()
+    public function testMoneyIntegerToDecimal()
     {
-        $converter = new ArrayToString();
-        $data = ['Foo', 'Bar'];
+        $converter = new MoneyIntegerToDecimal();
+        $data = 1200;
 
-        $this->assertEquals('FooBar', $converter->translate($data));
+        $this->assertEquals('12.00', $converter->translate($data));
     }
 
     /**
      * @return void
      */
-    public function testArrayToStringWithGlue()
-    {
-        $converter = new ArrayToString();
-        $converter->setOptions(
-            [ArrayToString::OPTION_GLUE => '-']
-        );
-        $data = ['Foo', 'Bar'];
-
-        $this->assertEquals('Foo-Bar', $converter->translate($data));
-    }
-
-    /**
-     * @return void
-     */
-    public function testArrayToStringWithoutArray()
+    public function testMoneyIntegerToDecimalWithIntegerString()
     {
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
-        $converter = new ArrayToString();
-        $data = 'Foo';
+        $converter = new MoneyIntegerToDecimal();
+        $data = '1200';
+
+        $converter->translate($data);
+    }
+
+    /**
+     * @return void
+     */
+    public function testMoneyIntegerToDecimalWithTextString()
+    {
+        $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
+
+        $converter = new MoneyIntegerToDecimal();
+        $data = 'FooBar';
 
         $converter->translate($data);
     }
