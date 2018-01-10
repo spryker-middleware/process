@@ -3,6 +3,7 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorStagePluginInterface;
 
 /**
@@ -13,7 +14,7 @@ abstract class AbstractTranslatorStagePlugin extends AbstractStagePlugin impleme
     /**
      * @inheritdoc
      */
-    public function process($payload)
+    public function process($payload, StreamInterface $inStream, StreamInterface $outStream)
     {
         return $this->getFacade()
             ->translate($payload, $this->getTranslatorConfig());

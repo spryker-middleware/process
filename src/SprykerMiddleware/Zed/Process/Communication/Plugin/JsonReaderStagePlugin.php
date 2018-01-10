@@ -2,6 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 /**
@@ -13,16 +14,13 @@ class JsonReaderStagePlugin extends AbstractStagePlugin implements StagePluginIn
     const PLUGIN_NAME = 'SPRYKER_MIDDLEWARE_JSON_READER_STAGE_PLUGIN';
 
     /**
-     * Process the payload.
-     *
-     * @param mixed $payload
-     *
-     * @return mixed
+     * @inheritdoc
      */
-    public function process($payload)
+    public function process($payload, StreamInterface $inStream, StreamInterface $outStream)
     {
-        return $this->getFacade()
-            ->readJson($this->inStream);
+        return $this->getFactory()
+            ->getProcessService()
+            ->readJson($inStream);
     }
 
     /**

@@ -4,10 +4,6 @@ namespace SprykerMiddleware\Shared\Process\Stream;
 
 interface StreamInterface
 {
-    const MODE_READ = 'r';
-    const MODE_WRITE = 'w';
-    const MODE_READ_WRITE = 'w+';
-
     /**
      * @param string $mode
      *

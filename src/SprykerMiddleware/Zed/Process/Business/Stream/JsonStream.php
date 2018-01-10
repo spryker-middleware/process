@@ -58,6 +58,7 @@ class JsonStream implements StreamInterface
                 $data[] = $this->get();
                 $length--;
             }
+            return $data;
         }
 
         return false;

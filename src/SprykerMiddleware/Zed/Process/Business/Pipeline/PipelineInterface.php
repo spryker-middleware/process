@@ -7,8 +7,6 @@ use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 interface PipelineInterface
 {
     /**
-     * Create a new pipeline with an appended stage.
-     *
      * @param callable $operation
      *
      * @return static
@@ -16,28 +14,20 @@ interface PipelineInterface
     public function pipe(callable $operation);
 
     /**
-     * Process the payload.
-     *
      * @param mixed $payload
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outStream
      *
      * @return mixed
      */
-    public function process($payload);
+    public function process($payload, StreamInterface $inStream, StreamInterface $outStream);
 
     /**
-     * Process the payload.
-     *
      * @param mixed $payload
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outStream
      *
      * @return mixed
      */
-    public function __invoke($payload);
-
-    /**
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inputStream
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outputStream
-     *
-     * @return void
-     */
-    public function setStreams(StreamInterface $inputStream, StreamInterface $outputStream);
+    public function __invoke($payload, StreamInterface $inStream, StreamInterface $outStream);
 }

@@ -42,6 +42,14 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
+     * @return \SprykerMiddleware\Service\Process\ProcessServiceInterface
+     */
+    public function getProcessService()
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::SERVICE_PROCESS);
+    }
+
+    /**
      * @return \Monolog\Handler\AbstractHandler[]
      */
     public function getMiddlewareLogHandlers()

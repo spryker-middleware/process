@@ -1,8 +1,8 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Business\Pipeline;
 
-use League\Pipeline\ProcessorInterface;
 use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface;
 
 class Pipeline implements PipelineInterface
 {
@@ -12,23 +12,21 @@ class Pipeline implements PipelineInterface
     protected $stages = [];
 
     /**
-     * @var \League\Pipeline\ProcessorInterface
+     * @var \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface
      */
     protected $processor;
 
     /**
-     * @param \League\Pipeline\ProcessorInterface $processor
+     * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface $processor
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[] $stages
      */
-    public function __construct(ProcessorInterface $processor, array $stages)
+    public function __construct(PipelineProcessorInterface $processor, array $stages)
     {
         $this->processor = $processor;
         $this->stages = $stages;
     }
 
     /**
-     * Create a new pipeline with an appended stage.
-     *
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface|callable $stage
      *
      * @return static
@@ -42,36 +40,22 @@ class Pipeline implements PipelineInterface
     }
 
     /**
-     * Process the payload.
-     *
      * @param mixed $payload
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outStream
      *
      * @return mixed
      */
-    public function process($payload)
+    public function process($payload, StreamInterface $inStream, StreamInterface $outStream)
     {
-        return $this->processor->process($this->stages, $payload);
+        return $this->processor->process($this->stages, $payload, $inStream, $outStream);
     }
 
     /**
      * @inheritdoc
      */
-    public function __invoke($payload)
+    public function __invoke($payload, StreamInterface $inStream, StreamInterface $outStream)
     {
-        return $this->process($payload);
-    }
-
-    /**
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inputStream
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outputStream
-     *
-     * @return void
-     */
-    public function setStreams(StreamInterface $inputStream, StreamInterface $outputStream)
-    {
-        foreach ($this->stages as $stage) {
-            $stage->getStagePlugin()->setInStream($inputStream);
-            $stage->getStagePlugin()->setOutStream($outputStream);
-        }
+        return $this->process($payload, $inStream, $outStream);
     }
 }

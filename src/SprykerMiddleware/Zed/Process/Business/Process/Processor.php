@@ -3,7 +3,6 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 
 use Exception;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface;
@@ -97,13 +96,13 @@ class Processor implements ProcessorInterface
         $this->getLogger()->info('Middleware process is started.', ['process' => $this]);
         $counter = 0;
         try {
-            $this->inputStream->open(StreamInterface::MODE_READ);
-            $this->outputStream->open(StreamInterface::MODE_WRITE);
+            $this->inputStream->open('r');
+            $this->outputStream->open('w');
             foreach ($this->iterator as $item) {
                 $this->getLogger()->info('Start processing of item', [
                     'itemNo' => $counter++,
                 ]);
-                $this->pipeline->process($item);
+                $this->pipeline->process($item, $this->inputStream, $this->outputStream);
             }
             $this->outputStream->flush();
         } catch (Exception $e) {
@@ -160,8 +159,6 @@ class Processor implements ProcessorInterface
         $loggerConfig = $this->loggerConfigPluginFinder
             ->getLoggerConfigPluginByProcessName($this->processSettingsTransfer->getName());
         $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerSettings()->getVerboseLevel());
-
-        $this->pipeline->setStreams($this->inputStream, $this->outputStream);
 
         $this->initLogger($loggerConfig);
     }

@@ -38,19 +38,4 @@ interface ProcessFacadeInterface
      * @return array
      */
     public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array;
-
-    /**
-     * @param resource $inStream
-     *
-     * @return array
-     */
-    public function readJson($inStream): array;
-
-    /**
-     * @param resource $outStream
-     * @param array $payload
-     *
-     * @return array
-     */
-    public function writeJson($outStream, $payload);
 }

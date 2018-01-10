@@ -2,26 +2,26 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
+ * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
  */
 class JsonWriterStagePlugin extends AbstractStagePlugin implements StagePluginInterface
 {
     const PLUGIN_NAME = 'SPRYKER_MIDDLEWARE_JSON_WRITER_STAGE_PLUGIN';
 
     /**
-     * Process the payload.
-     *
-     * @param mixed $payload
-     *
-     * @return mixed
+     * @inheritdoc
      */
-    public function process($payload)
+    public function process($payload, StreamInterface $inStream, StreamInterface $outStream)
     {
-        $this->getFacade()
-            ->writeJson($this->outStream, $payload);
+        $this->getFactory()
+            ->getProcessService()
+            ->writeJson($outStream, $payload);
+
         return $payload;
     }
 

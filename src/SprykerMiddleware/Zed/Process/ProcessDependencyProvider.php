@@ -7,7 +7,6 @@ use Spryker\Zed\Log\Communication\Plugin\Processor\PsrLogMessageProcessorPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Handler\StdErrStreamHandlerPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Log\MiddlewareLoggerConfigPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Processor\IntrospectionProcessorPlugin;
-use SprykerMiddleware\Zed\Process\Communication\Plugin\Stream\JsonStreamPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
@@ -37,6 +36,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideCommunicationLayerDependencies($container);
         $container = $this->addLogHandlers($container);
         $container = $this->addLogProcessors($container);
+        $container = $this->addProcessService($container);
 
         return $container;
     }
@@ -57,7 +57,6 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addLogConfigPlugins($container);
         $container = $this->addDefaultLoggerConfigPlugin($container);
         $container = $this->addEncodingService($container);
-        $container = $this->addProcessService($container);
 
         return $container;
     }
@@ -237,9 +236,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function getStreamPluginsStack()
     {
-        return [
-            new JsonStreamPlugin(),
-        ];
+        return [];
     }
 
     /**
