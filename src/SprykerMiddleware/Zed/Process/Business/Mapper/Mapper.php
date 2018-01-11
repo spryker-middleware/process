@@ -23,8 +23,6 @@ class Mapper implements MapperInterface
     const KEY_OPERATION = 'operation';
     const KEY_STRATEGY = 'strategy';
 
-    const OPTION_ITEM_MAP = 'itemMap';
-    const OPTION_EXCEPT = 'except';
     /**
      * @var \Generated\Shared\Transfer\MapperConfigTransfer
      */
@@ -76,7 +74,7 @@ class Mapper implements MapperInterface
             return $this->mapCallable($result, $payload, $key, $value);
         }
         if (is_array($value)) {
-            return $this->mapArray($result, $payload, $key, $value);
+            return $this->mapKey($result, $payload, $key, reset($value));
         }
         if (is_string($value) || is_int($value)) {
             return $this->mapKey($result, $payload, $key, $value);
@@ -102,41 +100,8 @@ class Mapper implements MapperInterface
             static::KEY_OLD_KEY => $value,
             static::KEY_DATA => $mappedValue,
         ]);
-        return $this->arrayManager->putValue($result, $key, $mappedValue);
-    }
 
-    /**
-     * @param array $result
-     * @param array $payload
-     * @param string $key
-     * @param array $value
-     *
-     * @return array
-     */
-    protected function mapArray(array $result, array $payload, string $key, array $value): array
-    {
-        $originKey = reset($value);
-        $originArray = $this->arrayManager->getValueByKey($payload, $originKey);
-        $originArray = $this->filterArray($originArray, $value);
-        if (!isset($value[static::OPTION_ITEM_MAP])) {
-            return $this->arrayManager->putValue($result, $key, $originArray);
-        }
-        $resultArray = [];
-        $rules = $value[static::OPTION_ITEM_MAP];
-        foreach ($originArray as $originItemKey => $item) {
-            $resultItem = [];
-            foreach ($rules as $itemKey => $itemValue) {
-                $resultItem = $this->mapByRule($resultItem, $item, $itemKey, $itemValue);
-            }
-            $resultArray[$originItemKey] = $resultItem;
-        }
-        $this->getLogger()->debug(static::OPERATION, [
-            static::KEY_OPERATION => static::OPERATION_MAP_ARRAY,
-            static::KEY_NEW_KEY => $key,
-            static::KEY_OLD_KEY => $value,
-            static::KEY_DATA => $resultArray,
-        ]);
-        return $this->arrayManager->putValue($result, $key, $resultArray);
+        return $this->arrayManager->putValue($result, $key, $mappedValue);
     }
 
     /**
@@ -156,27 +121,8 @@ class Mapper implements MapperInterface
             static::KEY_OLD_KEY => $value,
             static::KEY_DATA => $mappedValue,
         ]);
+
         return $this->arrayManager->putValue($result, $key, $mappedValue);
-    }
-
-    /**
-     * @param array $array
-     * @param array $value
-     *
-     * @return array
-     */
-    protected function filterArray(array $array, array $value): array
-    {
-        if (!isset($value[static::OPTION_EXCEPT])) {
-            return $array;
-        }
-
-        $exceptKeys = $value[static::OPTION_EXCEPT];
-        if (!is_array($exceptKeys)) {
-            $exceptKeys = [$exceptKeys];
-        }
-
-        return array_diff_key($array, array_flip($exceptKeys));
     }
 
     /**
@@ -189,7 +135,7 @@ class Mapper implements MapperInterface
         if ($this->mapperConfigTransfer->getStrategy() === ProcessConfig::MAPPER_STRATEGY_COPY_UNKNOWN) {
             $this->getLogger()->debug(static::OPERATION, [
                 static::KEY_OPERATION => static::OPERATION_COPY_ORIGINAL_DATA,
-                static::KEY_STRATEGY => $this->map->getStrategy(),
+                static::KEY_STRATEGY => $this->mapperConfigTransfer->getStrategy(),
             ]);
             return $payload;
         }

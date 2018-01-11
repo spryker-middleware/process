@@ -4,6 +4,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 use Exception;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
+use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
@@ -105,6 +106,8 @@ class Processor implements ProcessorInterface
                 $this->pipeline->process($item, $this->inputStream, $this->outputStream);
             }
             $this->outputStream->flush();
+        } catch (TolerableProcessException $exception) {
+            $this->getLogger()->error('Experienced tolerable process error in ' . $exception->getFile());
         } catch (Exception $e) {
             throw $e;
         } finally {

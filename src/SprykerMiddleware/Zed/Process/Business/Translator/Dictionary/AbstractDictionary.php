@@ -18,6 +18,16 @@ abstract class AbstractDictionary implements DictionaryInterface
     }
 
     /**
+     * @param string $dictionaryFilePath
+     *
+     * @return array
+     */
+    protected function readDictionaryFromFile(string $dictionaryFilePath): array
+    {
+        return json_decode(file_get_contents($dictionaryFilePath), true);
+    }
+
+    /**
      * @return array
      */
     abstract public function getDictionary(): array;
