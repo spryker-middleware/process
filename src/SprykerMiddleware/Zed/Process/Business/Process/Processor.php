@@ -3,11 +3,10 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 
 use Exception;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
+use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
-use SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface;
-use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
+use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface;
 
 class Processor implements ProcessorInterface
@@ -50,14 +49,14 @@ class Processor implements ProcessorInterface
     protected $outputStream;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface
      */
-    protected $pluginFinder;
+    protected $processPlugin;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface
+     * @var \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface
      */
-    protected $loggerConfigPluginFinder;
+    protected $processPluginResolver;
 
     /**
      * @var \SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface
@@ -67,21 +66,18 @@ class Processor implements ProcessorInterface
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
-     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface $pluginFinder
-     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface $loggerConfigPluginFinder
+     * @param \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface $processPluginResolver
      * @param \SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface $streamPluginResolver
      */
     public function __construct(
         ProcessSettingsTransfer $processSettingsTransfer,
         PipelineInterface $pipeline,
-        PluginFinderInterface $pluginFinder,
-        LoggerConfigPluginFinderInterface $loggerConfigPluginFinder,
+        ProcessPluginResolverInterface $processPluginResolver,
         StreamPluginResolverInterface $streamPluginResolver
     ) {
         $this->processSettingsTransfer = $processSettingsTransfer;
         $this->pipeline = $pipeline;
-        $this->pluginFinder = $pluginFinder;
-        $this->loggerConfigPluginFinder = $loggerConfigPluginFinder;
+        $this->processPluginResolver = $processPluginResolver;
         $this->streamPluginResolver = $streamPluginResolver;
         $this->init();
     }
@@ -152,15 +148,22 @@ class Processor implements ProcessorInterface
             ->getStreamPluginByPath($this->processSettingsTransfer->getOutputPath())
             ->getStream($this->processSettingsTransfer->getOutputPath());
 
-        $this->iterator = $this->pluginFinder
-            ->getIteratorPluginByProcessName($this->processSettingsTransfer->getName())
+        $this->processPlugin = $this->processPluginResolver
+            ->getProcessConfigurationPluginByProcessName($this->processSettingsTransfer->getName());
+
+        $this->iterator = $this->processPlugin
+            ->getIteratorPlugin()
             ->getIterator($this->inputStream, $this->processSettingsTransfer->getIteratorSettings());
-        $this->preProcessStack = $this->pluginFinder
-            ->getPreProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
-        $this->postProcessStack = $this->pluginFinder
-            ->getPostProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
-        $loggerConfig = $this->loggerConfigPluginFinder
-            ->getLoggerConfigPluginByProcessName($this->processSettingsTransfer->getName());
+
+        $this->preProcessStack = $this->processPlugin
+            ->getPreProcessorHookPlugins();
+
+        $this->postProcessStack = $this->processPlugin
+            ->getPostProcessorHookPlugins();
+
+        $loggerConfig = $this->processPlugin
+            ->getLoggerPlugin();
+
         $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerSettings()->getVerboseLevel());
 
         $this->initLogger($loggerConfig);

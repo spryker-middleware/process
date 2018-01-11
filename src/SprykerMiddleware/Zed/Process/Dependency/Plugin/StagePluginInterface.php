@@ -14,9 +14,4 @@ interface StagePluginInterface
      * @return mixed
      */
     public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream);
-
-    /**
-     * @return string
-     */
-    public function getName(): string;
 }

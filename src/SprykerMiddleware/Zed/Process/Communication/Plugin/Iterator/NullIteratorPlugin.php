@@ -14,8 +14,6 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPlug
  */
 class NullIteratorPlugin extends AbstractPlugin implements ProcessIteratorPluginInterface
 {
-    const PLUGIN_NAME = 'SPRYKER_MIDDLEWARE_NULL_ITERATOR_PLUGIN';
-
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      * @param \Generated\Shared\Transfer\IteratorSettingsTransfer $iteratorSettingsTransfer
@@ -27,13 +25,5 @@ class NullIteratorPlugin extends AbstractPlugin implements ProcessIteratorPlugin
         return $this->getFactory()
             ->createIteratorFactory()
             ->createNullIterator($inStream);
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return static::PLUGIN_NAME;
     }
 }

@@ -12,8 +12,6 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
  */
 class JsonWriterStagePlugin extends AbstractStagePlugin implements StagePluginInterface
 {
-    const PLUGIN_NAME = 'SPRYKER_MIDDLEWARE_JSON_WRITER_STAGE_PLUGIN';
-
     /**
      * @inheritdoc
      */
@@ -24,13 +22,5 @@ class JsonWriterStagePlugin extends AbstractStagePlugin implements StagePluginIn
             ->write($outStream, $payload);
 
         return $payload;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return static::PLUGIN_NAME;
     }
 }

@@ -17,9 +17,4 @@ abstract class AbstractStagePlugin extends AbstractPlugin implements StagePlugin
      * @return mixed
      */
     abstract public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream);
-
-    /**
-     * @return string
-     */
-    abstract public function getName(): string;
 }
