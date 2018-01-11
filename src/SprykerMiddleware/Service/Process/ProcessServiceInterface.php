@@ -9,7 +9,7 @@ interface ProcessServiceInterface
 {
     /**
      * Specification:
-     * - Read data from given JSON stream.
+     * - Read data from given stream.
      *
      * @api
      *
@@ -21,7 +21,7 @@ interface ProcessServiceInterface
 
     /**
      * Specification:
-     * - Write given data to given JSON stream.
+     * - Write given data to given stream.
      *
      * @api
      *
