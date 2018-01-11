@@ -2,19 +2,20 @@
 
 namespace  SprykerMiddleware\Zed\Process\Business\Pipeline\Stage;
 
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 interface StageInterface
 {
     /**
      * @param mixed $payload
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      *
      * @return mixed
      */
-    public function __invoke($payload, StreamInterface $inStream, StreamInterface $outStream): array;
+    public function __invoke($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream): array;
 
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface

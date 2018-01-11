@@ -2,7 +2,8 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Pipeline;
 
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
 interface PipelineInterface
 {
@@ -15,19 +16,19 @@ interface PipelineInterface
 
     /**
      * @param mixed $payload
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      *
      * @return mixed
      */
-    public function process($payload, StreamInterface $inStream, StreamInterface $outStream);
+    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream);
 
     /**
      * @param mixed $payload
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $outStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      *
      * @return mixed
      */
-    public function __invoke($payload, StreamInterface $inStream, StreamInterface $outStream);
+    public function __invoke($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream);
 }

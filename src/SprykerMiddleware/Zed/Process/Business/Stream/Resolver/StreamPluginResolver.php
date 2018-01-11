@@ -48,9 +48,9 @@ class StreamPluginResolver implements StreamPluginResolverInterface
     protected function findPluginByProtocol($protocol): ProcessStreamPluginInterface
     {
         foreach ($this->streamPluginStack as $streamPlugin) {
-            if ($streamPlugin->getProtocol() === $protocol) {
+//            if ($streamPlugin->getProtocol() === $protocol) {
                 return $streamPlugin;
-            }
+//            }
         }
     }
 }

@@ -3,7 +3,8 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
 use Generated\Shared\Transfer\MapperConfigTransfer;
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\MapperStagePluginInterface;
 
 /**
@@ -14,7 +15,7 @@ abstract class AbstractMapperStagePlugin extends AbstractStagePlugin implements 
     /**
      * @inheritdoc
      */
-    public function process($payload, StreamInterface $inStream, StreamInterface $outStream)
+    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream)
     {
         return $this->getFacade()
             ->map($payload, $this->getMapperConfig());

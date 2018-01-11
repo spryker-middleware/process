@@ -27,6 +27,6 @@ class JsonWriter implements WriterInterface
      */
     public function write($outStream, $payload)
     {
-        return $this->streamService->writeJson($outStream, $payload);
+        return $this->streamService->write($outStream, $payload);
     }
 }

@@ -27,6 +27,6 @@ class JsonReader implements ReaderInterface
     public function read($inStream): array
     {
         return $this->streamService
-            ->readJson($inStream);
+            ->read($inStream);
     }
 }

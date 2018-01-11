@@ -1,15 +1,11 @@
 <?php
 
-namespace SprykerMiddleware\Service\Process;
+namespace SprykerMiddleware\Service\Process\Model;
 
-use Spryker\Service\Kernel\AbstractService;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
-/**
- * @method \SprykerMiddleware\Service\Process\ProcessServiceFactory getFactory();
- */
-class ProcessService extends AbstractService implements ProcessServiceInterface
+class StreamService implements StreamServiceInterface
 {
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
@@ -18,9 +14,7 @@ class ProcessService extends AbstractService implements ProcessServiceInterface
      */
     public function read(ReadStreamInterface $stream)
     {
-        return $this->getFactory()
-            ->createStreamService()
-            ->read($stream);
+        return $stream->read();
     }
 
     /**
@@ -31,8 +25,6 @@ class ProcessService extends AbstractService implements ProcessServiceInterface
      */
     public function write(WriteStreamInterface $stream, $data)
     {
-        return $this->getFactory()
-            ->createStreamService()
-            ->write($stream, $data);
+        return $stream->write($data);
     }
 }

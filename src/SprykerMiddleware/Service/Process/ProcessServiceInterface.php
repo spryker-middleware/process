@@ -2,7 +2,8 @@
 
 namespace SprykerMiddleware\Service\Process;
 
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
 interface ProcessServiceInterface
 {
@@ -12,11 +13,11 @@ interface ProcessServiceInterface
      *
      * @api
      *
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $stream
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
      *
      * @return array
      */
-    public function readJson(StreamInterface $stream);
+    public function read(ReadStreamInterface $stream);
 
     /**
      * Specification:
@@ -24,10 +25,10 @@ interface ProcessServiceInterface
      *
      * @api
      *
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $stream
+     * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $stream
      * @param array $data
      *
      * @return bool|int
      */
-    public function writeJson(StreamInterface $stream, $data);
+    public function write(WriteStreamInterface $stream, $data);
 }

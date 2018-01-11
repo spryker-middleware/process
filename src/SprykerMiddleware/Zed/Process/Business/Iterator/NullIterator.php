@@ -4,19 +4,19 @@ namespace SprykerMiddleware\Zed\Process\Business\Iterator;
 
 use Exception;
 use Iterator;
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 
 class NullIterator implements Iterator
 {
     /**
-     * @var \SprykerMiddleware\Shared\Process\Stream\StreamInterface
+     * @var \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
      */
     protected $inStream;
 
     /**
-     * @param \SprykerMiddleware\Shared\Process\Stream\StreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      */
-    public function __construct(StreamInterface $inStream)
+    public function __construct(ReadStreamInterface $inStream)
     {
         $this->inStream = $inStream;
     }
