@@ -21,8 +21,6 @@ use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolver;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
 use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
-use SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolver;
-use SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
@@ -44,8 +42,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         return new Processor(
             $processSettingsTransfer,
             $this->createPipeline($processSettingsTransfer),
-            $this->createProcessPluginResolver(),
-            $this->createStreamPluginResolver()
+            $this->createProcessPluginResolver()
         );
     }
 
@@ -55,14 +52,6 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     public function createProcessPluginResolver(): ProcessPluginResolverInterface
     {
         return new ProcessPluginResolver($this->getProfileConfigurationPluginStack());
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface
-     */
-    public function createStreamPluginResolver(): StreamPluginResolverInterface
-    {
-        return new StreamPluginResolver($this->getStreamsPluginStack());
     }
 
     /**
@@ -150,14 +139,6 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function createTranslatorFunctionResolver(): AbstractClassResolver
     {
         return new TranslatorFunctionResolver();
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\ProcessStreamPluginInterface[]
-     */
-    protected function getStreamsPluginStack()
-    {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESS_STREAMS);
     }
 
     /**

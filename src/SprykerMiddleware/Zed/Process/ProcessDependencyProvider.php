@@ -14,18 +14,11 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const MIDDLEWARE_PROCESSES = 'MIDDLEWARE_PROCESSES';
     const MIDDLEWARE_DEFAULT_PROCESSES = 'MIDDLEWARE_DEFAULT_PROCESSES';
     const MIDDLEWARE_CONFIGURATION_PROFILES = 'MIDDLEWARE_CONFIGURATION_PROFILES';
-    const MIDDLEWARE_STAGE_PLUGINS = 'MIDDLEWARE_STAGE_PLUGINS';
-    const MIDDLEWARE_PROCESS_ITERATORS = 'MIDDLEWARE_PROCESS_ITERATORS';
-    const MIDDLEWARE_PROCESS_STREAMS = 'MIDDLEWARE_PROCESS_STREAMS';
-    const MIDDLEWARE_PROCESS_LOGGERS = 'MIDDLEWARE_PROCESS_LOGGERS';
-    const MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK';
-    const MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK';
-    const MIDDLEWARE_LOG_CONFIGS = 'MIDDLEWARE_LOG_CONFIGS';
     const MIDDLEWARE_LOG_HANDLERS = 'MIDDLEWARE_LOG_HANDLERS';
     const MIDDLEWARE_LOG_PROCESSORS = 'MIDDLEWARE_LOG_PROCESSORS';
     const MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN';
-    const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
 
+    const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
     const SERVICE_PROCESS = 'PROCESS_SERVICE';
 
     /**
@@ -55,7 +48,6 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addConfigurationProfilesStack($container);
-        $container = $this->addStreamPluginsStack($container);
         $container = $this->addProcessService($container);
 
         return $container;
@@ -70,20 +62,6 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container[static::MIDDLEWARE_CONFIGURATION_PROFILES] = function () {
             return $this->getConfigurationProfilePluginsStack();
-        };
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addStreamPluginsStack($container)
-    {
-        $container[static::MIDDLEWARE_PROCESS_STREAMS] = function () {
-            return $this->getStreamPluginsStack();
         };
 
         return $container;

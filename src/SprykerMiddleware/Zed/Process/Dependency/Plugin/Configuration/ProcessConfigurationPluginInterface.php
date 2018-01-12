@@ -4,6 +4,8 @@ namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration;
 
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\InputStreamPluginInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OutputStreamPluginInterface;
 
 interface ProcessConfigurationPluginInterface
 {
@@ -11,6 +13,16 @@ interface ProcessConfigurationPluginInterface
      * @return string
      */
     public function getProcessName(): string;
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\InputStreamPluginInterface
+     */
+    public function getInputStreamPlugin(): InputStreamPluginInterface;
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OutputStreamPluginInterface
+     */
+    public function getOutputStreamPlugin(): OutputStreamPluginInterface;
 
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface

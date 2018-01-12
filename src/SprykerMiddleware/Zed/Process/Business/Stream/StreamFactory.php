@@ -2,16 +2,14 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
-
 class StreamFactory
 {
     /**
      * @param string $path
      *
-     * @return \SprykerMiddleware\Shared\Process\Stream\StreamInterface
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface|\SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
-    public function createJsonStream(string $path): StreamInterface
+    public function createJsonStream(string $path)
     {
         return new JsonStream($path);
     }

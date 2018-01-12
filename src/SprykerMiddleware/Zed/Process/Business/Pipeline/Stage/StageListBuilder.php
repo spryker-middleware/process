@@ -35,6 +35,7 @@ class StageListBuilder implements StageListBuilderInterface
         foreach ($stagePluginList as $stagePlugin) {
             $stages[] = new Stage($stagePlugin);
         }
+
         return $stages;
     }
 }

@@ -7,7 +7,6 @@ use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
-use SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface;
 
 class Processor implements ProcessorInterface
 {
@@ -39,12 +38,12 @@ class Processor implements ProcessorInterface
     protected $postProcessStack;
 
     /**
-     * @var \SprykerMiddleware\Shared\Process\Stream\StreamInterface
+     * @var \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
      */
     protected $inputStream;
 
     /**
-     * @var \SprykerMiddleware\Shared\Process\Stream\StreamInterface
+     * @var \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
     protected $outputStream;
 
@@ -59,26 +58,18 @@ class Processor implements ProcessorInterface
     protected $processPluginResolver;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface
-     */
-    private $streamPluginResolver;
-
-    /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface $processPluginResolver
-     * @param \SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface $streamPluginResolver
      */
     public function __construct(
         ProcessSettingsTransfer $processSettingsTransfer,
         PipelineInterface $pipeline,
-        ProcessPluginResolverInterface $processPluginResolver,
-        StreamPluginResolverInterface $streamPluginResolver
+        ProcessPluginResolverInterface $processPluginResolver
     ) {
         $this->processSettingsTransfer = $processSettingsTransfer;
         $this->pipeline = $pipeline;
         $this->processPluginResolver = $processPluginResolver;
-        $this->streamPluginResolver = $streamPluginResolver;
         $this->init();
     }
 
@@ -140,16 +131,16 @@ class Processor implements ProcessorInterface
      */
     protected function init(): void
     {
-        $this->inputStream = $this->streamPluginResolver
-            ->getStreamPluginByPath($this->processSettingsTransfer->getInputPath())
-            ->getStream($this->processSettingsTransfer->getInputPath());
-
-        $this->outputStream = $this->streamPluginResolver
-            ->getStreamPluginByPath($this->processSettingsTransfer->getOutputPath())
-            ->getStream($this->processSettingsTransfer->getOutputPath());
-
         $this->processPlugin = $this->processPluginResolver
             ->getProcessConfigurationPluginByProcessName($this->processSettingsTransfer->getName());
+
+        $this->inputStream = $this->processPlugin
+            ->getInputStreamPlugin()
+            ->getInputStream($this->processSettingsTransfer->getInputPath());
+
+        $this->outputStream = $this->processPlugin
+            ->getOutputStreamPlugin()
+            ->getOutputStream($this->processSettingsTransfer->getOutputPath());
 
         $this->iterator = $this->processPlugin
             ->getIteratorPlugin()

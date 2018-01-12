@@ -3,33 +3,38 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Stream;
 
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
-use SprykerMiddleware\Zed\Process\Business\StreamWrapper\JsonStreamWrapper;
-use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\ProcessStreamPluginInterface;
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\InputStreamPluginInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OutputStreamPluginInterface;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
  * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
  */
-class JsonStreamPlugin extends AbstractPlugin implements ProcessStreamPluginInterface
+class JsonStreamPlugin extends AbstractPlugin implements InputStreamPluginInterface, OutputStreamPluginInterface
 {
     /**
      * @param string $path
      *
-     * @return \SprykerMiddleware\Shared\Process\Stream\StreamInterface
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
      */
-    public function getStream(string $path): StreamInterface
+    public function getInputStream(string $path): ReadStreamInterface
     {
-         return $this->getFactory()
+        return $this->getFactory()
             ->createStreamFactory()
             ->createJsonStream($path);
     }
 
     /**
-     * @return string
+     * @param string $path
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
-    public function getProtocol(): string
+    public function getOutputStream(string $path): WriteStreamInterface
     {
-        return JsonStreamWrapper::STREAM_PROTOCOL;
+        return $this->getFactory()
+            ->createStreamFactory()
+            ->createJsonStream($path);
     }
 }
