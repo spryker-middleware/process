@@ -12,6 +12,11 @@ abstract class AbstractTranslatorFunction implements TranslatorFunctionInterface
     protected $options;
 
     /**
+     * @var string
+     */
+    protected $key;
+
+    /**
      * @var array
      */
     protected $requiredOptions = [];
@@ -35,6 +40,16 @@ abstract class AbstractTranslatorFunction implements TranslatorFunctionInterface
     }
 
     /**
+     * @param string $key
+     *
+     * @return void
+     */
+    public function setKey(string $key): void
+    {
+        $this->key = $key;
+    }
+
+    /**
      * @param array $options
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\MissingRequiredOptionsTranslatorException
@@ -45,7 +60,7 @@ abstract class AbstractTranslatorFunction implements TranslatorFunctionInterface
     {
         foreach ($this->requiredOptions as $requiredOption) {
             if (!in_array($requiredOption, array_keys($options))) {
-                throw new MissingRequiredOptionsTranslatorException('Missing required option: ' . $requiredOption);
+                throw new MissingRequiredOptionsTranslatorException(static::class, $this->key, $options, $requiredOption);
             }
         }
     }

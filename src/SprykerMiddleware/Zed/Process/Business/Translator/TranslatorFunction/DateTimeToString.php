@@ -24,7 +24,7 @@ class DateTimeToString extends AbstractTranslatorFunction implements TranslatorF
     public function translate($value)
     {
         if (!($value instanceof DateTime)) {
-            throw new WrongTypeValueTranslatorException();
+            throw new WrongTypeValueTranslatorException(static::class, $this->key, '\DateTime', $value);
         }
 
         return $value->format($this->options['format']);

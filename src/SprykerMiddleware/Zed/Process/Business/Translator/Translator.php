@@ -167,7 +167,7 @@ class Translator implements TranslatorInterface
     {
         $options = isset($translation[static::KEY_OPTIONS]) ? $translation[static::KEY_OPTIONS] : [];
         /** @var \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface $translateFunction */
-        $translateFunction = $this->translatorFunctionResolver->resolve($this, reset($translation), $options);
+        $translateFunction = $this->translatorFunctionResolver->resolve($this, reset($translation), $key, $options);
 
         $inputValue = $this->arrayManager->getValueByKey($result, $key);
         $resultValue = $translateFunction->translate($inputValue);

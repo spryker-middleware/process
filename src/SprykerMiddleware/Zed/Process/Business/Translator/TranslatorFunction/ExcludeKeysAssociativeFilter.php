@@ -24,7 +24,7 @@ class ExcludeKeysAssociativeFilter extends AbstractTranslatorFunction implements
     public function translate($value)
     {
         if (!is_array($value)) {
-            throw new WrongTypeValueTranslatorException();
+            throw new WrongTypeValueTranslatorException(static::class, $this->key, 'array', $value);
         }
 
         return array_diff_key($value, array_flip($this->options[self::OPTION_EXCLUDE_KEYS]));
