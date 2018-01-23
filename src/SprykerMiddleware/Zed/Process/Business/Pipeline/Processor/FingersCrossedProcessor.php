@@ -17,8 +17,9 @@ class FingersCrossedProcessor implements PipelineProcessorInterface
      */
     public function process(array $stages, $payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream)
     {
+        $originalPayload = $payload;
         foreach ($stages as $stage) {
-            $payload = call_user_func($stage, $payload, $inStream, $outStream);
+            $payload = call_user_func($stage, $payload, $inStream, $outStream, $originalPayload);
         }
 
         return $payload;

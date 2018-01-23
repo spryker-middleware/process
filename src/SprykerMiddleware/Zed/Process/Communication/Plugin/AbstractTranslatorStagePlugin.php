@@ -15,7 +15,7 @@ abstract class AbstractTranslatorStagePlugin extends AbstractStagePlugin impleme
     /**
      * @inheritdoc
      */
-    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream)
+    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream, $originalPayload)
     {
         return $this->getFacade()
             ->translate($payload, $this->getTranslatorConfig());
