@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Iterator;
 
-use Generated\Shared\Transfer\IteratorSettingsTransfer;
+use Generated\Shared\Transfer\IteratorConfigTransfer;
 use Iterator;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
@@ -16,11 +16,11 @@ class NullIteratorPlugin extends AbstractPlugin implements ProcessIteratorPlugin
 {
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
-     * @param \Generated\Shared\Transfer\IteratorSettingsTransfer $iteratorSettingsTransfer
+     * @param \Generated\Shared\Transfer\IteratorConfigTransfer $iteratorConfigTransfer
      *
      * @return \Iterator
      */
-    public function getIterator(ReadStreamInterface $inStream, IteratorSettingsTransfer $iteratorSettingsTransfer): Iterator
+    public function getIterator(ReadStreamInterface $inStream, IteratorConfigTransfer $iteratorConfigTransfer): Iterator
     {
         return $this->getFactory()
             ->createIteratorFactory()

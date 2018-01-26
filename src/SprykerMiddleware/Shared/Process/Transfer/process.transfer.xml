@@ -7,27 +7,17 @@
         <property name="name" type="string"/>
         <property name="inputPath" type="string"/>
         <property name="outputPath" type="string"/>
-        <property name="iteratorSettings" type="IteratorSettings"/>
-        <property name="aggregatorSettings" type="AggregatorSettings"/>
-        <property name="loggerSettings" type="LoggerSettings"/>
+        <property name="iteratorConfig" type="IteratorConfig"/>
+        <property name="loggerConfig" type="LoggerConfig"/>
     </transfer>
 
-    <transfer name="IteratorSettings">
+    <transfer name="IteratorConfig">
         <property name="offset" type="int"/>
         <property name="limit" type="int"/>
         <property name="parseAsArray" type="bool"/>
     </transfer>
 
-    <transfer name="AggregatorSettings">
-        <property name="threshold" type="int"/>
-        <property name="writerConfig" type="WriterConfig"/>
-    </transfer>
-
-    <transfer name="WriterConfig">
-        <property name="destination" type="string"/>
-    </transfer>
-
-    <transfer name="LoggerSettings">
+    <transfer name="LoggerConfig">
         <property name="verboseLevel" type="int"/>
         <property name="isQuiet" type="bool"/>
     </transfer>

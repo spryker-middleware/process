@@ -1,11 +1,9 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Communication\Console;
 
-use Generated\Shared\Transfer\AggregatorSettingsTransfer;
-use Generated\Shared\Transfer\IteratorSettingsTransfer;
-use Generated\Shared\Transfer\LoggerSettingsTransfer;
+use Generated\Shared\Transfer\IteratorConfigTransfer;
+use Generated\Shared\Transfer\LoggerConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use Generated\Shared\Transfer\WriterConfigTransfer;
 use Monolog\Logger;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Console\Input\InputInterface;
@@ -98,8 +96,6 @@ class ProcessConsole extends Console
     protected function processArgs(InputInterface $input, OutputInterface $output): ProcessSettingsTransfer
     {
         $processSettingsTransfer = new ProcessSettingsTransfer();
-        $processSettingsTransfer->setAggregatorSettings(new AggregatorSettingsTransfer());
-        $processSettingsTransfer->getAggregatorSettings()->setWriterConfig(new WriterConfigTransfer());
         if ($input->getOption(static::OPTION_PROCESS_NAME)) {
             $processSettingsTransfer->setName($input->getOption(static::OPTION_PROCESS_NAME));
             $this->processStreamArgs($input, $processSettingsTransfer);
@@ -129,11 +125,11 @@ class ProcessConsole extends Console
      */
     protected function setIteratorOptions(InputInterface $input, ProcessSettingsTransfer $processSettingsTransfer): void
     {
-        $processSettingsTransfer->setIteratorSettings(new IteratorSettingsTransfer());
+        $processSettingsTransfer->setIteratorConfig(new IteratorConfigTransfer());
         $offset = $input->getOption(static::OPTION_ITERATOR_OFFSET) ?: 0;
         $limit = $input->getOption(static::OPTION_ITERATOR_LIMIT) ?: -1;
-        $processSettingsTransfer->getIteratorSettings()->setOffset($offset);
-        $processSettingsTransfer->getIteratorSettings()->setLimit($limit);
+        $processSettingsTransfer->getIteratorConfig()->setOffset($offset);
+        $processSettingsTransfer->getIteratorConfig()->setLimit($limit);
     }
 
     /**
@@ -166,12 +162,12 @@ class ProcessConsole extends Console
         OutputInterface $output,
         ProcessSettingsTransfer $processSettingsTransfer
     ): void {
-        $processSettingsTransfer->setLoggerSettings(new LoggerSettingsTransfer());
-        $processSettingsTransfer->getLoggerSettings()->setIsQuiet($output->isQuiet());
+        $processSettingsTransfer->setLoggerConfig(new LoggerConfigTransfer());
+        $processSettingsTransfer->getLoggerConfig()->setIsQuiet($output->isQuiet());
         $logLevel = $input->getOption(static::OPTION_LOG_LEVEL);
         if ($logLevel) {
             $verboseLevel = Logger::toMonologLevel($logLevel);
-            $processSettingsTransfer->getLoggerSettings()->setVerboseLevel($verboseLevel);
+            $processSettingsTransfer->getLoggerConfig()->setVerboseLevel($verboseLevel);
             return;
         }
         $verboseLevel = Logger::ERROR;
@@ -184,7 +180,7 @@ class ProcessConsole extends Console
         if ($output->isDebug()) {
             $verboseLevel = Logger::DEBUG;
         }
-        $processSettingsTransfer->getLoggerSettings()->setVerboseLevel($verboseLevel);
+        $processSettingsTransfer->getLoggerConfig()->setVerboseLevel($verboseLevel);
     }
 
     /**

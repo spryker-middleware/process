@@ -15,15 +15,15 @@ class Pipeline implements PipelineInterface
     /**
      * @var \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface
      */
-    protected $processor;
+    protected $pipelineProcessor;
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface $processor
+     * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface $pipelineProcessor
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[] $stages
      */
-    public function __construct(PipelineProcessorInterface $processor, array $stages)
+    public function __construct(PipelineProcessorInterface $pipelineProcessor, array $stages)
     {
-        $this->processor = $processor;
+        $this->pipelineProcessor = $pipelineProcessor;
         $this->stages = $stages;
     }
 
@@ -49,7 +49,7 @@ class Pipeline implements PipelineInterface
      */
     public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream)
     {
-        return $this->processor->process($this->stages, $payload, $inStream, $outStream);
+        return $this->pipelineProcessor->process($this->stages, $payload, $inStream, $outStream);
     }
 
     /**

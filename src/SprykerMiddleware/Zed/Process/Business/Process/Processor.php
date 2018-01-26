@@ -144,7 +144,7 @@ class Processor implements ProcessorInterface
 
         $this->iterator = $this->processPlugin
             ->getIteratorPlugin()
-            ->getIterator($this->inputStream, $this->processSettingsTransfer->getIteratorSettings());
+            ->getIterator($this->inputStream, $this->processSettingsTransfer->getIteratorConfig());
 
         $this->preProcessStack = $this->processPlugin
             ->getPreProcessorHookPlugins();
@@ -155,7 +155,7 @@ class Processor implements ProcessorInterface
         $loggerConfig = $this->processPlugin
             ->getLoggerPlugin();
 
-        $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerSettings()->getVerboseLevel());
+        $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerConfig()->getVerboseLevel());
 
         $this->initLogger($loggerConfig);
     }
