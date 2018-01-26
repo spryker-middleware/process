@@ -3,14 +3,14 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 
 use Exception;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
+use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
-use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 
 class Processor implements ProcessorInterface
 {
-    use LoggerTrait;
+    use MiddlewareLoggerTrait;
 
     /**
      * @var \Generated\Shared\Transfer\ProcessSettingsTransfer
@@ -81,20 +81,20 @@ class Processor implements ProcessorInterface
     public function process(): void
     {
         $this->preProcess();
-        $this->getLogger()->info('Middleware process is started.', ['process' => $this]);
+        $this->getProcessLogger()->info('Middleware process is started.', ['process' => $this]);
         $counter = 0;
         try {
             $this->inputStream->open('r');
             $this->outputStream->open('w');
             foreach ($this->iterator as $item) {
-                $this->getLogger()->info('Start processing of item', [
+                $this->getProcessLogger()->info('Start processing of item', [
                     'itemNo' => $counter++,
                 ]);
                 $this->pipeline->process($item, $this->inputStream, $this->outputStream);
             }
             $this->outputStream->flush();
         } catch (TolerableProcessException $exception) {
-            $this->getLogger()->error('Experienced tolerable process error in ' . $exception->getFile());
+            $this->getProcessLogger()->error('Experienced tolerable process error in ' . $exception->getFile());
         } catch (Exception $e) {
             throw $e;
         } finally {
@@ -102,7 +102,7 @@ class Processor implements ProcessorInterface
             $this->outputStream->close();
         }
 
-        $this->getLogger()->info('Middleware process is finished.');
+        $this->getProcessLogger()->info('Middleware process is finished.');
         $this->postProcess();
     }
 

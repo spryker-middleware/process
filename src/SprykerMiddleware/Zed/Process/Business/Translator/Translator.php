@@ -3,14 +3,13 @@
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
+use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
-use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 
 class Translator implements TranslatorInterface
 {
-    use LoggerTrait;
+    use MiddlewareLoggerTrait;
 
     const OPERATION = 'Translation';
 
@@ -137,7 +136,7 @@ class Translator implements TranslatorInterface
     {
         $inputValue = $this->arrayManager->getValueByKey($payload, $key);
         $resultValue = $translation($inputValue, $key, $result);
-        $this->getLogger()->debug(
+        $this->getProcessLogger()->debug(
             static::OPERATION,
             [
                 static::KEY_KEY => $key,
@@ -166,7 +165,7 @@ class Translator implements TranslatorInterface
 
         $inputValue = $this->arrayManager->getValueByKey($result, $key);
         $resultValue = $translateFunction->translate($inputValue);
-        $this->getLogger()->debug(
+        $this->getProcessLogger()->debug(
             static::OPERATION,
             [
                 static::KEY_KEY => $key,

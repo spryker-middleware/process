@@ -52,11 +52,11 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     /**
      * @param array $records
      *
-     * @return mixed
+     * @return void
      */
     public function handleBatch(array $records)
     {
-        return $this->getHandler()->handleBatch($records);
+        $this->getHandler()->handleBatch($records);
     }
 
     /**

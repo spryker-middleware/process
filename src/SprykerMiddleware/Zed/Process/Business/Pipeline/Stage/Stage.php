@@ -2,14 +2,14 @@
 
 namespace  SprykerMiddleware\Zed\Process\Business\Pipeline\Stage;
 
+use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
-use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 class Stage implements StageInterface
 {
-    use LoggerTrait;
+    use MiddlewareLoggerTrait;
 
     /**
      * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface
@@ -29,7 +29,7 @@ class Stage implements StageInterface
      */
     public function __invoke($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream): array
     {
-        $this->getLogger()->info('Input Data', [
+        $this->getProcessLogger()->info('Input Data', [
             'stage' => $this->getStagePluginClass(),
             'input' => $payload,
         ]);
@@ -37,7 +37,7 @@ class Stage implements StageInterface
         $processedPayload = $this->stagePlugin
             ->process($payload, $inStream, $outStream);
 
-        $this->getLogger()->info('Result Data', [
+        $this->getProcessLogger()->info('Result Data', [
            'stage' => $this->getStagePluginClass(),
            'output' => $processedPayload,
         ]);
