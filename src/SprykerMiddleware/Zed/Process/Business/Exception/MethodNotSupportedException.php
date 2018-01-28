@@ -5,10 +5,10 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerMiddleware\Zed\Process;
+namespace SprykerMiddleware\Zed\Process\Business\Exception;
 
-use Spryker\Zed\Kernel\AbstractBundleConfig;
+use Exception;
 
-class ProcessConfig extends AbstractBundleConfig
+class MethodNotSupportedException extends Exception
 {
 }

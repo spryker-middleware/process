@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
@@ -114,10 +119,10 @@ class JsonStream implements StreamInterface, WriteStreamInterface, ReadStreamInt
     /**
      * @inheritdoc
      */
-    public function seek($offset, $whence): int
+    public function seek(int $offset, int $whence): int
     {
         $newPosition = $this->getNewPosition($offset, $whence);
-        if ($newPosition === false || $newPosition < 0 || $newPosition > count($this->data)) {
+        if ($newPosition < 0 || $newPosition > count($this->data)) {
             return false;
         }
         $this->position = $newPosition;
@@ -163,11 +168,11 @@ class JsonStream implements StreamInterface, WriteStreamInterface, ReadStreamInt
      * @param int $offset
      * @param int $whence
      *
-     * @return bool|int
+     * @return int
      */
-    protected function getNewPosition($offset, $whence)
+    protected function getNewPosition(int $offset, int $whence)
     {
-        $newPosition = false;
+        $newPosition = $this->position;
         if ($whence === SEEK_SET) {
             $newPosition = $offset;
         }
