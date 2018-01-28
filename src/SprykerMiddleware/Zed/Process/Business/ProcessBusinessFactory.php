@@ -56,7 +56,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     public function createProcessPluginResolver(): ProcessPluginResolverInterface
     {
-        return new ProcessPluginResolver($this->getProfileConfigurationPluginStack());
+        return new ProcessPluginResolver($this->getProcessesPluginsStack());
     }
 
     /**
@@ -157,8 +157,8 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
-    protected function getProfileConfigurationPluginStack()
+    protected function getProcessesPluginsStack()
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_CONFIGURATION_PROFILES);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
     }
 }
