@@ -7,16 +7,16 @@
 
 namespace SprykerMiddleware\Shared\Process\Log;
 
-use Exception;
 use Spryker\Shared\Log\Config\LoggerConfigInterface;
 use Spryker\Shared\Log\LoggerTrait;
+use SprykerMiddleware\Shared\Process\Log\Exception\ProcessLoggerNotConfiguredException;
 
 trait MiddlewareLoggerTrait
 {
     use LoggerTrait;
 
     /**
-     * @throws \Exception
+     * @throws \SprykerMiddleware\Shared\Process\Log\Exception\ProcessLoggerNotConfiguredException
      *
      * @return \Psr\Log\LoggerInterface
      */
@@ -26,8 +26,9 @@ trait MiddlewareLoggerTrait
             return MiddlewareLoggerContainer::getLogger();
         }
 
-        throw new Exception();
+        throw new ProcessLoggerNotConfiguredException();
     }
+
 
     /**
      * @param \Spryker\Shared\Log\Config\LoggerConfigInterface $loggerConfig
