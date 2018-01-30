@@ -8,7 +8,6 @@
 namespace SprykerMiddleware\Shared\Process\Log\Exception;
 
 use Exception;
-use Throwable;
 
 class ProcessLoggerNotConfiguredException extends Exception
 {

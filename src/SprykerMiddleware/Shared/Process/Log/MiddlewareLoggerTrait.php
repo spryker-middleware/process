@@ -29,7 +29,6 @@ trait MiddlewareLoggerTrait
         throw new ProcessLoggerNotConfiguredException();
     }
 
-
     /**
      * @param \Spryker\Shared\Log\Config\LoggerConfigInterface $loggerConfig
      *

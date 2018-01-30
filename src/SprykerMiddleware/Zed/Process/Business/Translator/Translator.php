@@ -8,9 +8,9 @@
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface;
 
 class Translator implements TranslatorInterface
 {
@@ -30,7 +30,7 @@ class Translator implements TranslatorInterface
     protected $translatorConfigTransfer;
 
     /**
-     * @var \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver
+     * @var \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface
      */
     protected $translatorFunctionResolver;
 
@@ -41,12 +41,12 @@ class Translator implements TranslatorInterface
 
     /**
      * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
-     * @param \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver $translatorFunctionResolver
+     * @param \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface $translatorFunctionResolver
      * @param \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface $arrayManager
      */
     public function __construct(
         TranslatorConfigTransfer $translatorConfigTransfer,
-        AbstractClassResolver $translatorFunctionResolver,
+        TranslatorFunctionPluginResolverInterface $translatorFunctionResolver,
         ArrayManagerInterface $arrayManager
     ) {
         $this->translatorConfigTransfer = $translatorConfigTransfer;
@@ -166,10 +166,10 @@ class Translator implements TranslatorInterface
     {
         $options = isset($translation[static::KEY_OPTIONS]) ? $translation[static::KEY_OPTIONS] : [];
         /** @var \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface $translateFunction */
-        $translateFunction = $this->translatorFunctionResolver->resolve($this, reset($translation), $options);
+        $translateFunctionPlugin = $this->translatorFunctionResolver->getTranslatorFunctionPluginByName(reset($translation));
 
         $inputValue = $this->arrayManager->getValueByKey($result, $key);
-        $resultValue = $translateFunction->translate($inputValue);
+        $resultValue = $translateFunctionPlugin->translate($inputValue, $options);
         $this->getProcessLogger()->debug(
             static::OPERATION,
             [
