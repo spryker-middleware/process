@@ -2,7 +2,6 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
-use Psr\Log\LoggerInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 /**
@@ -11,17 +10,26 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
  */
 class JsonReaderStagePlugin extends AbstractStagePlugin implements StagePluginInterface
 {
+    const PLUGIN_NAME = 'SPRYKER_MIDDLEWARE_JSON_READER_STAGE_PLUGIN';
+
     /**
      * Process the payload.
      *
      * @param mixed $payload
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return mixed
      */
-    public function process($payload, LoggerInterface $logger)
+    public function process($payload)
     {
         return $this->getFacade()
-            ->readJson($this->inStream, $logger);
+            ->readJson($this->inStream);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return static::PLUGIN_NAME;
     }
 }

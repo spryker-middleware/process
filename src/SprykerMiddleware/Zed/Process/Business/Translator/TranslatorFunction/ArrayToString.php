@@ -27,6 +27,7 @@ class ArrayToString extends AbstractTranslatorFunction
         if (!is_array($value)) {
             throw new WrongTypeValueTranslatorException();
         }
+
         return implode($this->options[self::OPTION_GLUE], $value);
     }
 }

@@ -92,6 +92,7 @@ class TranslatorFunctionResolver extends AbstractClassResolver
     {
         $instance = $this->getResolvedClassInstance();
         $instance->setOptions($options);
+
         return $instance;
     }
 

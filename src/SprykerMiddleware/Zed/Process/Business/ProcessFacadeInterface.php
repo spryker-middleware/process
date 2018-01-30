@@ -5,7 +5,6 @@ namespace SprykerMiddleware\Zed\Process\Business;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use Psr\Log\LoggerInterface;
 
 interface ProcessFacadeInterface
 {
@@ -25,37 +24,33 @@ interface ProcessFacadeInterface
      *
      * @param array $payload
      * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer, LoggerInterface $logger): array;
+    public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array;
 
     /**
      * @api
      *
      * @param array $payload
      * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): array;
+    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array;
 
     /**
      * @param resource $inStream
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function readJson($inStream, LoggerInterface $logger): array;
+    public function readJson($inStream): array;
 
     /**
      * @param resource $outStream
      * @param array $payload
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function writeJson($outStream, $payload, $logger);
+    public function writeJson($outStream, $payload);
 }

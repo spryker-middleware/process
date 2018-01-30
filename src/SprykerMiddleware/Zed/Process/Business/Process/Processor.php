@@ -1,12 +1,21 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Business\Process;
 
-use Iterator;
-use Psr\Log\LoggerInterface;
+use Generated\Shared\Transfer\ProcessSettingsTransfer;
+use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
+use SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface;
+use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
 
 class Processor implements ProcessorInterface
 {
+    use LoggerTrait;
+
+    /**
+     * @var \Generated\Shared\Transfer\ProcessSettingsTransfer
+     */
+    protected $processSettingsTransfer;
+
     /**
      * @var \Iterator
      */
@@ -30,60 +39,71 @@ class Processor implements ProcessorInterface
     /**
      * @var resource
      */
-    protected $outstream;
+    protected $inStream;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var resource
      */
-    protected $logger;
+    protected $outStream;
 
     /**
-     * @param \Iterator $iterator
+     * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface
+     */
+    protected $pluginFinder;
+
+    /**
+     * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface
+     */
+    protected $loggerConfigPluginFinder;
+
+    /**
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
-     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[] $preProcessStack
-     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PostProcessorHookPluginInterface[] $postProcessStack
-     * @param resource $outstream
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface $pluginFinder
+     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface $loggerConfigPluginFinder
+     * @param resource $inStream
+     * @param resource $outStream
      */
     public function __construct(
-        Iterator $iterator,
+        ProcessSettingsTransfer $processSettingsTransfer,
         PipelineInterface $pipeline,
-        array $preProcessStack,
-        array $postProcessStack,
-        $outstream,
-        LoggerInterface $logger
+        PluginFinderInterface $pluginFinder,
+        LoggerConfigPluginFinderInterface $loggerConfigPluginFinder,
+        $inStream,
+        $outStream
     ) {
-        $this->iterator = $iterator;
+        $this->processSettingsTransfer = $processSettingsTransfer;
         $this->pipeline = $pipeline;
-        $this->preProcessStack = $preProcessStack;
-        $this->postProcessStack = $postProcessStack;
-        $this->logger = $logger;
-        $this->outstream = $outstream;
+        $this->pluginFinder = $pluginFinder;
+        $this->inStream = $inStream;
+        $this->outStream = $outStream;
+        $this->loggerConfigPluginFinder = $loggerConfigPluginFinder;
+        $this->init();
     }
 
     /**
      * @return void
      */
-    public function process()
+    public function process(): void
     {
         $this->preProcess();
-        $this->logger->info('Middleware process is started.', ['process' => $this]);
+        $this->getLogger()->info('Middleware process is started.', ['process' => $this]);
         $counter = 0;
         foreach ($this->iterator as $item) {
-            $this->logger->info('Start processing of item', [
+            $this->getLogger()->info('Start processing of item', [
                 'itemNo' => $counter++,
             ]);
             $this->pipeline->process($item);
         }
-        fflush($this->outstream);
-        $this->logger->info('Middleware process is finished.');
+        fflush($this->outStream);
+        $this->getLogger()->info('Middleware process is finished.');
         $this->postProcess();
     }
 
     /**
      * @return void
      */
-    public function preProcess()
+    public function preProcess(): void
     {
         foreach ($this->preProcessStack as $preProcessor) {
             $preProcessor->process();
@@ -93,10 +113,28 @@ class Processor implements ProcessorInterface
     /**
      * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         foreach ($this->postProcessStack as $postProcessor) {
             $postProcessor->process();
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function init(): void
+    {
+        $this->iterator = $this->pluginFinder
+            ->getIteratorPluginByProcessName($this->processSettingsTransfer->getName())
+            ->getIterator($this->inStream, $this->processSettingsTransfer->getIteratorSettings());
+        $this->preProcessStack = $this->pluginFinder
+            ->getPreProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
+        $this->postProcessStack = $this->pluginFinder
+            ->getPostProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
+        $loggerConfig = $this->loggerConfigPluginFinder
+            ->getLoggerConfigPluginByProcessName($this->processSettingsTransfer->getName());
+        $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerSettings()->getVerboseLevel());
+        $this->initLogger($loggerConfig);
     }
 }

@@ -2,29 +2,24 @@
 
 namespace  SprykerMiddleware\Zed\Process\Business\Pipeline\Stage;
 
-use Psr\Log\LoggerInterface;
+use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 class Stage implements StageInterface
 {
+    use LoggerTrait;
+
     /**
-     * @var \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface
      */
     protected $stagePlugin;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface $stagePlugin
      */
-    protected $logger;
-
-    /**
-     * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface $stagePlugin
-     * @param \Psr\Log\LoggerInterface $logger
-     */
-    public function __construct(StagePluginInterface $stagePlugin, LoggerInterface $logger)
+    public function __construct(StagePluginInterface $stagePlugin)
     {
         $this->stagePlugin = $stagePlugin;
-        $this->logger = $logger;
     }
 
     /**
@@ -32,15 +27,15 @@ class Stage implements StageInterface
      */
     public function __invoke($payload): array
     {
-        $this->logger->info('Input Data', [
+        $this->getLogger()->info('Input Data', [
             'stage' => $this->getStagePluginClass(),
             'input' => $payload,
         ]);
 
         $processedPayload = $this->stagePlugin
-            ->process($payload, $this->logger);
+            ->process($payload);
 
-        $this->logger->info('Result Data', [
+        $this->getLogger()->info('Result Data', [
            'stage' => $this->getStagePluginClass(),
            'output' => $processedPayload,
         ]);

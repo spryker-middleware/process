@@ -8,7 +8,12 @@ class JsonStream
     /**
      * @var resource
      */
-    protected $subhandle;
+    public $context;
+
+    /**
+     * @var resource
+     */
+    protected $subHandle;
 
     /**
      * @var array
@@ -30,7 +35,7 @@ class JsonStream
      */
     public function stream_close()
     {
-        return fclose($this->subhandle);
+        return fclose($this->subHandle);
     }
 
     /**
@@ -46,18 +51,21 @@ class JsonStream
      */
     public function stream_flush()
     {
-        fwrite($this->subhandle, json_encode($this->data));
-        return fflush($this->subhandle);
+        fwrite($this->subHandle, json_encode($this->data));
+
+        return fflush($this->subHandle);
     }
 
     /**
      * @param string $data
      *
-     * @return void
+     * @return int
      */
     public function stream_write($data)
     {
-        $this->data[] = json_decode($data);
+        $this->data[$this->position++] = json_decode($data, true);
+
+        return strlen($data);
     }
 
     /**
@@ -77,7 +85,7 @@ class JsonStream
      */
     public function stream_stat()
     {
-        return fstat($this->subhandle);
+        return fstat($this->subHandle);
     }
 
     /**
@@ -90,15 +98,25 @@ class JsonStream
      */
     public function stream_open($path, $mode, $options, &$opened_path)
     {
+        $useIncludePath = $options & STREAM_USE_PATH;
         $parts = parse_url($path);
-        if ($opened_path === null) {
-            $this->subhandle = fopen($parts['host'] . ':' . $parts['path'], $mode, $options);
-        } else {
-            $this->subhandle = fopen($parts['host'] . ':' . $parts['path'], $mode, $options, $opened_path);
+
+        $this->subHandle = fopen($parts['host'] . ':' . $parts['path'], $mode, $useIncludePath, $this->context);
+
+        if ($this->subHandle === false) {
+            return false;
         }
 
-        if (strpos($mode, 'r') !== false) {
+        if (strpos($mode, 'r') !== false || strpos($mode, '+') !== false) {
             $this->data = $this->loadJson();
+        }
+
+        if (strpos($mode,'a') !== false) {
+            $this->position = count($this->data);
+        }
+
+        if (strpos($mode,'w') !== false) {
+            $this->position = 0;
         }
 
         $this->mode = $mode;
@@ -114,10 +132,21 @@ class JsonStream
      */
     public function stream_seek($offset, $whence = SEEK_SET)
     {
-        fseek($this->subhandle, 0, SEEK_SET);
-        $this->data = $this->loadJson();
-        $result = fseek($this->subhandle, 0, $whence);
-        return $result;
+        $newPosition =  $this->getNewPosition($offset, $whence);
+        if ($newPosition === false || $newPosition < 0 || $newPosition > count($this->data)) {
+            return false;
+        }
+        $this->position = $newPosition;
+
+        return true;
+    }
+
+    /**
+     * @return int
+     */
+    public function stream_tell()
+    {
+        return $this->position;
     }
 
     /**
@@ -127,12 +156,37 @@ class JsonStream
     {
         $data = '';
 
-        while (!feof($this->subhandle)) {
-            $data .= fread($this->subhandle, 1000);
+        while (!feof($this->subHandle)) {
+            $data .= fread($this->subHandle, 1000);
         }
 
         $this->position = 0;
 
-        return json_decode($data);
+        return json_decode($data, true);
+    }
+
+    /**
+     * @param int $offset
+     * @param int $whence
+     *
+     * @return bool|int
+     */
+    protected function getNewPosition($offset, $whence)
+    {
+        $newPosition = false;
+        if ($whence === SEEK_SET) {
+            $newPosition = $offset;
+        }
+
+        if ($whence === SEEK_CUR) {
+            $newPosition = $this->position + $offset;
+        }
+
+        if ($whence === SEEK_END) {
+            $offset = $offset <= 0 ? $offset : 0;
+            $newPosition = count($this->data) + $offset;
+        }
+
+        return $newPosition;
     }
 }

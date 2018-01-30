@@ -31,6 +31,8 @@ class ProcessConsole extends Console
     const OPTION_ITERATOR_OFFSET_SHORTCUT = 's';
     const OPTION_ITERATOR_LIMIT_SHORTCUT = 'l';
     const OPTION_LOG_LEVEL_SHORTCUT = 'f';
+    const OPTION_INPUT_SHORTCUT = 'i';
+    const OPTION_OUTPUT_SHORTCUT = 'o';
 
     /**
      * @var int
@@ -85,40 +87,17 @@ class ProcessConsole extends Console
 
         $this->addOption(
             static::OPTION_INPUT,
-            'i',
+            static::OPTION_INPUT_SHORTCUT,
             InputOption::VALUE_REQUIRED,
             'Input Stream'
         );
 
         $this->addOption(
             static::OPTION_OUTPUT,
-            'o',
+            static::OPTION_OUTPUT_SHORTCUT,
             InputOption::VALUE_REQUIRED,
             'Output Stream'
         );
-    }
-
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return int|null
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $processSettingsTransfer = $this->processArgs($input, $output);
-        if ($this->hasError()) {
-            return $this->exitCode;
-        }
-        try {
-            $this->processStreamArgs($input);
-            $this->getFacade()
-                ->process($processSettingsTransfer, $this->inputStream, $this->outputStream);
-        } catch (Exception $e) {
-        } finally {
-            $this->closeStreams();
-        }
-        return $this->exitCode;
     }
 
     /**
@@ -165,6 +144,32 @@ class ProcessConsole extends Console
         $limit = $input->getOption(static::OPTION_ITERATOR_LIMIT) ?: -1;
         $processSettingsTransfer->getIteratorSettings()->setOffset($offset);
         $processSettingsTransfer->getIteratorSettings()->setLimit($limit);
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
+     * @throws \Exception
+     *
+     * @return int|null
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $processSettingsTransfer = $this->processArgs($input, $output);
+        if ($this->hasError()) {
+            return $this->exitCode;
+        }
+        try {
+            $this->processStreamArgs($input);
+            $this->getFacade()
+                ->process($processSettingsTransfer, $this->inputStream, $this->outputStream);
+        } catch (Exception $e) {
+            throw $e;
+        } finally {
+            $this->closeStreams();
+        }
+        return $this->exitCode;
     }
 
     /**

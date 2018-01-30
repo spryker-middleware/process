@@ -27,6 +27,7 @@ class StringToArray extends AbstractTranslatorFunction
         if (!is_string($value)) {
             throw new WrongTypeValueTranslatorException();
         }
+
         return explode($this->options[self::OPTION_DELIMITER], $value);
     }
 }
