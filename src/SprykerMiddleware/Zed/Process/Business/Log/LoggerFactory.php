@@ -13,20 +13,16 @@ class LoggerFactory
     public static $loggerConfig;
 
     /**
-     * @param \Spryker\Shared\Log\Config\LoggerConfigInterface $loggerConfig
+     * @param \Spryker\Shared\Log\Config\LoggerConfigInterface|null $loggerConfig
      *
-     * @return void
-     */
-    public static function initLogger(LoggerConfigInterface $loggerConfig)
-    {
-        static::$loggerConfig = $loggerConfig;
-    }
-
-    /**
      * @return \Psr\Log\LoggerInterface
      */
-    public static function getInstance()
+    public static function getInstance(LoggerConfigInterface $loggerConfig = null)
     {
+        if ($loggerConfig !== null) {
+            static::$loggerConfig = $loggerConfig;
+        }
+
         return SprykerLoggerFactory::getInstance(static::$loggerConfig);
     }
 }

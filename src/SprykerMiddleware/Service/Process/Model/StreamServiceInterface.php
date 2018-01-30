@@ -5,6 +5,11 @@ namespace SprykerMiddleware\Service\Process\Model;
 interface StreamServiceInterface
 {
     /**
+     * Specification:
+     * - Read data from given stream.
+     *
+     * @api
+     *
      * @param resource $stream
      *
      * @return mixed
@@ -12,6 +17,11 @@ interface StreamServiceInterface
     public function read($stream);
 
     /**
+     * Specification:
+     * - Write given data to given stream.
+     *
+     * @api
+     *
      * @param resource $stream
      * @param mixed $data
      *

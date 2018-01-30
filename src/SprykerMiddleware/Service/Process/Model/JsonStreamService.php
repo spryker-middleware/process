@@ -2,7 +2,7 @@
 
 namespace SprykerMiddleware\Service\Process\Model;
 
-class JsonStreamService implements StreamServiceInterface
+class JsonStreamService implements JsonStreamServiceInterface
 {
     /**
      * @param resource $stream

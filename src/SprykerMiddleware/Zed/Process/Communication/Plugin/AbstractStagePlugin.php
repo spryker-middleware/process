@@ -27,11 +27,6 @@ abstract class AbstractStagePlugin extends AbstractPlugin implements StagePlugin
     abstract public function process($payload);
 
     /**
-     * @return string
-     */
-    abstract public function getName(): string;
-
-    /**
      * @param resource $inStream
      *
      * @return void

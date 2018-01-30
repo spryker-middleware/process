@@ -12,6 +12,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServic
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
 {
     const MIDDLEWARE_PROCESSES = 'MIDDLEWARE_PROCESSES';
+    const MIDDLEWARE_DEFAULT_PROCESSES = 'MIDDLEWARE_DEFAULT_PROCESSES';
+    const MIDDLEWARE_CONFIGURATION_PROFILES = 'MIDDLEWARE_CONFIGURATION_PROFILES';
     const MIDDLEWARE_STAGE_PLUGINS = 'MIDDLEWARE_STAGE_PLUGINS';
     const MIDDLEWARE_PROCESS_ITERATORS = 'MIDDLEWARE_PROCESS_ITERATORS';
     const MIDDLEWARE_PROCESS_LOGGERS = 'MIDDLEWARE_PROCESS_LOGGERS';
@@ -33,6 +35,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     public function provideCommunicationLayerDependencies(Container $container)
     {
         $container = parent::provideCommunicationLayerDependencies($container);
+
+        $container = $this->addDefaultProcessesStack($container);
+        $container = $this->addDefaultLoggerConfigPlugin($container);
         $container = $this->addLogHandlers($container);
         $container = $this->addLogProcessors($container);
 
@@ -47,14 +52,8 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     public function provideBusinessLayerDependencies(Container $container)
     {
         $container = parent::provideBusinessLayerDependencies($container);
-        $container = $this->addIterators($container);
-        $container = $this->addStagePluginsStack($container);
-        $container = $this->addPreProcessorHooks($container);
-        $container = $this->addPostProcessorHooks($container);
-        $container = $this->addEncodingService($container);
+        $container = $this->addConfigurationProfilesStack($container);
         $container = $this->addProcessService($container);
-        $container = $this->addLogConfigPlugins($container);
-        $container = $this->addDefaultLoggerConfigPlugin($container);
 
         return $container;
     }
@@ -64,10 +63,10 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addIterators($container)
+    protected function addConfigurationProfilesStack($container)
     {
-        $container[static::MIDDLEWARE_PROCESS_ITERATORS] = function () {
-            return $this->getIteratorsStack();
+        $container[static::MIDDLEWARE_CONFIGURATION_PROFILES] = function () {
+            return $this->getConfigurationProfilePluginsStack();
         };
 
         return $container;
@@ -78,41 +77,29 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addStagePluginsStack(Container $container): Container
+    protected function addDefaultProcessesStack($container)
     {
-        $container[static::MIDDLEWARE_STAGE_PLUGINS] = function () {
-            return $this->getStagePluginsStack();
+        $container[static::MIDDLEWARE_DEFAULT_PROCESSES] = function () {
+            return $this->getDefaultProcessesPluginsStack();
         };
 
         return $container;
     }
 
     /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
-    protected function addPreProcessorHooks(Container $container): Container
+    protected function getDefaultProcessesPluginsStack()
     {
-        $container[static::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK] = function () {
-            return $this->getPreProcessorHooksStack();
-        };
-
-        return $container;
+        return [];
     }
 
     /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
      */
-    protected function addPostProcessorHooks(Container $container): Container
+    protected function getConfigurationProfilePluginsStack()
     {
-        $container[static::MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK] = function () {
-            return $this->getPostProcessorHooksStack();
-        };
-
-        return $container;
+        return [];
     }
 
     /**
@@ -176,20 +163,6 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addLogConfigPlugins($container)
-    {
-        $container[static::MIDDLEWARE_LOG_CONFIGS] = function () {
-            return $this->getLoggerConfigPluginsStack();
-        };
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addDefaultLoggerConfigPlugin($container)
     {
         $container[static::MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN] = function () {
@@ -200,51 +173,11 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return array
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
-    protected function getProcesses(): array
+    protected function getDefaultLoggerConfigPlugin()
     {
-        return [];
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[][]
-     */
-    protected function getPreProcessorHooksStack(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PostProcessorHookPluginInterface[][]
-     */
-    protected function getPostProcessorHooksStack(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[]
-     */
-    protected function getStagePluginsStack()
-    {
-        return [];
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface[]
-     */
-    protected function getIteratorsStack()
-    {
-        return [];
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface[]
-     */
-    protected function getLoggerConfigPluginsStack()
-    {
-        return [];
+        return new MiddlewareLoggerConfigPlugin();
     }
 
     /**
@@ -266,13 +199,5 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         return [
             new StdErrStreamHandlerPlugin(),
         ];
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
-     */
-    protected function getDefaultLoggerConfigPlugin()
-    {
-        return new MiddlewareLoggerConfigPlugin();
     }
 }

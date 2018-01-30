@@ -41,6 +41,14 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
+     */
+    public function getDefaultProcessesPlugins()
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_DEFAULT_PROCESSES);
+    }
+
+    /**
      * @return \Monolog\Handler\AbstractHandler
      */
     public function createStdErrStreamHandler(): AbstractHandler

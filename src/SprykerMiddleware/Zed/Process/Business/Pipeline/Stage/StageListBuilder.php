@@ -3,21 +3,21 @@
 namespace SprykerMiddleware\Zed\Process\Business\Pipeline\Stage;
 
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
+use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 
 class StageListBuilder implements StageListBuilderInterface
 {
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface
+     * @var \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface
      */
-    protected $pluginFinder;
+    protected $pluginResolver;
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface $pluginFinder
+     * @param \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface $pluginResolver
      */
-    public function __construct(PluginFinderInterface $pluginFinder)
+    public function __construct(ProcessPluginResolverInterface $pluginResolver)
     {
-        $this->pluginFinder = $pluginFinder;
+        $this->pluginResolver = $pluginResolver;
     }
 
     /**
@@ -29,7 +29,10 @@ class StageListBuilder implements StageListBuilderInterface
      */
     public function buildStageList(ProcessSettingsTransfer $processSettingsTransfer, $inStream, $outStream): array
     {
-        $stagePluginList = $this->pluginFinder->getStagePluginsByProcessName($processSettingsTransfer->getName());
+        $stagePluginList = $this->pluginResolver
+            ->getProcessConfigurationPluginByProcessName($processSettingsTransfer->getName())
+            ->getStagePlugins();
+
         $stages = [];
         foreach ($stagePluginList as $stagePlugin) {
             $stagePlugin->setInStream($inStream);

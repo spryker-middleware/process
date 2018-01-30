@@ -21,6 +21,6 @@ trait LoggerTrait
      */
     public static function initLogger(LoggerConfigInterface $loggerConfig)
     {
-        LoggerFactory::initLogger($loggerConfig);
+        LoggerFactory::getInstance($loggerConfig);
     }
 }

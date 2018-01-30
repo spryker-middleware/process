@@ -10,8 +10,6 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
  */
 class JsonReaderStagePlugin extends AbstractStagePlugin implements StagePluginInterface
 {
-    const PLUGIN_NAME = 'SPRYKER_MIDDLEWARE_JSON_READER_STAGE_PLUGIN';
-
     /**
      * Process the payload.
      *
@@ -23,13 +21,5 @@ class JsonReaderStagePlugin extends AbstractStagePlugin implements StagePluginIn
     {
         return $this->getFacade()
             ->readJson($this->inStream);
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return static::PLUGIN_NAME;
     }
 }
