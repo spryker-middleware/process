@@ -1,46 +1,48 @@
 <?php
 
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace  SprykerMiddleware\Zed\Process\Business\Pipeline\Stage;
 
-use Psr\Log\LoggerInterface;
+use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
 class Stage implements StageInterface
 {
+    use MiddlewareLoggerTrait;
+
     /**
-     * @var \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface
      */
     protected $stagePlugin;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface $stagePlugin
      */
-    protected $logger;
-
-    /**
-     * @param \SprykerMiddleware\Zed\Process\Communication\Plugin\StagePluginInterface $stagePlugin
-     * @param \Psr\Log\LoggerInterface $logger
-     */
-    public function __construct(StagePluginInterface $stagePlugin, LoggerInterface $logger)
+    public function __construct(StagePluginInterface $stagePlugin)
     {
         $this->stagePlugin = $stagePlugin;
-        $this->logger = $logger;
     }
 
     /**
      * @inheritdoc
      */
-    public function __invoke($payload): array
+    public function __invoke($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream): array
     {
-        $this->logger->info('Input Data', [
+        $this->getProcessLogger()->info('Input Data', [
             'stage' => $this->getStagePluginClass(),
             'input' => $payload,
         ]);
 
         $processedPayload = $this->stagePlugin
-            ->process($payload, $this->logger);
+            ->process($payload, $inStream, $outStream);
 
-        $this->logger->info('Result Data', [
+        $this->getProcessLogger()->info('Result Data', [
            'stage' => $this->getStagePluginClass(),
            'output' => $processedPayload,
         ]);
@@ -54,5 +56,13 @@ class Stage implements StageInterface
     protected function getStagePluginClass(): string
     {
         return get_class($this->stagePlugin);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface
+     */
+    public function getStagePlugin(): StagePluginInterface
+    {
+        return $this->stagePlugin;
     }
 }

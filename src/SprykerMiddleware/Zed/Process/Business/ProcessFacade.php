@@ -1,11 +1,15 @@
 <?php
 
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerMiddleware\Zed\Process\Business;
 
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -20,14 +24,13 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
      *
      * @param array $payload
      * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */
-    public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer, LoggerInterface $logger): array
+    public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array
     {
         return $this->getFactory()
-            ->createMapper($mapperConfigTransfer, $logger)
+            ->createMapper($mapperConfigTransfer)
             ->map($payload);
     }
 
@@ -42,10 +45,10 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
      *
      * @return array
      */
-    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer, LoggerInterface $logger): array
+    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array
     {
         return $this->getFactory()
-            ->createTranslator($translatorConfigTransfer, $logger)
+            ->createTranslator($translatorConfigTransfer)
             ->translate($payload);
     }
 

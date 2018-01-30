@@ -1,21 +1,46 @@
 <?php
+
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerMiddleware\Zed\Process;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
+use Spryker\Zed\Log\Communication\Plugin\Processor\PsrLogMessageProcessorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Handler\StdErrStreamHandlerPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Log\MiddlewareLoggerConfigPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Processor\IntrospectionProcessorPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
 {
     const MIDDLEWARE_PROCESSES = 'MIDDLEWARE_PROCESSES';
-    const MIDDLEWARE_PIPELINES = 'MIDDLEWARE_PIPELINES';
-    const MIDDLEWARE_PROCESS_ITERATORS = 'MIDDLEWARE_PROCESS_ITERATORS';
-    const MIDDLEWARE_PROCESS_LOGGERS = 'MIDDLEWARE_PROCESS_LOGGERS';
-    const MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK';
-    const MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK';
-    const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
+    const MIDDLEWARE_LOG_HANDLERS = 'MIDDLEWARE_LOG_HANDLERS';
+    const MIDDLEWARE_LOG_PROCESSORS = 'MIDDLEWARE_LOG_PROCESSORS';
+    const MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN';
 
-    const PIPELINE = 'PIPELINE';
+    const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
+    const SERVICE_PROCESS = 'PROCESS_SERVICE';
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    public function provideCommunicationLayerDependencies(Container $container)
+    {
+        $container = parent::provideCommunicationLayerDependencies($container);
+
+        $container = $this->addDefaultLoggerConfigPlugin($container);
+        $container = $this->addLogHandlers($container);
+        $container = $this->addLogProcessors($container);
+        $container = $this->addProcessService($container);
+
+        return $container;
+    }
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -25,11 +50,8 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     public function provideBusinessLayerDependencies(Container $container)
     {
         $container = parent::provideBusinessLayerDependencies($container);
-        $container = $this->addProcesses($container);
-        $container = $this->addPipelines($container);
-        $container = $this->addPreProcessorHooks($container);
-        $container = $this->addPostProcessorHooks($container);
-        $container = $this->addServiceUtils($container);
+        $container = $this->addProcessService($container);
+        $container = $this->addProcessesStack($container);
 
         return $container;
     }
@@ -39,27 +61,21 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addProcesses(Container $container): Container
+    protected function addProcessesStack($container)
     {
         $container[static::MIDDLEWARE_PROCESSES] = function () {
-            return $this->getProcesses();
+            return $this->getProcessesPluginsStack();
         };
 
         return $container;
     }
 
     /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
-    protected function addPipelines(Container $container): Container
+    protected function getProcessesPluginsStack()
     {
-        $container[static::MIDDLEWARE_PIPELINES] = function () {
-            return $this->getPipelines();
-        };
-
-        return $container;
+        return [];
     }
 
     /**
@@ -67,35 +83,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addPreProcessorHooks(Container $container): Container
-    {
-        $container[static::MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK] = function () {
-            return $this->getPreProcessorHooks();
-        };
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addPostProcessorHooks(Container $container): Container
-    {
-        $container[static::MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK] = function () {
-            return $this->getPostProcessorHooks();
-        };
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addServiceUtils(Container $container): Container
+    protected function addEncodingService(Container $container): Container
     {
         $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
             return new ProcessToUtilEncodingServiceBridge($container->getLocator()->utilEncoding()->service());
@@ -105,34 +93,87 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return array
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
      */
-    public function getProcesses(): array
+    protected function addProcessService(Container $container): Container
     {
-        return [];
+        $container[static::SERVICE_PROCESS] = function (Container $container) {
+            return $container->getLocator()->process()->service();
+        };
+
+        return $container;
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[][]
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
      */
-    public function getPipelines(): array
+    protected function addLogHandlers($container)
     {
-        return [];
+        $container[static::MIDDLEWARE_LOG_HANDLERS] = function () {
+            return $this->getLogHandlers();
+        };
+
+        return $container;
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[][]
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
      */
-    public function getPreProcessorHooks(): array
+    protected function addLogProcessors($container)
     {
-        return [];
+        $container[static::MIDDLEWARE_LOG_PROCESSORS] = function () {
+            return $this->getLogProcessors();
+        };
+
+        return $container;
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PostProcessorHookPluginInterface[][]
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
      */
-    public function getPostProcessorHooks(): array
+    protected function addDefaultLoggerConfigPlugin($container)
     {
-        return [];
+        $container[static::MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN] = function () {
+            return $this->getDefaultLoggerConfigPlugin();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
+     */
+    protected function getDefaultLoggerConfigPlugin()
+    {
+        return new MiddlewareLoggerConfigPlugin();
+    }
+
+    /**
+     * @return \Spryker\Shared\Log\Dependency\Plugin\LogHandlerPluginInterface[]
+     */
+    protected function getLogProcessors()
+    {
+        return [
+            new PsrLogMessageProcessorPlugin(),
+            new IntrospectionProcessorPlugin(),
+        ];
+    }
+
+    /**
+     * @return \Spryker\Shared\Log\Dependency\Plugin\LogProcessorPluginInterface[]
+     */
+    protected function getLogHandlers()
+    {
+        return [
+            new StdErrStreamHandlerPlugin(),
+        ];
     }
 }

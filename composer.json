@@ -4,9 +4,10 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "league/pipeline": "^0.3.0",
+        "php": ">=7.1",
         "spryker/console": "^4.0.0",
         "spryker/development": "^3.0.0",
+        "spryker/log": "^3.0.0",
         "spryker/transfer": "^3.4.0",
         "spryker/util-encoding": "^2.0.0"
     },

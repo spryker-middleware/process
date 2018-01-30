@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
@@ -92,6 +97,7 @@ class TranslatorFunctionResolver extends AbstractClassResolver
     {
         $instance = $this->getResolvedClassInstance();
         $instance->setOptions($options);
+
         return $instance;
     }
 

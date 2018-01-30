@@ -1,14 +1,21 @@
 <?php
 
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
+use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 
 class Translator implements TranslatorInterface
 {
+    use MiddlewareLoggerTrait;
+
     const OPERATION = 'Translation';
 
     const KEY_OPTIONS = 'options';
@@ -33,26 +40,18 @@ class Translator implements TranslatorInterface
     protected $arrayManager;
 
     /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      * @param \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver $translatorFunctionResolver
      * @param \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface $arrayManager
-     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         TranslatorConfigTransfer $translatorConfigTransfer,
         AbstractClassResolver $translatorFunctionResolver,
-        ArrayManagerInterface $arrayManager,
-        LoggerInterface $logger
+        ArrayManagerInterface $arrayManager
     ) {
         $this->translatorConfigTransfer = $translatorConfigTransfer;
         $this->translatorFunctionResolver = $translatorFunctionResolver;
         $this->arrayManager = $arrayManager;
-        $this->logger = $logger;
     }
 
     /**
@@ -142,7 +141,7 @@ class Translator implements TranslatorInterface
     {
         $inputValue = $this->arrayManager->getValueByKey($payload, $key);
         $resultValue = $translation($inputValue, $key, $result);
-        $this->logger->debug(
+        $this->getProcessLogger()->debug(
             static::OPERATION,
             [
                 static::KEY_KEY => $key,
@@ -171,7 +170,7 @@ class Translator implements TranslatorInterface
 
         $inputValue = $this->arrayManager->getValueByKey($result, $key);
         $resultValue = $translateFunction->translate($inputValue);
-        $this->logger->debug(
+        $this->getProcessLogger()->debug(
             static::OPERATION,
             [
                 static::KEY_KEY => $key,

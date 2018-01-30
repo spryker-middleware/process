@@ -1,14 +1,21 @@
 <?php
 
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
 use Generated\Shared\Transfer\MapperConfigTransfer;
-use Psr\Log\LoggerInterface;
+use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Shared\Process\ProcessConfig;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 
 class Mapper implements MapperInterface
 {
+    use MiddlewareLoggerTrait;
+
     const OPERATION = 'Mapping';
     const OPERATION_COPY_ORIGINAL_DATA = 'Copy original data';
     const OPERATION_MAP_ARRAY = 'Map array';
@@ -32,23 +39,15 @@ class Mapper implements MapperInterface
     protected $arrayManager;
 
     /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface $arrayManager
-     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         MapperConfigTransfer $mapperConfigTransfer,
-        ArrayManagerInterface $arrayManager,
-        LoggerInterface $logger
+        ArrayManagerInterface $arrayManager
     ) {
         $this->mapperConfigTransfer = $mapperConfigTransfer;
         $this->arrayManager = $arrayManager;
-        $this->logger = $logger;
     }
 
     /**
@@ -100,7 +99,7 @@ class Mapper implements MapperInterface
     protected function mapCallable(array $result, array $payload, string $key, callable $value): array
     {
         $mappedValue = $value($payload, $key);
-        $this->logger->debug(static::OPERATION, [
+        $this->getProcessLogger()->debug(static::OPERATION, [
             static::KEY_OPERATION => static::OPERATION_MAP_CALLABLE,
             static::KEY_NEW_KEY => $key,
             static::KEY_OLD_KEY => $value,
@@ -121,7 +120,7 @@ class Mapper implements MapperInterface
     protected function mapKey(array $result, array $payload, string $key, string $value): array
     {
         $mappedValue = $this->arrayManager->getValueByKey($payload, $value);
-        $this->logger->debug(static::OPERATION, [
+        $this->getProcessLogger()->debug(static::OPERATION, [
             static::KEY_OPERATION => static::OPERATION_MAP_KEY,
             static::KEY_NEW_KEY => $key,
             static::KEY_OLD_KEY => $value,
@@ -139,7 +138,7 @@ class Mapper implements MapperInterface
     protected function prepareResult(array $payload): array
     {
         if ($this->mapperConfigTransfer->getStrategy() === ProcessConfig::MAPPER_STRATEGY_COPY_UNKNOWN) {
-            $this->logger->debug(static::OPERATION, [
+            $this->getProcessLogger()->debug(static::OPERATION, [
                 static::KEY_OPERATION => static::OPERATION_COPY_ORIGINAL_DATA,
                 static::KEY_STRATEGY => $this->mapperConfigTransfer->getStrategy(),
             ]);
