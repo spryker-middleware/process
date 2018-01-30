@@ -16,6 +16,7 @@ use Psr\Log\LogLevel;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use SprykerMiddleware\Zed\Process\Business\Iterator\IteratorFactory;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactory;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -37,6 +38,14 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     public function createStreamFactory(): StreamFactory
     {
         return new StreamFactory();
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactory
+     */
+    public function createTranslatorFunctionFactory(): TranslatorFunctionFactory
+    {
+        return new TranslatorFunctionFactory();
     }
 
     /**

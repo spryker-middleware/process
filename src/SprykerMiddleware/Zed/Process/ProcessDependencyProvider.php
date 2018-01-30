@@ -21,6 +21,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const MIDDLEWARE_LOG_HANDLERS = 'MIDDLEWARE_LOG_HANDLERS';
     const MIDDLEWARE_LOG_PROCESSORS = 'MIDDLEWARE_LOG_PROCESSORS';
     const MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN';
+    const MIDDLEWARE_TRANSLATOR_FUNCTIONS = 'MIDDLEWARE_TRANSLATOR_FUNCTIONS';
 
     const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
     const SERVICE_PROCESS = 'PROCESS_SERVICE';
@@ -52,6 +53,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addProcessService($container);
         $container = $this->addProcessesStack($container);
+        $container = $this->addTranslatorFunctions($container);
 
         return $container;
     }
@@ -149,6 +151,20 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addTranslatorFunctions($container)
+    {
+        $container[static::MIDDLEWARE_TRANSLATOR_FUNCTIONS] = function () {
+            return $this->getTranslatorFunctionsStack();
+        };
+
+        return $container;
+    }
+
+    /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
     protected function getDefaultLoggerConfigPlugin()
@@ -175,5 +191,13 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         return [
             new StdErrStreamHandlerPlugin(),
         ];
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
+     */
+    protected function getTranslatorFunctionsStack()
+    {
+        return [];
     }
 }

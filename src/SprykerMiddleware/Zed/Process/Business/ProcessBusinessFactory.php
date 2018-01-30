@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
-use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
@@ -27,7 +26,8 @@ use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverI
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
 use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
-use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolver;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
@@ -139,11 +139,11 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver
+     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface
      */
-    protected function createTranslatorFunctionResolver(): AbstractClassResolver
+    protected function createTranslatorFunctionResolver(): TranslatorFunctionPluginResolverInterface
     {
-        return new TranslatorFunctionResolver();
+        return new TranslatorFunctionPluginResolver($this->getTranslatorFunctionsStack());
     }
 
     /**
@@ -160,5 +160,13 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function getProcessesPluginsStack()
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
+     */
+    protected function getTranslatorFunctionsStack()
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_TRANSLATOR_FUNCTIONS);
     }
 }
