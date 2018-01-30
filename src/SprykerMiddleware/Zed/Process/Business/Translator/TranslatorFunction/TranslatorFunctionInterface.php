@@ -22,4 +22,11 @@ interface TranslatorFunctionInterface
      * @return void
      */
     public function setOptions(array $options): void;
+
+    /**
+     * @param string $key
+     *
+     * @return void
+     */
+    public function setKey(string $key): void;
 }

@@ -27,17 +27,19 @@ abstract class AbstractTranslatorFunctionPlugin extends AbstractPlugin implement
 
     /**
      * @param mixed $value
+     * @param string $key
      * @param array $options
      *
      * @return mixed
      */
-    public function translate($value, array $options)
+    public function translate($value, string $key,  array $options)
     {
-        $translatorFunctiopn = $this->getFactory()
+        $translatorFunction = $this->getFactory()
             ->createTranslatorFunctionFactory()
             ->createTranslatorFunction($this->getTranslatorFunctionClassName());
-        $translatorFunctiopn->setOptions($options);
+        $translatorFunction->setKey($key);
+        $translatorFunction->setOptions($options);
 
-        return $translatorFunctiopn->translate($value);
+        return $translatorFunction->translate($value);
     }
 }

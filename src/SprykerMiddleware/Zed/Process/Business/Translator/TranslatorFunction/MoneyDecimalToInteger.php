@@ -23,7 +23,7 @@ class MoneyDecimalToInteger extends AbstractTranslatorFunction
     public function translate($value)
     {
         if (!is_float($value)) {
-            throw new WrongTypeValueTranslatorException();
+            throw new WrongTypeValueTranslatorException(static::class, $this->key, 'float', $value);
         }
 
         return (int)round($value * static::PRICE_PRECISION);

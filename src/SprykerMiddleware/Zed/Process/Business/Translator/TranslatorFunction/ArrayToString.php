@@ -30,7 +30,7 @@ class ArrayToString extends AbstractTranslatorFunction
     public function translate($value)
     {
         if (!is_array($value)) {
-            throw new WrongTypeValueTranslatorException();
+            throw new WrongTypeValueTranslatorException(static::class, $this->key, 'array', $value);
         }
 
         return implode($this->options[self::OPTION_GLUE], $value);
