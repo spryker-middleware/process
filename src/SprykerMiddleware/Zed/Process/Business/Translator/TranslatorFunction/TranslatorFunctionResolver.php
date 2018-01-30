@@ -22,18 +22,19 @@ class TranslatorFunctionResolver extends AbstractClassResolver
     /**
      * @param object|string $callerClass
      * @param string $translationFunctionClassName
+     * @param string $key
      * @param array $options
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\TranslatorFunctionNotFoundException
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunctionInterface
      */
-    public function resolve($callerClass, string $translationFunctionClassName, array $options = [])
+    public function resolve($callerClass, string $translationFunctionClassName, string $key, array $options = [])
     {
         $this->setCallerClass($callerClass);
         $this->setTranslationFunctionClassName($translationFunctionClassName);
         if ($this->canResolve()) {
-            return $this->getResolvedClassInstanceWithOptions($options);
+            return $this->getResolvedClassInstanceWithParams($key, $options);
         }
 
         throw new TranslatorFunctionNotFoundException($this->translationFunctionClassName);
@@ -89,13 +90,15 @@ class TranslatorFunctionResolver extends AbstractClassResolver
     }
 
     /**
+     * @param string $key
      * @param array $options
      *
-     * @return object
+     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunctionInterface
      */
-    protected function getResolvedClassInstanceWithOptions(array $options)
+    protected function getResolvedClassInstanceWithParams(string $key, array $options)
     {
         $instance = $this->getResolvedClassInstance();
+        $instance->setKey($key);
         $instance->setOptions($options);
 
         return $instance;

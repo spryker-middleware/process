@@ -30,7 +30,7 @@ class StringToArray extends AbstractTranslatorFunction
     public function translate($value)
     {
         if (!is_string($value)) {
-            throw new WrongTypeValueTranslatorException();
+            throw new WrongTypeValueTranslatorException(static::class, $this->key, 'string', $value);
         }
 
         return explode($this->options[self::OPTION_DELIMITER], $value);
