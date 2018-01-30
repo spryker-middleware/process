@@ -1,7 +1,6 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Communication\Console;
 
-use Exception;
 use Generated\Shared\Transfer\AggregatorSettingsTransfer;
 use Generated\Shared\Transfer\IteratorSettingsTransfer;
 use Generated\Shared\Transfer\LoggerSettingsTransfer;
@@ -38,16 +37,6 @@ class ProcessConsole extends Console
      * @var int
      */
     protected $exitCode = self::CODE_SUCCESS;
-
-    /**
-     * @var resource
-     */
-    protected $inputStream;
-
-    /**
-     * @var resource
-     */
-    protected $outputStream;
 
     /**
      * @return void
@@ -113,6 +102,7 @@ class ProcessConsole extends Console
         $processSettingsTransfer->getAggregatorSettings()->setWriterConfig(new WriterConfigTransfer());
         if ($input->getOption(static::OPTION_PROCESS_NAME)) {
             $processSettingsTransfer->setName($input->getOption(static::OPTION_PROCESS_NAME));
+            $this->processStreamArgs($input, $processSettingsTransfer);
             $this->setIteratorOptions($input, $processSettingsTransfer);
             $this->setLoggerOptions($input, $output, $processSettingsTransfer);
 
@@ -150,8 +140,6 @@ class ProcessConsole extends Console
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
-     * @throws \Exception
-     *
      * @return int|null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -160,15 +148,9 @@ class ProcessConsole extends Console
         if ($this->hasError()) {
             return $this->exitCode;
         }
-        try {
-            $this->processStreamArgs($input);
-            $this->getFacade()
-                ->process($processSettingsTransfer, $this->inputStream, $this->outputStream);
-        } catch (Exception $e) {
-            throw $e;
-        } finally {
-            $this->closeStreams();
-        }
+        $this->getFacade()
+            ->process($processSettingsTransfer);
+
         return $this->exitCode;
     }
 
@@ -207,33 +189,21 @@ class ProcessConsole extends Console
 
     /**
      * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      *
      * @return void
      */
-    protected function processStreamArgs(InputInterface $input): void
+    protected function processStreamArgs(InputInterface $input, ProcessSettingsTransfer $processSettingsTransfer): void
     {
-        $inputStream = 'php://stdin';
-        $outputStream = 'php://stdout';
+        $inputPath = 'php://stdin';
+        $outputPath = 'php://stdout';
         if ($input->getOption(self::OPTION_INPUT)) {
-            $inputStream = $input->getOption(self::OPTION_INPUT);
+            $inputPath = $input->getOption(self::OPTION_INPUT);
         }
         if ($input->getOption(self::OPTION_OUTPUT)) {
-            $outputStream = $input->getOption(self::OPTION_OUTPUT);
+            $outputPath = $input->getOption(self::OPTION_OUTPUT);
         }
-        $this->inputStream = fopen($inputStream, 'r');
-        $this->outputStream = fopen($outputStream, 'w');
-    }
-
-    /**
-     * @return void
-     */
-    protected function closeStreams()
-    {
-        if ($this->inputStream) {
-            fclose($this->inputStream);
-        }
-        if ($this->outputStream) {
-            fclose($this->outputStream);
-        }
+        $processSettingsTransfer->setInputPath($inputPath);
+        $processSettingsTransfer->setOutputPath($outputPath);
     }
 }

@@ -2,15 +2,15 @@
 
 namespace SprykerMiddleware\Service\Process;
 
-use SprykerMiddleware\Service\Process\Model\JsonStreamService;
+use SprykerMiddleware\Service\Process\Model\StreamService;
 
 class ProcessServiceFactory
 {
     /**
      * @return \SprykerMiddleware\Service\Process\Model\StreamServiceInterface
      */
-    public function createJsonStreamService()
+    public function createStreamService()
     {
-        return new JsonStreamService();
+        return new StreamService();
     }
 }

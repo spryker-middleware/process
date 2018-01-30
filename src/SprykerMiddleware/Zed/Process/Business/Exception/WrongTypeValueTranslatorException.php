@@ -2,8 +2,6 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Exception;
 
-use Exception;
-
-class WrongTypeValueTranslatorException extends Exception
+class WrongTypeValueTranslatorException extends TolerableProcessException
 {
 }

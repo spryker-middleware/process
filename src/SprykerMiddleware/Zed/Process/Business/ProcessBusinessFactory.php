@@ -5,17 +5,16 @@ namespace SprykerMiddleware\Zed\Process\Business;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use League\Pipeline\FingersCrossedProcessor;
-use League\Pipeline\ProcessorInterface as LeagueProcessorInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Kernel\ClassResolver\AbstractClassResolver;
-use SprykerMiddleware\Service\Process\ProcessServiceInterface;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
+use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\FingersCrossedProcessor;
+use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilder;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinder;
@@ -24,12 +23,11 @@ use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinder;
 use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
 use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
-use SprykerMiddleware\Zed\Process\Business\Reader\JsonReader;
-use SprykerMiddleware\Zed\Process\Business\Reader\ReaderInterface;
+use SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolver;
+use SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
-use SprykerMiddleware\Zed\Process\Business\Writer\JsonWriter;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -39,23 +37,18 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
 {
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
-     * @param resource $inStream
-     * @param resource $outStream
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface
      */
     public function createProcessor(
-        ProcessSettingsTransfer $processSettingsTransfer,
-        $inStream,
-        $outStream
+        ProcessSettingsTransfer $processSettingsTransfer
     ): ProcessorInterface {
         return new Processor(
             $processSettingsTransfer,
-            $this->createPipeline($processSettingsTransfer, $inStream, $outStream),
+            $this->createPipeline($processSettingsTransfer),
             $this->createPluginFinder(),
             $this->createLoggerConfigPluginFinder(),
-            $inStream,
-            $outStream
+            $this->createStreamPluginResolver()
         );
     }
 
@@ -83,6 +76,14 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
             $this->getLoggerConfigPluginsStack(),
             $this->getDefaultLoggerConfigPlugin()
         );
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface
+     */
+    public function createStreamPluginResolver(): StreamPluginResolverInterface
+    {
+        return new StreamPluginResolver($this->getStreamsPluginStack());
     }
 
     /**
@@ -121,22 +122,6 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Reader\ReaderInterface
-     */
-    public function createJsonReader(): ReaderInterface
-    {
-        return new JsonReader($this->getProcessService());
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Writer\WriterInterface
-     */
-    public function createJsonWriter()
-    {
-        return new JsonWriter($this->getProcessService());
-    }
-
-    /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[]
      */
     protected function getPreProcessHookStack(): array
@@ -154,37 +139,28 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
-     * @param resource $inStream
-     * @param resource $outStream
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
      */
     protected function createPipeline(
-        ProcessSettingsTransfer $processSettingsTransfer,
-        $inStream,
-        $outStream
+        ProcessSettingsTransfer $processSettingsTransfer
     ): PipelineInterface {
         return new Pipeline(
             $this->createPipelineProcessor(),
-            $this->getStages($processSettingsTransfer, $inStream, $outStream)
+            $this->getStages($processSettingsTransfer)
         );
     }
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
-     * @param resource $inStream
-     * @param resource $outStream
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
      */
     protected function getStages(
-        ProcessSettingsTransfer $processSettingsTransfer,
-        $inStream,
-        $outStream
+        ProcessSettingsTransfer $processSettingsTransfer
     ): array {
-
         return $this->createStageListBuilder()
-            ->buildStageList($processSettingsTransfer, $inStream, $outStream);
+            ->buildStageList($processSettingsTransfer);
     }
 
     /**
@@ -198,9 +174,9 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \League\Pipeline\ProcessorInterface
+     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface
      */
-    protected function createPipelineProcessor(): LeagueProcessorInterface
+    protected function createPipelineProcessor(): PipelineProcessorInterface
     {
         return new FingersCrossedProcessor();
     }
@@ -222,14 +198,6 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerMiddleware\Service\Process\ProcessServiceInterface
-     */
-    protected function getProcessService(): ProcessServiceInterface
-    {
-        return $this->getProvidedDependency(ProcessDependencyProvider::SERVICE_PROCESS);
-    }
-
-    /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[]
      */
     protected function getStagePluginsStack(): array
@@ -243,6 +211,14 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function getIteratorsStack()
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESS_ITERATORS);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\ProcessStreamPluginInterface[]
+     */
+    protected function getStreamsPluginStack()
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESS_STREAMS);
     }
 
     /**

@@ -1,11 +1,14 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Business\Process;
 
+use Exception;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use SprykerMiddleware\Zed\Process\Business\Log\LoggerTrait;
+use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface;
+use SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface;
 
 class Processor implements ProcessorInterface
 {
@@ -37,14 +40,14 @@ class Processor implements ProcessorInterface
     protected $postProcessStack;
 
     /**
-     * @var resource
+     * @var \SprykerMiddleware\Shared\Process\Stream\StreamInterface
      */
-    protected $inStream;
+    protected $inputStream;
 
     /**
-     * @var resource
+     * @var \SprykerMiddleware\Shared\Process\Stream\StreamInterface
      */
-    protected $outStream;
+    protected $outputStream;
 
     /**
      * @var \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface
@@ -57,31 +60,35 @@ class Processor implements ProcessorInterface
     protected $loggerConfigPluginFinder;
 
     /**
+     * @var \SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface
+     */
+    private $streamPluginResolver;
+
+    /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\PluginFinderInterface $pluginFinder
      * @param \SprykerMiddleware\Zed\Process\Business\PluginFinder\LoggerConfigPluginFinderInterface $loggerConfigPluginFinder
-     * @param resource $inStream
-     * @param resource $outStream
+     * @param \SprykerMiddleware\Zed\Process\Business\Stream\Resolver\StreamPluginResolverInterface $streamPluginResolver
      */
     public function __construct(
         ProcessSettingsTransfer $processSettingsTransfer,
         PipelineInterface $pipeline,
         PluginFinderInterface $pluginFinder,
         LoggerConfigPluginFinderInterface $loggerConfigPluginFinder,
-        $inStream,
-        $outStream
+        StreamPluginResolverInterface $streamPluginResolver
     ) {
         $this->processSettingsTransfer = $processSettingsTransfer;
         $this->pipeline = $pipeline;
         $this->pluginFinder = $pluginFinder;
-        $this->inStream = $inStream;
-        $this->outStream = $outStream;
         $this->loggerConfigPluginFinder = $loggerConfigPluginFinder;
+        $this->streamPluginResolver = $streamPluginResolver;
         $this->init();
     }
 
     /**
+     * @throws \Exception
+     *
      * @return void
      */
     public function process(): void
@@ -89,13 +96,25 @@ class Processor implements ProcessorInterface
         $this->preProcess();
         $this->getLogger()->info('Middleware process is started.', ['process' => $this]);
         $counter = 0;
-        foreach ($this->iterator as $item) {
-            $this->getLogger()->info('Start processing of item', [
-                'itemNo' => $counter++,
-            ]);
-            $this->pipeline->process($item);
+        try {
+            $this->inputStream->open('r');
+            $this->outputStream->open('w');
+            foreach ($this->iterator as $item) {
+                $this->getLogger()->info('Start processing of item', [
+                    'itemNo' => $counter++,
+                ]);
+                $this->pipeline->process($item, $this->inputStream, $this->outputStream);
+            }
+            $this->outputStream->flush();
+        } catch (TolerableProcessException $exception) {
+            $this->getLogger()->error('Experienced tolerable process error in ' . $exception->getFile());
+        } catch (Exception $e) {
+            throw $e;
+        } finally {
+            $this->inputStream->close();
+            $this->outputStream->close();
         }
-        fflush($this->outStream);
+
         $this->getLogger()->info('Middleware process is finished.');
         $this->postProcess();
     }
@@ -125,9 +144,17 @@ class Processor implements ProcessorInterface
      */
     protected function init(): void
     {
+        $this->inputStream = $this->streamPluginResolver
+            ->getStreamPluginByPath($this->processSettingsTransfer->getInputPath())
+            ->getStream($this->processSettingsTransfer->getInputPath());
+
+        $this->outputStream = $this->streamPluginResolver
+            ->getStreamPluginByPath($this->processSettingsTransfer->getOutputPath())
+            ->getStream($this->processSettingsTransfer->getOutputPath());
+
         $this->iterator = $this->pluginFinder
             ->getIteratorPluginByProcessName($this->processSettingsTransfer->getName())
-            ->getIterator($this->inStream, $this->processSettingsTransfer->getIteratorSettings());
+            ->getIterator($this->inputStream, $this->processSettingsTransfer->getIteratorSettings());
         $this->preProcessStack = $this->pluginFinder
             ->getPreProcessorHookPluginsByProcessName($this->processSettingsTransfer->getName());
         $this->postProcessStack = $this->pluginFinder
@@ -135,6 +162,7 @@ class Processor implements ProcessorInterface
         $loggerConfig = $this->loggerConfigPluginFinder
             ->getLoggerConfigPluginByProcessName($this->processSettingsTransfer->getName());
         $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerSettings()->getVerboseLevel());
+
         $this->initLogger($loggerConfig);
     }
 }

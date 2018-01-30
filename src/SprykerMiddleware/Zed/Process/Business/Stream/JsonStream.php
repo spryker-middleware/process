@@ -2,18 +2,21 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
-// @codingStandardsIgnoreFile
-class JsonStream
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+
+class JsonStream implements StreamInterface, WriteStreamInterface, ReadStreamInterface
 {
     /**
      * @var resource
      */
-    public $context;
+    protected $handle;
 
     /**
-     * @var resource
+     * @var string
      */
-    protected $subHandle;
+    protected $path;
 
     /**
      * @var array
@@ -31,79 +34,21 @@ class JsonStream
     protected $position;
 
     /**
-     * @return bool
-     */
-    public function stream_close()
-    {
-        return fclose($this->subHandle);
-    }
-
-    /**
-     * @return bool
-     */
-    public function stream_eof()
-    {
-        return $this->position >= count($this->data);
-    }
-
-    /**
-     * @return bool
-     */
-    public function stream_flush()
-    {
-        fwrite($this->subHandle, json_encode($this->data));
-
-        return fflush($this->subHandle);
-    }
-
-    /**
-     * @param string $data
-     *
-     * @return int
-     */
-    public function stream_write($data)
-    {
-        $this->data[$this->position++] = json_decode($data, true);
-
-        return strlen($data);
-    }
-
-    /**
-     * @return bool|string
-     */
-    public function stream_read()
-    {
-        if (!$this->stream_eof()) {
-            return json_encode($this->data[$this->position++]) . PHP_EOL;
-        }
-
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function stream_stat()
-    {
-        return fstat($this->subHandle);
-    }
-
-    /**
      * @param string $path
-     * @param string $mode
-     * @param int $options
-     * @param string $opened_path
-     *
-     * @return bool
      */
-    public function stream_open($path, $mode, $options, &$opened_path)
+    public function __construct(string $path)
     {
-        $useIncludePath = $options & STREAM_USE_PATH;
-        $parts = parse_url($path);
+        $this->path = $path;
+    }
 
-        $this->subHandle = fopen($parts['host'] . ':' . $parts['path'], $mode, $useIncludePath, $this->context);
+    /**
+     * @inheritdoc
+     */
+    public function open(string $mode): bool
+    {
+        $this->handle = fopen($this->path, $mode);
 
-        if ($this->subHandle === false) {
+        if ($this->handle === false) {
             return false;
         }
 
@@ -111,11 +56,11 @@ class JsonStream
             $this->data = $this->loadJson();
         }
 
-        if (strpos($mode,'a') !== false) {
+        if (strpos($mode, 'a') !== false) {
             $this->position = count($this->data);
         }
 
-        if (strpos($mode,'w') !== false) {
+        if (strpos($mode, 'w') !== false) {
             $this->position = 0;
         }
 
@@ -125,14 +70,53 @@ class JsonStream
     }
 
     /**
-     * @param int $offset
-     * @param int $whence
-     *
-     * @return int
+     * @inheritdoc
      */
-    public function stream_seek($offset, $whence = SEEK_SET)
+    public function close(): bool
     {
-        $newPosition =  $this->getNewPosition($offset, $whence);
+        if ($this->handle) {
+            return fclose($this->handle);
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function read()
+    {
+        return $this->get();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function get()
+    {
+        if (!$this->eof()) {
+            return $this->data[$this->position++];
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function write($data): int
+    {
+        $this->data[$this->position++] = $data;
+
+        return 1;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function seek($offset, $whence): int
+    {
+        $newPosition = $this->getNewPosition($offset, $whence);
         if ($newPosition === false || $newPosition < 0 || $newPosition > count($this->data)) {
             return false;
         }
@@ -142,11 +126,21 @@ class JsonStream
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function stream_tell()
+    public function flush(): bool
     {
-        return $this->position;
+        fwrite($this->handle, json_encode($this->data));
+
+        return fflush($this->handle);
+    }
+
+    /**
+     * @return bool
+     */
+    public function eof(): bool
+    {
+        return $this->position >= count($this->data);
     }
 
     /**
@@ -156,8 +150,8 @@ class JsonStream
     {
         $data = '';
 
-        while (!feof($this->subHandle)) {
-            $data .= fread($this->subHandle, 1000);
+        while (!feof($this->handle)) {
+            $data .= fread($this->handle, 1000);
         }
 
         $this->position = 0;

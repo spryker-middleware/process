@@ -14,6 +14,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const MIDDLEWARE_PROCESSES = 'MIDDLEWARE_PROCESSES';
     const MIDDLEWARE_STAGE_PLUGINS = 'MIDDLEWARE_STAGE_PLUGINS';
     const MIDDLEWARE_PROCESS_ITERATORS = 'MIDDLEWARE_PROCESS_ITERATORS';
+    const MIDDLEWARE_PROCESS_STREAMS = 'MIDDLEWARE_PROCESS_STREAMS';
     const MIDDLEWARE_PROCESS_LOGGERS = 'MIDDLEWARE_PROCESS_LOGGERS';
     const MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_PRE_PROCESSOR_HOOKS_STACK';
     const MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK = 'MIDDLEWARE_POST_PROCESSOR_HOOKS_STACK';
@@ -35,6 +36,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideCommunicationLayerDependencies($container);
         $container = $this->addLogHandlers($container);
         $container = $this->addLogProcessors($container);
+        $container = $this->addProcessService($container);
 
         return $container;
     }
@@ -48,13 +50,13 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addIterators($container);
+        $container = $this->addStreamPluginsStack($container);
         $container = $this->addStagePluginsStack($container);
         $container = $this->addPreProcessorHooks($container);
         $container = $this->addPostProcessorHooks($container);
-        $container = $this->addEncodingService($container);
-        $container = $this->addProcessService($container);
         $container = $this->addLogConfigPlugins($container);
         $container = $this->addDefaultLoggerConfigPlugin($container);
+        $container = $this->addEncodingService($container);
 
         return $container;
     }
@@ -68,6 +70,20 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container[static::MIDDLEWARE_PROCESS_ITERATORS] = function () {
             return $this->getIteratorsStack();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addStreamPluginsStack($container)
+    {
+        $container[static::MIDDLEWARE_PROCESS_STREAMS] = function () {
+            return $this->getStreamPluginsStack();
         };
 
         return $container;
@@ -208,6 +224,22 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface[]
+     */
+    protected function getIteratorsStack()
+    {
+        return [];
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\ProcessStreamPluginInterface[]
+     */
+    protected function getStreamPluginsStack()
+    {
+        return [];
+    }
+
+    /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook\PreProcessorHookPluginInterface[][]
      */
     protected function getPreProcessorHooksStack(): array
@@ -227,14 +259,6 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[]
      */
     protected function getStagePluginsStack()
-    {
-        return [];
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPluginInterface[]
-     */
-    protected function getIteratorsStack()
     {
         return [];
     }

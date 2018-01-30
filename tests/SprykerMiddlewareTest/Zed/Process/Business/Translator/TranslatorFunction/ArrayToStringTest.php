@@ -8,6 +8,7 @@
 namespace SprykerMiddlewareTest\Zed\Process\Business\Translator\TranslatorFunction;
 
 use Codeception\Test\Unit;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\ArrayToString;
 
 /**
  * Auto-generated group annotations
@@ -27,6 +28,36 @@ class ArrayToStringTest extends Unit
      */
     public function testArrayToString()
     {
-        $this->assertNull(null);
+        $converter = new ArrayToString();
+        $data = ['Foo', 'Bar'];
+
+        $this->assertEquals('FooBar', $converter->translate($data));
+    }
+
+    /**
+     * @return void
+     */
+    public function testArrayToStringWithGlue()
+    {
+        $converter = new ArrayToString();
+        $converter->setOptions(
+            [ArrayToString::OPTION_GLUE => '-']
+        );
+        $data = ['Foo', 'Bar'];
+
+        $this->assertEquals('Foo-Bar', $converter->translate($data));
+    }
+
+    /**
+     * @return void
+     */
+    public function testArrayToStringWithoutArray()
+    {
+        $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
+
+        $converter = new ArrayToString();
+        $data = 'Foo';
+
+        $converter->translate($data);
     }
 }

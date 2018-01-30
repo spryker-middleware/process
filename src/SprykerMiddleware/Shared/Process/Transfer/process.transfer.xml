@@ -5,6 +5,8 @@
 
     <transfer name="ProcessSettings">
         <property name="name" type="string"/>
+        <property name="inputPath" type="string"/>
+        <property name="outputPath" type="string"/>
         <property name="iteratorSettings" type="IteratorSettings"/>
         <property name="aggregatorSettings" type="AggregatorSettings"/>
         <property name="loggerSettings" type="LoggerSettings"/>

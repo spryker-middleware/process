@@ -9,15 +9,15 @@ use Generated\Shared\Transfer\TranslatorConfigTransfer;
 interface ProcessFacadeInterface
 {
     /**
+     * {@inheritdoc}
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer $processSettingsTransfer
-     * @param resource $inStream
-     * @param resource $outStream
      *
      * @return void
      */
-    public function process(ProcessSettingsTransfer $processSettingsTransfer, $inStream, $outStream): void;
+    public function process(ProcessSettingsTransfer $processSettingsTransfer): void;
 
     /**
      * @api
@@ -38,19 +38,4 @@ interface ProcessFacadeInterface
      * @return array
      */
     public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array;
-
-    /**
-     * @param resource $inStream
-     *
-     * @return array
-     */
-    public function readJson($inStream): array;
-
-    /**
-     * @param resource $outStream
-     * @param array $payload
-     *
-     * @return array
-     */
-    public function writeJson($outStream, $payload);
 }

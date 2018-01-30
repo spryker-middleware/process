@@ -1,33 +1,22 @@
 <?php
 namespace SprykerMiddleware\Zed\Process\Dependency\Plugin;
 
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+
 interface StagePluginInterface
 {
     /**
-     * Process the payload.
-     *
      * @param mixed $payload
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      *
      * @return mixed
      */
-    public function process($payload);
+    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream);
 
     /**
      * @return string
      */
     public function getName(): string;
-
-    /**
-     * @param resource $inStream
-     *
-     * @return void
-     */
-    public function setInStream($inStream): void;
-
-    /**
-     * @param resource $outStream
-     *
-     * @return void
-     */
-    public function setOutStream($outStream): void;
 }
