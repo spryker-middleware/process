@@ -169,7 +169,7 @@ class Translator implements TranslatorInterface
         $translateFunctionPlugin = $this->translatorFunctionResolver->getTranslatorFunctionPluginByName(reset($translation));
 
         $inputValue = $this->arrayManager->getValueByKey($result, $key);
-        $resultValue = $translateFunctionPlugin->translate($inputValue, $key, $options);
+        $resultValue = $translateFunctionPlugin->translate($inputValue, $payload, $key, $options);
         $this->getProcessLogger()->debug(
             static::OPERATION,
             [

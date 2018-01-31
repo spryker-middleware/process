@@ -21,10 +21,11 @@ interface TranslatorFunctionPluginInterface
 
     /**
      * @param mixed $value
+     * @param array $payload
      * @param string $key
      * @param array $options
      *
      * @return mixed
      */
-    public function translate($value, string $key, array $options);
+    public function translate($value, array $payload, string $key, array $options);
 }

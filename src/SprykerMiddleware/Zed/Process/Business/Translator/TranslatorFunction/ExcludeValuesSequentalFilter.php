@@ -11,11 +11,12 @@ class ExcludeValuesSequentalFilter extends ExcludeValuesAssociativeFilter
 {
     /**
      * @param array $value
+     * @param array $payload
      *
      * @return array
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
-        return array_values(parent::translate($value));
+        return array_values(parent::translate($value, $payload));
     }
 }

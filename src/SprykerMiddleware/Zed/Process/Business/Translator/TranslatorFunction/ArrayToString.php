@@ -22,12 +22,13 @@ class ArrayToString extends AbstractTranslatorFunction
 
     /**
      * @param string $value
+     * @param array $payload
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException
      *
      * @return array
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         if (!is_array($value)) {
             throw new WrongTypeValueTranslatorException(static::class, $this->key, 'array', $value);

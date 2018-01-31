@@ -19,10 +19,11 @@ class Enum extends AbstractTranslatorFunction implements TranslatorFunctionInter
 
     /**
      * @param mixed $value
+     * @param array $payload
      *
      * @return mixed
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         if (is_array($this->options[self::OPTION_MAP]) && isset($this->options[self::OPTION_MAP][$value])) {
             return $this->options[self::OPTION_MAP][$value];

@@ -11,10 +11,11 @@ class StringToFloat extends AbstractTranslatorFunction implements TranslatorFunc
 {
     /**
      * @param string $value
+     * @param array $payload
      *
      * @return float
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         return (float)$value;
     }

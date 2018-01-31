@@ -11,10 +11,11 @@ class BoolToString extends AbstractTranslatorFunction implements TranslatorFunct
 {
     /**
      * @param bool $value
+     * @param array $payload
      *
      * @return string
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         return $value ? 'true' : 'false';
     }

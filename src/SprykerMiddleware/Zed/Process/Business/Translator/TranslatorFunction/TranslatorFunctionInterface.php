@@ -11,10 +11,11 @@ interface TranslatorFunctionInterface
 {
     /**
      * @param mixed $value
+     * @param array $payload
      *
      * @return mixed
      */
-    public function translate($value);
+    public function translate($value, array $payload);
 
     /**
      * @param array $options

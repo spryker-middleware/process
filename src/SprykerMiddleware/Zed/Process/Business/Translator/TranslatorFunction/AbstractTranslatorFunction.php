@@ -28,10 +28,11 @@ abstract class AbstractTranslatorFunction implements TranslatorFunctionInterface
 
     /**
      * @param mixed $value
+     * @param array $payload
      *
      * @return mixed
      */
-    abstract public function translate($value);
+    abstract public function translate($value, array $payload);
 
     /**
      * @param array $options

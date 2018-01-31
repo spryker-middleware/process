@@ -11,10 +11,11 @@ class StringToInt extends AbstractTranslatorFunction implements TranslatorFuncti
 {
     /**
      * @param string $value
+     * @param array $payload
      *
      * @return int
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         return (int)$value;
     }

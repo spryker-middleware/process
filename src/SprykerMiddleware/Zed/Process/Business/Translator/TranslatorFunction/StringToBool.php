@@ -12,10 +12,11 @@ class StringToBool extends AbstractTranslatorFunction implements TranslatorFunct
     const VALUE_TRUE = 'true';
     /**
      * @param string $value
+     * @param array $payload
      *
      * @return bool
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         return strtolower($value) === static::VALUE_TRUE;
     }

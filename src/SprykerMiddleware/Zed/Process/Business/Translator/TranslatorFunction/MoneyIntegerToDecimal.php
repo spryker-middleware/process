@@ -15,12 +15,13 @@ class MoneyIntegerToDecimal extends AbstractTranslatorFunction
 
     /**
      * @param int $value
+     * @param array $payload
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException
      *
      * @return float
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         if (!is_int($value)) {
             throw new WrongTypeValueTranslatorException(static::class, $this->key, 'int', $value);

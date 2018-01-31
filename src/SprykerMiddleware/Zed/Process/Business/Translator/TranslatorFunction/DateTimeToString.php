@@ -21,12 +21,13 @@ class DateTimeToString extends AbstractTranslatorFunction implements TranslatorF
 
     /**
      * @param \DateTime $value
+     * @param array $payload
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException
      *
      * @return string
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         if (!($value instanceof DateTime)) {
             throw new WrongTypeValueTranslatorException(static::class, $this->key, '\DateTime', $value);

@@ -11,10 +11,11 @@ class FloatToInt extends AbstractTranslatorFunction implements TranslatorFunctio
 {
     /**
      * @param float $value
+     * @param array $payload
      *
      * @return int
      */
-    public function translate($value)
+    public function translate($value, array $payload)
     {
         return (int)$value;
     }
