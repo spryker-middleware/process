@@ -13,16 +13,16 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigu
 class ProcessPluginResolver implements ProcessPluginResolverInterface
 {
     /**
-     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
      */
-    protected $processesPluginsStack;
+    protected $configurationProfilePluginsStack;
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[] $processesPluginsStack
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[] $configurationProfilePluginsStack
      */
-    public function __construct(array $processesPluginsStack)
+    public function __construct(array $configurationProfilePluginsStack)
     {
-        $this->processesPluginsStack = $processesPluginsStack;
+        $this->configurationProfilePluginsStack = $configurationProfilePluginsStack;
     }
 
     /**
@@ -34,9 +34,11 @@ class ProcessPluginResolver implements ProcessPluginResolverInterface
      */
     public function getProcessConfigurationPluginByProcessName(string $processName): ProcessConfigurationPluginInterface
     {
-        foreach ($this->processesPluginsStack as $processConfigurationPlugin) {
-            if ($processConfigurationPlugin->getProcessName() === $processName) {
-                return $processConfigurationPlugin;
+        foreach ($this->configurationProfilePluginsStack as $profile) {
+            foreach ($profile->getProcessConfigurationPlugins() as $processConfig) {
+                if ($processConfig->getProcessName() === $processName) {
+                    return $processConfig;
+                }
             }
         }
 

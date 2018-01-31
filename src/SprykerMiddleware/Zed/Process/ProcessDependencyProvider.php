@@ -17,7 +17,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServic
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
 {
-    const MIDDLEWARE_PROCESSES = 'MIDDLEWARE_PROCESSES';
+    const MIDDLEWARE_DEFAULT_PROCESSES = 'MIDDLEWARE_DEFAULT_PROCESSES';
+    const MIDDLEWARE_CONFIGURATION_PROFILES = 'MIDDLEWARE_CONFIGURATION_PROFILES';
     const MIDDLEWARE_LOG_HANDLERS = 'MIDDLEWARE_LOG_HANDLERS';
     const MIDDLEWARE_LOG_PROCESSORS = 'MIDDLEWARE_LOG_PROCESSORS';
     const MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN';
@@ -35,6 +36,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = parent::provideCommunicationLayerDependencies($container);
 
+        $container = $this->addDefaultProcessesStack($container);
         $container = $this->addDefaultLoggerConfigPlugin($container);
         $container = $this->addLogHandlers($container);
         $container = $this->addLogProcessors($container);
@@ -51,8 +53,8 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     public function provideBusinessLayerDependencies(Container $container)
     {
         $container = parent::provideBusinessLayerDependencies($container);
+        $container = $this->addConfigurationProfilesStack($container);
         $container = $this->addProcessService($container);
-        $container = $this->addProcessesStack($container);
         $container = $this->addTranslatorFunctions($container);
 
         return $container;
@@ -63,10 +65,24 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addProcessesStack($container)
+    protected function addConfigurationProfilesStack($container)
     {
-        $container[static::MIDDLEWARE_PROCESSES] = function () {
-            return $this->getProcessesPluginsStack();
+        $container[static::MIDDLEWARE_CONFIGURATION_PROFILES] = function () {
+            return $this->getConfigurationProfilePluginsStack();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addDefaultProcessesStack($container)
+    {
+        $container[static::MIDDLEWARE_DEFAULT_PROCESSES] = function () {
+            return $this->getDefaultProcessesPluginsStack();
         };
 
         return $container;
@@ -75,7 +91,15 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
-    protected function getProcessesPluginsStack()
+    protected function getDefaultProcessesPluginsStack()
+    {
+        return [];
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
+     */
+    protected function getConfigurationProfilePluginsStack()
     {
         return [];
     }
