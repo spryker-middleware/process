@@ -20,7 +20,7 @@ class JsonWriterStagePlugin extends AbstractStagePlugin implements StagePluginIn
     /**
      * @inheritdoc
      */
-    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream)
+    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream, $originalPayload)
     {
         $this->getFactory()
             ->getProcessService()

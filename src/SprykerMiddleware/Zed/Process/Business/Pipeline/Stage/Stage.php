@@ -32,7 +32,7 @@ class Stage implements StageInterface
     /**
      * @inheritdoc
      */
-    public function __invoke($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream): array
+    public function __invoke($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream, $originalPayload): array
     {
         $this->getProcessLogger()->info('Input Data', [
             'stage' => $this->getStagePluginClass(),
@@ -40,7 +40,7 @@ class Stage implements StageInterface
         ]);
 
         $processedPayload = $this->stagePlugin
-            ->process($payload, $inStream, $outStream);
+            ->process($payload, $inStream, $outStream, $originalPayload);
 
         $this->getProcessLogger()->info('Result Data', [
            'stage' => $this->getStagePluginClass(),
