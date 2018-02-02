@@ -8,12 +8,11 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
 
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface;
 
 /**
- * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
+ * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
  */
-abstract class AbstractTranslatorFunctionPlugin extends AbstractPlugin implements TranslatorFunctionPluginInterface
+abstract class AbstractGenericTranslatorFunctionPlugin extends AbstractPlugin implements GenericTranslatorFunctionPluginInterface
 {
     /**
      * @return string

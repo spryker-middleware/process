@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\ExcludeValuesSequentalFilter;
 
-class ExcludeValuesSequentalFilterTranslatorFunctionPlugin extends AbstractTranslatorFunctionPlugin
+class ExcludeValuesSequentalFilterTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     const NAME = 'ExcludeValuesSequentalFilter';
 

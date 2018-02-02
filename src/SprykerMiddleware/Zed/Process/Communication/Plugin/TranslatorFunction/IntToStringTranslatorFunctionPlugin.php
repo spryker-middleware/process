@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\IntToString;
 
-class IntToStringTranslatorFunctionPlugin extends AbstractTranslatorFunctionPlugin
+class IntToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     const NAME = 'IntToString';
 

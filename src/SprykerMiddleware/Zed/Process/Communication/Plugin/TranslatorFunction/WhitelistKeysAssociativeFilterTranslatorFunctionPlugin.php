@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\WhitelistKeysAssociativeFilter;
 
-class WhitelistKeysAssociativeFilterTranslatorFunctionPlugin extends AbstractTranslatorFunctionPlugin
+class WhitelistKeysAssociativeFilterTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     const NAME = 'WhitelistKeysAssociativeFilter';
 

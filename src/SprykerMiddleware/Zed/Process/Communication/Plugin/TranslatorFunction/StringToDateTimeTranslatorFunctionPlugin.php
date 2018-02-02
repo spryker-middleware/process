@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\StringToDateTime;
 
-class StringToDateTimeTranslatorFunctionPlugin extends AbstractTranslatorFunctionPlugin
+class StringToDateTimeTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     const NAME = 'StringToDateTime';
 

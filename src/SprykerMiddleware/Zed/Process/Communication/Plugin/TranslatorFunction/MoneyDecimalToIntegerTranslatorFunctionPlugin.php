@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\MoneyDecimalToInteger;
 
-class MoneyDecimalToIntegerTranslatorFunctionPlugin extends AbstractTranslatorFunctionPlugin
+class MoneyDecimalToIntegerTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     const NAME = 'MoneyDecimalToInteger';
 

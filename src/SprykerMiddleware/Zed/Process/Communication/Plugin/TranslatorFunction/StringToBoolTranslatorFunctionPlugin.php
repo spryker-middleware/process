@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\StringToBool;
 
-class StringToBoolTranslatorFunctionPlugin extends AbstractTranslatorFunctionPlugin
+class StringToBoolTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     const NAME = 'StringToBool';
 

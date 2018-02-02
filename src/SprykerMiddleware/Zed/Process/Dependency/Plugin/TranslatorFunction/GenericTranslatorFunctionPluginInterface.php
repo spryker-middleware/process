@@ -7,12 +7,17 @@
 
 namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction;
 
-interface TranslatorFunctionPluginInterface
+interface GenericTranslatorFunctionPluginInterface extends TranslatorFunctionPluginInterface
 {
     /**
      * @return string
      */
     public function getName();
+
+    /**
+     * @return string
+     */
+    public function getTranslatorFunctionClassName();
 
     /**
      * @param mixed $value

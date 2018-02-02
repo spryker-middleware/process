@@ -12,7 +12,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\ArrayTo
 /**
  * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
  */
-class ArrayToStringTranslatorFunctionPlugin extends AbstractTranslatorFunctionPlugin
+class ArrayToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     const NAME = 'ArrayToString';
 

@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
 
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\StringToFloat;
 
-class StringToFloatTranslatorFunctionPlugin extends AbstractTranslatorFunctionPlugin
+class StringToFloatTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     const NAME = 'StringToFloat';
 
