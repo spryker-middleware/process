@@ -7,7 +7,7 @@
 
 namespace SprykerMiddleware\Shared\Process\Stream;
 
-interface ReadStreamInterface
+interface ReadStreamInterface extends StreamInterface
 {
     /**
      * @return mixed

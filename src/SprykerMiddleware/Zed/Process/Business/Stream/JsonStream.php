@@ -11,7 +11,7 @@ use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
-class JsonStream implements StreamInterface, WriteStreamInterface, ReadStreamInterface
+class JsonStream implements WriteStreamInterface, ReadStreamInterface
 {
     /**
      * @var resource

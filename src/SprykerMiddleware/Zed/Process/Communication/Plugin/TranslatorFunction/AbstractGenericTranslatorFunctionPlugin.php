@@ -12,6 +12,7 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\GenericTr
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
+ * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
  */
 abstract class AbstractGenericTranslatorFunctionPlugin extends AbstractPlugin implements GenericTranslatorFunctionPluginInterface
 {

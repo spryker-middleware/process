@@ -10,13 +10,18 @@ namespace SprykerMiddleware\Zed\Process\Communication;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\AbstractHandler;
+use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\IntrospectionProcessor;
 use Psr\Log\LogLevel;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
+use SprykerMiddleware\Service\Process\ProcessServiceInterface;
 use SprykerMiddleware\Zed\Process\Business\Iterator\IteratorFactory;
+use SprykerMiddleware\Zed\Process\Business\Iterator\IteratorFactoryInterface;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory;
+use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactory;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactoryInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -25,25 +30,25 @@ use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 class ProcessCommunicationFactory extends AbstractCommunicationFactory
 {
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\IteratorFactory
+     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\IteratorFactoryInterface
      */
-    public function createIteratorFactory(): IteratorFactory
+    public function createIteratorFactory(): IteratorFactoryInterface
     {
         return new IteratorFactory();
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory
+     * @return \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface
      */
-    public function createStreamFactory(): StreamFactory
+    public function createStreamFactory(): StreamFactoryInterface
     {
         return new StreamFactory();
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactory
+     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactoryInterface
      */
-    public function createTranslatorFunctionFactory(): TranslatorFunctionFactory
+    public function createTranslatorFunctionFactory(): TranslatorFunctionFactoryInterface
     {
         return new TranslatorFunctionFactory();
     }
@@ -59,15 +64,15 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Service\Process\ProcessServiceInterface
      */
-    public function getProcessService()
+    public function getProcessService(): ProcessServiceInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::SERVICE_PROCESS);
     }
 
     /**
-     * @return \Monolog\Handler\AbstractHandler[]
+     * @return \Monolog\Handler\HandlerInterface[]
      */
-    public function getMiddlewareLogHandlers()
+    public function getMiddlewareLogHandlers(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_LOG_HANDLERS);
     }
@@ -75,7 +80,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return callable[]
      */
-    public function getMiddlewareLogProcessors()
+    public function getMiddlewareLogProcessors(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_LOG_PROCESSORS);
     }
@@ -83,15 +88,15 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
-    public function getDefaultProcessesPlugins()
+    public function getDefaultProcessesPlugins(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_DEFAULT_PROCESSES);
     }
 
     /**
-     * @return \Monolog\Handler\AbstractHandler
+     * @return \Monolog\Handler\HandlerInterface
      */
-    public function createStdErrStreamHandler(): AbstractHandler
+    public function createStdErrStreamHandler(): HandlerInterface
     {
         $streamHandler = new StreamHandler(
             'php://stderr',

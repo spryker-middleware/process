@@ -7,7 +7,7 @@
 
 namespace SprykerMiddleware\Shared\Process\Stream;
 
-interface WriteStreamInterface
+interface WriteStreamInterface extends StreamInterface
 {
     /**
      * @param mixed $data
