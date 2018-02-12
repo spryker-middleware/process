@@ -10,7 +10,6 @@ namespace SprykerMiddleware\Zed\Process\Communication;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\AbstractHandler;
-use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\IntrospectionProcessor;
 use Psr\Log\LogLevel;
@@ -70,7 +69,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return \Monolog\Handler\HandlerInterface[]
+     * @return \Monolog\Handler\AbstractHandler[]
      */
     public function getMiddlewareLogHandlers(): array
     {
@@ -94,9 +93,9 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return \Monolog\Handler\HandlerInterface
+     * @return \Monolog\Handler\AbstractHandler
      */
-    public function createStdErrStreamHandler(): HandlerInterface
+    public function createStdErrStreamHandler(): AbstractHandler
     {
         $streamHandler = new StreamHandler(
             'php://stderr',

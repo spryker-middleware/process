@@ -8,7 +8,6 @@
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
-use SprykerMiddleware\Shared\Process\Stream\StreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
 class JsonStream implements WriteStreamInterface, ReadStreamInterface

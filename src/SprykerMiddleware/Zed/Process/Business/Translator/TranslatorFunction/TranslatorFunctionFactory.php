@@ -7,7 +7,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
-class TranslatorFunctionFactory implements  TranslatorFunctionFactoryInterface
+class TranslatorFunctionFactory implements TranslatorFunctionFactoryInterface
 {
     /**
      * @param string $translatorFunctionClassName
