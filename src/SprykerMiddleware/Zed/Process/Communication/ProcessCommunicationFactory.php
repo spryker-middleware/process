@@ -114,4 +114,12 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     {
         return new LogstashFormatter(APPLICATION);
     }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
+     */
+    public function getGenericTranslatorFuncitonsPlugins(): array
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS);
+    }
 }

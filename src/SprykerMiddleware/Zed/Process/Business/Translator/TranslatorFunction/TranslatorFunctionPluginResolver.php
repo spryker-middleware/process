@@ -13,18 +13,16 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\Translato
 class TranslatorFunctionPluginResolver implements TranslatorFunctionPluginResolverInterface
 {
     /**
-     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
      */
-    protected $translatorFunctionPluginStack;
+    protected $configurationProfilePluginsStack;
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[] $translatorFunctionPluginStack
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[] $configurationProfilePluginsStack
      */
-    public function __construct(array $translatorFunctionPluginStack)
+    public function __construct(array $configurationProfilePluginsStack)
     {
-        foreach ($translatorFunctionPluginStack as $translatorFunctionPlugin) {
-            $this->translatorFunctionPluginStack[$translatorFunctionPlugin->getName()] = $translatorFunctionPlugin;
-        }
+        $this->configurationProfilePluginsStack = $configurationProfilePluginsStack;
     }
 
     /**
@@ -36,12 +34,17 @@ class TranslatorFunctionPluginResolver implements TranslatorFunctionPluginResolv
      */
     public function getTranslatorFunctionPluginByName(string $translatorFunctionPluginName): TranslatorFunctionPluginInterface
     {
-        if (!isset($this->translatorFunctionPluginStack[$translatorFunctionPluginName])) {
-            throw new MissingTranslatorFunctionPluginException(sprintf(
-                'Missing "%s" translatro function plugin. You need to register the plugin in ProcessDependencyProvider.',
-                $translatorFunctionPluginName
-            ));
+        foreach ($this->configurationProfilePluginsStack as $profile) {
+            foreach ($profile->getTranslatorFunctionPlugins() as $translatorFunctionPlugin) {
+                if ($translatorFunctionPlugin->getName() === $translatorFunctionPluginName) {
+                    return $translatorFunctionPlugin;
+                }
+            }
         }
-        return $this->translatorFunctionPluginStack[$translatorFunctionPluginName];
+
+        throw new MissingTranslatorFunctionPluginException(sprintf(
+            'Missing "%s" translator function plugin. You need to add your translator function to configuration profile',
+            $translatorFunctionPluginName
+        ));
     }
 }

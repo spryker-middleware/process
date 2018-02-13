@@ -13,4 +13,9 @@ interface ConfigurationProfilePluginInterface
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
     public function getProcessConfigurationPlugins(): array;
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
+     */
+    public function getTranslatorFunctionPlugins(): array;
 }

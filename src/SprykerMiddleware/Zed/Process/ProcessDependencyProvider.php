@@ -10,9 +10,28 @@ namespace SprykerMiddleware\Zed\Process;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Log\Communication\Plugin\Processor\PsrLogMessageProcessorPlugin;
+use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\ExcludeValuesAssociativeFilter;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Handler\StdErrStreamHandlerPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Log\MiddlewareLoggerConfigPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Processor\IntrospectionProcessorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\ArrayToStringTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\BoolToStringTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\DateTimeToStringTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\EnumTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\ExcludeKeysAssociativeFilterTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\ExcludeValuesSequentalFilterTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\FloatToIntTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\FloatToStringTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\IntToFloatTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\IntToStringTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\MoneyDecimalToIntegerTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\MoneyIntegerToDecimalTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToArrayTranslatoFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToBoolTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToDateTimeTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToFloatTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToIntTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\WhitelistKeysAssociativeFilterTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
@@ -22,7 +41,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const MIDDLEWARE_LOG_HANDLERS = 'MIDDLEWARE_LOG_HANDLERS';
     const MIDDLEWARE_LOG_PROCESSORS = 'MIDDLEWARE_LOG_PROCESSORS';
     const MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN';
-    const MIDDLEWARE_TRANSLATOR_FUNCTIONS = 'MIDDLEWARE_TRANSLATOR_FUNCTIONS';
+    const MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS = 'MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS';
 
     const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
     const SERVICE_PROCESS = 'PROCESS_SERVICE';
@@ -41,6 +60,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addLogHandlers($container);
         $container = $this->addLogProcessors($container);
         $container = $this->addProcessService($container);
+        $container = $this->addGenericTranslatorFunctions($container);
 
         return $container;
     }
@@ -55,7 +75,6 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addConfigurationProfilesStack($container);
         $container = $this->addProcessService($container);
-        $container = $this->addTranslatorFunctions($container);
 
         return $container;
     }
@@ -179,10 +198,10 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addTranslatorFunctions($container)
+    protected function addGenericTranslatorFunctions($container)
     {
-        $container[static::MIDDLEWARE_TRANSLATOR_FUNCTIONS] = function () {
-            return $this->getTranslatorFunctionsStack();
+        $container[static::MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS] = function () {
+            return $this->getGenericTranslatorFunctionsStack();
         };
 
         return $container;
@@ -220,8 +239,28 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
-    protected function getTranslatorFunctionsStack()
+    protected function getGenericTranslatorFunctionsStack()
     {
-        return [];
+        return [
+            new ArrayToStringTranslatorFunctionPlugin(),
+            new BoolToStringTranslatorFunctionPlugin(),
+            new DateTimeToStringTranslatorFunctionPlugin(),
+            new EnumTranslatorFunctionPlugin(),
+            new ExcludeKeysAssociativeFilterTranslatorFunctionPlugin(),
+            new ExcludeValuesAssociativeFilter(),
+            new ExcludeValuesSequentalFilterTranslatorFunctionPlugin(),
+            new FloatToIntTranslatorFunctionPlugin(),
+            new FloatToStringTranslatorFunctionPlugin(),
+            new IntToFloatTranslatorFunctionPlugin(),
+            new IntToStringTranslatorFunctionPlugin(),
+            new MoneyDecimalToIntegerTranslatorFunctionPlugin(),
+            new MoneyIntegerToDecimalTranslatorFunctionPlugin(),
+            new StringToArrayTranslatoFunctionPlugin(),
+            new StringToBoolTranslatorFunctionPlugin(),
+            new StringToDateTimeTranslatorFunctionPlugin(),
+            new StringToFloatTranslatorFunctionPlugin(),
+            new StringToIntTranslatorFunctionPlugin(),
+            new WhitelistKeysAssociativeFilterTranslatorFunctionPlugin(),
+        ];
     }
 }

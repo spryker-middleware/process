@@ -143,7 +143,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     protected function createTranslatorFunctionResolver(): TranslatorFunctionPluginResolverInterface
     {
-        return new TranslatorFunctionPluginResolver($this->getTranslatorFunctionsStack());
+        return new TranslatorFunctionPluginResolver($this->getProfileConfigurationPluginStack());
     }
 
     /**
@@ -160,13 +160,5 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function getProfileConfigurationPluginStack()
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_CONFIGURATION_PROFILES);
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
-     */
-    protected function getTranslatorFunctionsStack()
-    {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_TRANSLATOR_FUNCTIONS);
     }
 }

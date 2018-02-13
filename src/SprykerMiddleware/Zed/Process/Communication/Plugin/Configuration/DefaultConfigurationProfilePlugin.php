@@ -24,4 +24,13 @@ class DefaultConfigurationProfilePlugin extends AbstractPlugin implements Config
         return $this->getFactory()
             ->getDefaultProcessesPlugins();
     }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
+     */
+    public function getTranslatorFunctionPlugins(): array
+    {
+        return $this->getFactory()
+            ->getGenericTranslatorFuncitonsPlugins();
+    }
 }
