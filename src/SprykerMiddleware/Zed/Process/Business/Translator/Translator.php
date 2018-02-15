@@ -139,7 +139,7 @@ class Translator implements TranslatorInterface
      */
     protected function translateCallable(array $result, array $payload, string $key, callable $translation): array
     {
-        $inputValue = $this->arrayManager->getValueByKey($payload, $key);
+        $inputValue = $this->arrayManager->getValueByKey($result, $key);
         $resultValue = $translation($inputValue, $key, $result);
         $this->getProcessLogger()->debug(
             static::OPERATION,
