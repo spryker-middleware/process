@@ -20,7 +20,7 @@ interface ProcessServiceInterface
      *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
      *
-     * @return array
+     * @return mixed
      */
     public function read(ReadStreamInterface $stream);
 
@@ -31,9 +31,9 @@ interface ProcessServiceInterface
      * @api
      *
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $stream
-     * @param array $data
+     * @param mixed $data
      *
-     * @return bool|int
+     * @return int
      */
-    public function write(WriteStreamInterface $stream, $data);
+    public function write(WriteStreamInterface $stream, $data): int;
 }

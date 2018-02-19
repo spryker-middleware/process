@@ -53,9 +53,9 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return callable
+     * @return \Monolog\Processor\IntrospectionProcessor
      */
-    public function createIntrospectionProcessor(): callable
+    public function createIntrospectionProcessor(): IntrospectionProcessor
     {
         return new IntrospectionProcessor();
     }

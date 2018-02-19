@@ -12,7 +12,7 @@ use Generated\Shared\Transfer\MapperConfigTransfer;
 interface MapInterface
 {
     /**
-     * @return \Generated\Shared\Transfer\MaperConfig
+     * @return \Generated\Shared\Transfer\MapperConfigTransfer
      */
     public function getMapperConfig(): MapperConfigTransfer;
 }

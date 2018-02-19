@@ -16,7 +16,7 @@ class ExcludeValuesSequentalFilterTranslatorFunctionPlugin extends AbstractGener
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return static::NAME;
     }
@@ -24,7 +24,7 @@ class ExcludeValuesSequentalFilterTranslatorFunctionPlugin extends AbstractGener
     /**
      * @return string
      */
-    public function getTranslatorFunctionClassName()
+    public function getTranslatorFunctionClassName(): string
     {
         return ExcludeValuesSequentalFilter::class;
     }

@@ -26,7 +26,7 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
     /**
      * @return string
      */
-    public function getChannelName()
+    public function getChannelName(): string
     {
         return static::CHANNEL_NAME;
     }
@@ -34,7 +34,7 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
     /**
      * @return \Monolog\Handler\AbstractHandler[]
      */
-    public function getHandlers()
+    public function getHandlers(): array
     {
         if ($this->handlers) {
             return $this->handlers;
@@ -46,7 +46,7 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
     /**
      * @return callable[]
      */
-    public function getProcessors()
+    public function getProcessors(): array
     {
         return $this->getFactory()->getMiddlewareLogProcessors();
     }
@@ -58,7 +58,7 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
      *
      * @return void
      */
-    public function changeLogLevel($level)
+    public function changeLogLevel($level): void
     {
         $this->handlers = $this->getFactory()->getMiddlewareLogHandlers();
         foreach ($this->handlers as $handler) {

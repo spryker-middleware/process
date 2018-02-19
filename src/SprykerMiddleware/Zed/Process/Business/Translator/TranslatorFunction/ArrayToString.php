@@ -26,9 +26,9 @@ class ArrayToString extends AbstractTranslatorFunction
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException
      *
-     * @return array
+     * @return string
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): string
     {
         if (!is_array($value)) {
             throw new WrongTypeValueTranslatorException(static::class, $this->key, 'array', $value);

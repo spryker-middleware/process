@@ -15,7 +15,7 @@ class IntToString extends AbstractTranslatorFunction implements TranslatorFuncti
      *
      * @return string
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): string
     {
         return (string)$value;
     }

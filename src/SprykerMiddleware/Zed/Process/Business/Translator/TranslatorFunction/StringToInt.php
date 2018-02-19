@@ -15,7 +15,7 @@ class StringToInt extends AbstractTranslatorFunction implements TranslatorFuncti
      *
      * @return int
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): int
     {
         return (int)$value;
     }

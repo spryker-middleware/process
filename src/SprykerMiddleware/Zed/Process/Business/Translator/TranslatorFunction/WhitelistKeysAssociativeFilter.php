@@ -27,7 +27,7 @@ class WhitelistKeysAssociativeFilter extends AbstractTranslatorFunction implemen
      *
      * @return array
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): array
     {
         if (!is_array($value)) {
             throw new WrongTypeValueTranslatorException(static::class, $this->key, 'array', $value);

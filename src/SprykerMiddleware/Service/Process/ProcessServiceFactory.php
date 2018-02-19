@@ -8,13 +8,14 @@
 namespace SprykerMiddleware\Service\Process;
 
 use SprykerMiddleware\Service\Process\Model\StreamService;
+use SprykerMiddleware\Service\Process\Model\StreamServiceInterface;
 
 class ProcessServiceFactory
 {
     /**
      * @return \SprykerMiddleware\Service\Process\Model\StreamServiceInterface
      */
-    public function createStreamService()
+    public function createStreamService(): StreamServiceInterface
     {
         return new StreamService();
     }

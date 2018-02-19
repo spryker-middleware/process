@@ -19,7 +19,7 @@ class ProcessService extends AbstractService implements ProcessServiceInterface
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
      *
-     * @return array
+     * @return mixed
      */
     public function read(ReadStreamInterface $stream)
     {
@@ -30,11 +30,11 @@ class ProcessService extends AbstractService implements ProcessServiceInterface
 
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $stream
-     * @param array $data
+     * @param mixed $data
      *
-     * @return bool|int
+     * @return int
      */
-    public function write(WriteStreamInterface $stream, $data)
+    public function write(WriteStreamInterface $stream, $data): int
     {
         return $this->getFactory()
             ->createStreamService()

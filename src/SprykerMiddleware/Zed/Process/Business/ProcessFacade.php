@@ -41,7 +41,6 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
      *
      * @param array $payload
      * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
-     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return array
      */

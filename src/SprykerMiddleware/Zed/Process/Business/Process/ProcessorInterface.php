@@ -12,5 +12,5 @@ interface ProcessorInterface
     /**
      * @return void
      */
-    public function process();
+    public function process(): void;
 }

@@ -12,12 +12,12 @@ interface GenericTranslatorFunctionPluginInterface extends TranslatorFunctionPlu
     /**
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @return string
      */
-    public function getTranslatorFunctionClassName();
+    public function getTranslatorFunctionClassName(): string;
 
     /**
      * @param mixed $value

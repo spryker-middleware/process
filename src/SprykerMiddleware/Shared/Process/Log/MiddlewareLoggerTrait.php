@@ -7,6 +7,7 @@
 
 namespace SprykerMiddleware\Shared\Process\Log;
 
+use Psr\Log\LoggerInterface;
 use Spryker\Shared\Log\Config\LoggerConfigInterface;
 use Spryker\Shared\Log\LoggerTrait;
 use SprykerMiddleware\Shared\Process\Log\Exception\ProcessLoggerNotConfiguredException;
@@ -20,7 +21,7 @@ trait MiddlewareLoggerTrait
      *
      * @return \Psr\Log\LoggerInterface
      */
-    protected function getProcessLogger()
+    protected function getProcessLogger(): LoggerInterface
     {
         if (MiddlewareLoggerContainer::getLogger()) {
             return MiddlewareLoggerContainer::getLogger();
@@ -34,7 +35,7 @@ trait MiddlewareLoggerTrait
      *
      * @return void
      */
-    public function initLogger(LoggerConfigInterface $loggerConfig)
+    public function initLogger(LoggerConfigInterface $loggerConfig): void
     {
         if (!MiddlewareLoggerContainer::getLogger()) {
             MiddlewareLoggerContainer::setLogger($this->getLogger($loggerConfig));

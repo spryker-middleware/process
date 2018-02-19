@@ -19,7 +19,7 @@ class MiddlewareLoggerContainer
     /**
      * @return \Psr\Log\LoggerInterface|null
      */
-    public static function getLogger()
+    public static function getLogger(): ?LoggerInterface
     {
         return self::$logger;
     }
@@ -29,7 +29,7 @@ class MiddlewareLoggerContainer
      *
      * @return void
      */
-    public static function setLogger(LoggerInterface $logger)
+    public static function setLogger(LoggerInterface $logger): void
     {
         self::$logger = $logger;
     }

@@ -16,7 +16,7 @@ class FloatToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFun
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return static::NAME;
     }
@@ -24,7 +24,7 @@ class FloatToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFun
     /**
      * @return string
      */
-    public function getTranslatorFunctionClassName()
+    public function getTranslatorFunctionClassName(): string
     {
         return FloatToString::class;
     }

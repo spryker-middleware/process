@@ -8,6 +8,8 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Handler;
 
 use Monolog\Formatter\FormatterInterface;
+use Monolog\Handler\AbstractHandler;
+use Monolog\Handler\HandlerInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLogHandlerPluginInterface;
 
@@ -25,7 +27,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     /**
      * @return \Monolog\Handler\AbstractHandler
      */
-    protected function getHandler()
+    protected function getHandler(): AbstractHandler
     {
         if (!$this->handler) {
             $this->handler = $this->getFactory()->createStdErrStreamHandler();
@@ -39,7 +41,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
      *
      * @return bool
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return $this->getHandler()->isHandling($record);
     }
@@ -49,7 +51,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
      *
      * @return bool
      */
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
         return $this->getHandler()->handle($record);
     }
@@ -59,7 +61,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
      *
      * @return void
      */
-    public function handleBatch(array $records)
+    public function handleBatch(array $records): void
     {
         $this->getHandler()->handleBatch($records);
     }
@@ -69,7 +71,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
      *
      * @return \Monolog\Handler\HandlerInterface
      */
-    public function pushProcessor($callback)
+    public function pushProcessor($callback): HandlerInterface
     {
         return $this->getHandler()->pushProcessor($callback);
     }
@@ -77,7 +79,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     /**
      * @return callable
      */
-    public function popProcessor()
+    public function popProcessor(): callable
     {
         return $this->getHandler()->popProcessor();
     }
@@ -87,7 +89,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
      *
      * @return \Monolog\Handler\HandlerInterface
      */
-    public function setFormatter(FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
         return $this->getHandler()->setFormatter($formatter);
     }
@@ -95,7 +97,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     /**
      * @return \Monolog\Formatter\FormatterInterface
      */
-    public function getFormatter()
+    public function getFormatter(): FormatterInterface
     {
         return $this->getHandler()->getFormatter();
     }
@@ -105,7 +107,7 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
      *
      * @return \Monolog\Handler\HandlerInterface
      */
-    public function setLevel($level)
+    public function setLevel($level): HandlerInterface
     {
         return $this->getHandler()->setLevel($level);
     }

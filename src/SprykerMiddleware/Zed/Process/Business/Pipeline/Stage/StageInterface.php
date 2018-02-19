@@ -19,7 +19,7 @@ interface StageInterface
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      * @param mixed $originalPayload
      *
-     * @return mixed
+     * @return array
      */
     public function __invoke($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream, $originalPayload): array;
 

@@ -29,6 +29,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -149,15 +150,15 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
-    protected function getDefaultLoggerConfigPlugin()
+    protected function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN);
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
      */
-    protected function getProfileConfigurationPluginStack()
+    protected function getProfileConfigurationPluginStack(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_CONFIGURATION_PROFILES);
     }

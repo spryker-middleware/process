@@ -28,7 +28,7 @@ class StringToArray extends AbstractTranslatorFunction
      *
      * @return array
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): array
     {
         if (!is_string($value)) {
             throw new WrongTypeValueTranslatorException(static::class, $this->key, 'string', $value);

@@ -19,12 +19,12 @@ abstract class AbstractGenericTranslatorFunctionPlugin extends AbstractPlugin im
     /**
      * @return string
      */
-    abstract public function getName();
+    abstract public function getName(): string;
 
     /**
      * @return string
      */
-    abstract public function getTranslatorFunctionClassName();
+    abstract public function getTranslatorFunctionClassName(): string;
 
     /**
      * @param mixed $value

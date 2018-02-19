@@ -32,6 +32,7 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\String
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToFloatTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToIntTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\WhitelistKeysAssociativeFilterTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
@@ -51,7 +52,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideCommunicationLayerDependencies(Container $container)
+    public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideCommunicationLayerDependencies($container);
 
@@ -70,7 +71,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideBusinessLayerDependencies(Container $container)
+    public function provideBusinessLayerDependencies(Container $container): Container
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addConfigurationProfilesStack($container);
@@ -84,7 +85,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addConfigurationProfilesStack($container)
+    protected function addConfigurationProfilesStack($container): Container
     {
         $container[static::MIDDLEWARE_CONFIGURATION_PROFILES] = function () {
             return $this->getConfigurationProfilePluginsStack();
@@ -98,7 +99,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addDefaultProcessesStack($container)
+    protected function addDefaultProcessesStack($container): Container
     {
         $container[static::MIDDLEWARE_DEFAULT_PROCESSES] = function () {
             return $this->getDefaultProcessesPluginsStack();
@@ -110,7 +111,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
-    protected function getDefaultProcessesPluginsStack()
+    protected function getDefaultProcessesPluginsStack(): array
     {
         return [];
     }
@@ -118,7 +119,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
      */
-    protected function getConfigurationProfilePluginsStack()
+    protected function getConfigurationProfilePluginsStack(): array
     {
         return [];
     }
@@ -156,7 +157,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addLogHandlers($container)
+    protected function addLogHandlers($container): Container
     {
         $container[static::MIDDLEWARE_LOG_HANDLERS] = function () {
             return $this->getLogHandlers();
@@ -170,7 +171,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addLogProcessors($container)
+    protected function addLogProcessors($container): Container
     {
         $container[static::MIDDLEWARE_LOG_PROCESSORS] = function () {
             return $this->getLogProcessors();
@@ -184,7 +185,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addDefaultLoggerConfigPlugin($container)
+    protected function addDefaultLoggerConfigPlugin($container): Container
     {
         $container[static::MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN] = function () {
             return $this->getDefaultLoggerConfigPlugin();
@@ -198,7 +199,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addGenericTranslatorFunctions($container)
+    protected function addGenericTranslatorFunctions($container): Container
     {
         $container[static::MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS] = function () {
             return $this->getGenericTranslatorFunctionsStack();
@@ -210,7 +211,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
-    protected function getDefaultLoggerConfigPlugin()
+    protected function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
     {
         return new MiddlewareLoggerConfigPlugin();
     }
@@ -218,7 +219,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \Spryker\Shared\Log\Dependency\Plugin\LogHandlerPluginInterface[]
      */
-    protected function getLogProcessors()
+    protected function getLogProcessors(): array
     {
         return [
             new PsrLogMessageProcessorPlugin(),
@@ -229,7 +230,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \Spryker\Shared\Log\Dependency\Plugin\LogProcessorPluginInterface[]
      */
-    protected function getLogHandlers()
+    protected function getLogHandlers(): array
     {
         return [
             new StdErrStreamHandlerPlugin(),
@@ -239,7 +240,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
-    protected function getGenericTranslatorFunctionsStack()
+    protected function getGenericTranslatorFunctionsStack(): array
     {
         return [
             new ArrayToStringTranslatorFunctionPlugin(),

@@ -16,7 +16,7 @@ interface ProcessToUtilEncodingServiceInterface
      *
      * @return string
      */
-    public function encodeJson($value, $options = null, $depth = null);
+    public function encodeJson($value, $options = null, $depth = null): string;
 
     /**
      * @param string $jsonValue
@@ -26,5 +26,5 @@ interface ProcessToUtilEncodingServiceInterface
      *
      * @return array
      */
-    public function decodeJson($jsonValue, $assoc = false, $depth = null, $options = null);
+    public function decodeJson($jsonValue, $assoc = false, $depth = null, $options = null): array;
 }

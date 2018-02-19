@@ -18,5 +18,5 @@ interface MiddlewareLoggerConfigPluginInterface extends LoggerConfigInterface
      *
      * @return void
      */
-    public function changeLogLevel($level);
+    public function changeLogLevel($level): void;
 }

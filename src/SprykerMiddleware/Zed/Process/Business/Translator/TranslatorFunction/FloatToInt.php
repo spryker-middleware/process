@@ -15,7 +15,7 @@ class FloatToInt extends AbstractTranslatorFunction implements TranslatorFunctio
      *
      * @return int
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): int
     {
         return (int)$value;
     }

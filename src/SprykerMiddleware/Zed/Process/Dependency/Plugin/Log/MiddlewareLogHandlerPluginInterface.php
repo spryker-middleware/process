@@ -16,5 +16,5 @@ interface MiddlewareLogHandlerPluginInterface extends HandlerInterface
      *
      * @return \Monolog\Handler\HandlerInterface
      */
-    public function setLevel($level);
+    public function setLevel($level): HandlerInterface;
 }

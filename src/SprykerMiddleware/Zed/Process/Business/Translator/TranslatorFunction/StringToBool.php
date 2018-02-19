@@ -16,7 +16,7 @@ class StringToBool extends AbstractTranslatorFunction implements TranslatorFunct
      *
      * @return bool
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): bool
     {
         return strtolower($value) === static::VALUE_TRUE;
     }

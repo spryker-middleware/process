@@ -21,7 +21,7 @@ class MoneyDecimalToInteger extends AbstractTranslatorFunction
      *
      * @return int
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): int
     {
         if (!is_float($value)) {
             throw new WrongTypeValueTranslatorException(static::class, $this->key, 'float', $value);

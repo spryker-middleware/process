@@ -45,7 +45,7 @@ class ProcessConsole extends Console
     /**
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(static::COMMAND_NAME)
             ->setDescription(static::DESCRIPTION);
@@ -144,7 +144,7 @@ class ProcessConsole extends Console
      *
      * @return int|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $processSettingsTransfer = $this->processArgs($input, $output);
         if ($this->hasError()) {

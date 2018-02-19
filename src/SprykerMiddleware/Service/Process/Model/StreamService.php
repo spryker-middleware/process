@@ -15,7 +15,7 @@ class StreamService implements StreamServiceInterface
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
      *
-     * @return array
+     * @return mixed
      */
     public function read(ReadStreamInterface $stream)
     {

@@ -15,7 +15,7 @@ class StringToFloat extends AbstractTranslatorFunction implements TranslatorFunc
      *
      * @return float
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): float
     {
         return (float)$value;
     }

@@ -15,7 +15,7 @@ class BoolToString extends AbstractTranslatorFunction implements TranslatorFunct
      *
      * @return string
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): string
     {
         return $value ? 'true' : 'false';
     }

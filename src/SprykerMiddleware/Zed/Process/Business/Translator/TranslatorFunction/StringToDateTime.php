@@ -17,7 +17,7 @@ class StringToDateTime extends AbstractTranslatorFunction implements TranslatorF
      *
      * @return \DateTime
      */
-    public function translate($value, array $payload)
+    public function translate($value, array $payload): DateTime
     {
         return new DateTime($value);
     }
