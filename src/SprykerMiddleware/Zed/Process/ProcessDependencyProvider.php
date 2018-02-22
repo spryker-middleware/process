@@ -10,7 +10,6 @@ namespace SprykerMiddleware\Zed\Process;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Log\Communication\Plugin\Processor\PsrLogMessageProcessorPlugin;
-use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\ExcludeValuesAssociativeFilter;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Handler\StdErrStreamHandlerPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Log\MiddlewareLoggerConfigPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Processor\IntrospectionProcessorPlugin;
@@ -19,6 +18,7 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\BoolTo
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\DateTimeToStringTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\EnumTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\ExcludeKeysAssociativeFilterTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\ExcludeValuesAssociativeFilterTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\ExcludeValuesSequentalFilterTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\FloatToIntTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\FloatToStringTranslatorFunctionPlugin;
@@ -248,7 +248,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
             new DateTimeToStringTranslatorFunctionPlugin(),
             new EnumTranslatorFunctionPlugin(),
             new ExcludeKeysAssociativeFilterTranslatorFunctionPlugin(),
-            new ExcludeValuesAssociativeFilter(),
+            new ExcludeValuesAssociativeFilterTranslatorFunctionPlugin(),
             new ExcludeValuesSequentalFilterTranslatorFunctionPlugin(),
             new FloatToIntTranslatorFunctionPlugin(),
             new FloatToStringTranslatorFunctionPlugin(),
