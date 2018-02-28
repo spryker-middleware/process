@@ -31,7 +31,7 @@ class ArrayToStringTest extends Unit
         $converter = new ArrayToString();
         $data = ['Foo', 'Bar'];
 
-        $this->assertEquals('FooBar', $converter->translate($data));
+        $this->assertEquals('FooBar', $converter->translate($data, []));
     }
 
     /**
@@ -45,7 +45,7 @@ class ArrayToStringTest extends Unit
         );
         $data = ['Foo', 'Bar'];
 
-        $this->assertEquals('Foo-Bar', $converter->translate($data));
+        $this->assertEquals('Foo-Bar', $converter->translate($data, []));
     }
 
     /**
@@ -56,8 +56,9 @@ class ArrayToStringTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new ArrayToString();
+        $converter->setKey('itemKey');
         $data = 'Foo';
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 }

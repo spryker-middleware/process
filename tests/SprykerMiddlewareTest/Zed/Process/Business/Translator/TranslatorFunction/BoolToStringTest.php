@@ -31,7 +31,7 @@ class BoolToStringTest extends Unit
         $converter = new BoolToString();
         $data = true;
 
-        $this->assertEquals('true', $converter->translate($data));
+        $this->assertEquals('true', $converter->translate($data, []));
     }
 
     /**
@@ -42,6 +42,6 @@ class BoolToStringTest extends Unit
         $converter = new BoolToString();
         $data = 0;
 
-        $this->assertEquals('false', $converter->translate($data));
+        $this->assertEquals('false', $converter->translate($data, []));
     }
 }

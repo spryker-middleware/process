@@ -39,17 +39,17 @@ class LengthValidator extends AbstractValidator
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    protected function getMinLength(): int
+    protected function getMinLength(): ?int
     {
         return $this->options[static::OPTION_MIN];
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    protected function getMaxLength(): int
+    protected function getMaxLength(): ?int
     {
         return $this->options[static::OPTION_MAX];
     }

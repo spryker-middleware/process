@@ -32,7 +32,7 @@ class StringToDateTimeTest extends Unit
         $converter = new StringToDateTime();
         $data = '2017-12-31';
 
-        $this->assertEquals(new DateTime($data), $converter->translate($data));
+        $this->assertEquals(new DateTime($data), $converter->translate($data, []));
     }
 
     /**
@@ -43,9 +43,10 @@ class StringToDateTimeTest extends Unit
         $this->expectException('Exception');
 
         $converter = new StringToDateTime();
+        $converter->setKey('itemKey');
         $data = '0';
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 
     /**
@@ -56,8 +57,9 @@ class StringToDateTimeTest extends Unit
         $this->expectException('Exception');
 
         $converter = new StringToDateTime();
+        $converter->setKey('itemKey');
         $data = 1;
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 }

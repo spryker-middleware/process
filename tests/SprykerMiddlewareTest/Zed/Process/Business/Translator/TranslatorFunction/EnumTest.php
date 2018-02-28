@@ -39,7 +39,7 @@ class EnumTest extends Unit
 
         $data = 'test';
 
-        $this->assertEquals($map[$data], $converter->translate($data));
+        $this->assertEquals($map[$data], $converter->translate($data, []));
     }
 
     /**
@@ -58,7 +58,7 @@ class EnumTest extends Unit
 
         $data = 0;
 
-        $this->assertEquals($map[$data], $converter->translate($data));
+        $this->assertEquals($map[$data], $converter->translate($data, []));
     }
 
     /**
@@ -77,6 +77,6 @@ class EnumTest extends Unit
 
         $data = 0;
 
-        $this->assertEquals($map[$data], $converter->translate($data));
+        $this->assertEquals($map[$data], $converter->translate($data, []));
     }
 }

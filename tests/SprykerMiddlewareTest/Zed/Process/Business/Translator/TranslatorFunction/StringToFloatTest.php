@@ -31,7 +31,7 @@ class StringToFloatTest extends Unit
         $converter = new StringToFloat();
         $data = '12.98';
 
-        $this->assertEquals(12.98, $converter->translate($data));
+        $this->assertEquals(12.98, $converter->translate($data, []));
     }
 
     /**
@@ -42,7 +42,7 @@ class StringToFloatTest extends Unit
         $converter = new StringToFloat();
         $data = 'FooBar';
 
-        $this->assertEquals(0.0, $converter->translate($data));
+        $this->assertEquals(0.0, $converter->translate($data, []));
     }
 
     /**
@@ -53,6 +53,6 @@ class StringToFloatTest extends Unit
         $converter = new StringToFloat();
         $data = 12;
 
-        $this->assertEquals(12.00, $converter->translate($data));
+        $this->assertEquals(12.00, $converter->translate($data, []));
     }
 }
