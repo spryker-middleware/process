@@ -32,6 +32,19 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\String
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToFloatTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\StringToIntTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\WhitelistKeysAssociativeFilterTranslatorFunctionPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\DateTimeValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\EqualToValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\GreaterOrEqualThanValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\GreaterThanValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\InListValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\LengthValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\LessOrEqualThanValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\LessThanValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\NotBlankValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\NotEqualToValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\RegexValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\RequiredValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\TypeValidatorPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
 
@@ -43,6 +56,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     const MIDDLEWARE_LOG_PROCESSORS = 'MIDDLEWARE_LOG_PROCESSORS';
     const MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN';
     const MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS = 'MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS';
+    const MIDDLEWARE_GENERIC_VALIDATORS = 'MIDDLEWARE_GENERIC_VALIDATORS';
 
     const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
     const SERVICE_PROCESS = 'PROCESS_SERVICE';
@@ -62,6 +76,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addLogProcessors($container);
         $container = $this->addProcessService($container);
         $container = $this->addGenericTranslatorFunctions($container);
+        $container = $this->addGenericValidators($container);
 
         return $container;
     }
@@ -209,6 +224,20 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addGenericValidators($container): Container
+    {
+        $container[static::MIDDLEWARE_GENERIC_VALIDATORS] = function () {
+            return $this->getGenericValidatorsStack();
+        };
+
+        return $container;
+    }
+
+    /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
     protected function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
@@ -262,6 +291,28 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
             new StringToFloatTranslatorFunctionPlugin(),
             new StringToIntTranslatorFunctionPlugin(),
             new WhitelistKeysAssociativeFilterTranslatorFunctionPlugin(),
+        ];
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\ValidatorPluginInterface[]
+     */
+    protected function getGenericValidatorsStack(): array
+    {
+        return [
+            new DateTimeValidatorPlugin(),
+            new EqualToValidatorPlugin(),
+            new GreaterOrEqualThanValidatorPlugin(),
+            new GreaterThanValidatorPlugin(),
+            new InListValidatorPlugin(),
+            new LengthValidatorPlugin(),
+            new LessOrEqualThanValidatorPlugin(),
+            new LessThanValidatorPlugin(),
+            new NotBlankValidatorPlugin(),
+            new NotEqualToValidatorPlugin(),
+            new RegexValidatorPlugin(),
+            new RequiredValidatorPlugin(),
+            new TypeValidatorPlugin(),
         ];
     }
 }

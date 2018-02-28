@@ -31,6 +31,15 @@ class DefaultConfigurationProfilePlugin extends AbstractPlugin implements Config
     public function getTranslatorFunctionPlugins(): array
     {
         return $this->getFactory()
-            ->getGenericTranslatorFuncitonsPlugins();
+            ->getGenericTranslatorFunctionsPlugins();
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\ValidatorPluginInterface[]
+     */
+    public function getValidatorPlugins(): array
+    {
+        return $this->getFactory()
+            ->getGenericValidatorPlugins();
     }
 }
