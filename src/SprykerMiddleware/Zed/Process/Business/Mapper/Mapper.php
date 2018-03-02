@@ -7,6 +7,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
+use Closure;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Shared\Process\ProcessConfig;
@@ -75,7 +76,7 @@ class Mapper implements MapperInterface
      */
     protected function mapByRule(array $result, array $payload, string $key, $value): array
     {
-        if (is_callable($value)) {
+        if ($value instanceof Closure) {
             return $this->mapCallable($result, $payload, $key, $value);
         }
         if (is_array($value)) {
