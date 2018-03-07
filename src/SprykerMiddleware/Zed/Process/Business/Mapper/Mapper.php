@@ -7,6 +7,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
+use Closure;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Shared\Process\ProcessConfig;
