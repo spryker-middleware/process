@@ -31,7 +31,7 @@ class MoneyIntegerToDecimalTest extends Unit
         $converter = new MoneyIntegerToDecimal();
         $data = 1200;
 
-        $this->assertEquals('12.00', $converter->translate($data));
+        $this->assertEquals('12.00', $converter->translate($data, []));
     }
 
     /**
@@ -42,9 +42,10 @@ class MoneyIntegerToDecimalTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new MoneyIntegerToDecimal();
+        $converter->setKey('itemKey');
         $data = '1200';
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 
     /**
@@ -55,8 +56,9 @@ class MoneyIntegerToDecimalTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new MoneyIntegerToDecimal();
+        $converter->setKey('itemKey');
         $data = 'FooBar';
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 }

@@ -44,7 +44,7 @@ class ExcludeValuesSequentalFilterTest extends Unit
             'foobar',
         ];
 
-        $this->assertEquals(['foobar'], $converter->translate($data));
+        $this->assertEquals(['foobar'], $converter->translate($data, []));
     }
 
     /**
@@ -68,7 +68,7 @@ class ExcludeValuesSequentalFilterTest extends Unit
             'baz' => 'foobar',
         ];
 
-        $this->assertEquals(['foobar'], $converter->translate($data));
+        $this->assertEquals(['foobar'], $converter->translate($data, []));
     }
 
     /**
@@ -79,8 +79,9 @@ class ExcludeValuesSequentalFilterTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new ExcludeValuesSequentalFilter();
+        $converter->setKey('itemKey');
         $data = 'foo';
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 }

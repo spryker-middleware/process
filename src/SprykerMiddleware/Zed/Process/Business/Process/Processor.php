@@ -99,7 +99,7 @@ class Processor implements ProcessorInterface
                     ]);
                     $this->pipeline->process($item, $this->inputStream, $this->outputStream);
                 } catch (TolerableProcessException $exception) {
-                    $this->getProcessLogger()->error('Experienced tolerable process error in ' . $exception->getFile());
+                    $this->getProcessLogger()->error('Experienced tolerable process error in ' . $exception->getFile(), ['exception' => $exception]);
                 }
             }
             $this->outputStream->flush();

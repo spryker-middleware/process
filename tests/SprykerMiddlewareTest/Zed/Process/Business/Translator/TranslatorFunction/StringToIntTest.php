@@ -31,7 +31,7 @@ class StringToIntTest extends Unit
         $converter = new StringToInt();
         $data = '12.98';
 
-        $this->assertEquals(12, $converter->translate($data));
+        $this->assertEquals(12, $converter->translate($data, []));
     }
 
     /**
@@ -42,7 +42,7 @@ class StringToIntTest extends Unit
         $converter = new StringToInt();
         $data = 'FooBar';
 
-        $this->assertEquals(0, $converter->translate($data));
+        $this->assertEquals(0, $converter->translate($data, []));
     }
 
     /**
@@ -53,6 +53,6 @@ class StringToIntTest extends Unit
         $converter = new StringToInt();
         $data = 12;
 
-        $this->assertEquals(12, $converter->translate($data));
+        $this->assertEquals(12, $converter->translate($data, []));
     }
 }

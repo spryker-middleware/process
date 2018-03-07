@@ -44,7 +44,7 @@ class ExcludeKeysAssociativeFilterTest extends Unit
             'baz' => 'foobar',
         ];
 
-        $this->assertEquals(['baz' => 'foobar'], $converter->translate($data));
+        $this->assertEquals(['baz' => 'foobar'], $converter->translate($data, []));
     }
 
     /**
@@ -69,7 +69,7 @@ class ExcludeKeysAssociativeFilterTest extends Unit
             'foobar',
         ];
 
-        $this->assertEquals(['0' => 'foo', '3' => 'foobar'], $converter->translate($data));
+        $this->assertEquals(['0' => 'foo', '3' => 'foobar'], $converter->translate($data, []));
     }
 
     /**
@@ -80,8 +80,9 @@ class ExcludeKeysAssociativeFilterTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new ExcludeKeysAssociativeFilter();
+        $converter->setKey('itemKey');
         $data = 'foo';
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 }

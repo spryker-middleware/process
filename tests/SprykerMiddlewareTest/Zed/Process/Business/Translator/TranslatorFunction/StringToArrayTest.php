@@ -34,7 +34,7 @@ class StringToArrayTest extends Unit
         );
         $data = 'Foo-Bar';
 
-        $this->assertEquals(['Foo', 'Bar'], $converter->translate($data));
+        $this->assertEquals(['Foo', 'Bar'], $converter->translate($data, []));
     }
 
     /**
@@ -48,7 +48,7 @@ class StringToArrayTest extends Unit
         );
         $data = '12';
 
-        $this->assertEquals(['12'], $converter->translate($data));
+        $this->assertEquals(['12'], $converter->translate($data, []));
     }
 
     /**
@@ -59,11 +59,12 @@ class StringToArrayTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new StringToArray();
+        $converter->setKey('itemKey');
         $converter->setOptions(
             [StringToArray::OPTION_DELIMITER => '-']
         );
         $data = 12.0;
 
-        $this->assertEquals(['12'], $converter->translate($data));
+        $this->assertEquals(['12'], $converter->translate($data, []));
     }
 }

@@ -21,6 +21,8 @@ use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactory;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactoryInterface;
+use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactory;
+use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactoryInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -118,8 +120,24 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
-    public function getGenericTranslatorFuncitonsPlugins(): array
+    public function getGenericTranslatorFunctionsPlugins(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\ValidatorPluginInterface[]
+     */
+    public function getGenericValidatorPlugins()
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_GENERIC_VALIDATORS);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactoryInterface;
+     */
+    public function createValidatorFactory(): ValidatorFactoryInterface
+    {
+        return new ValidatorFactory();
     }
 }

@@ -9,10 +9,10 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 interface TranslatorFunctionFactoryInterface
 {
-    /**
-     * @param string $translatorFunctionClassName
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface
-     */
+        /**
+         * @param string $translatorFunctionClassName
+         *
+         * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface
+         */
     public function createTranslatorFunction(string $translatorFunctionClassName): TranslatorFunctionInterface;
 }

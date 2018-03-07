@@ -31,4 +31,8 @@
         <property name="dictionary" type="array"/>
     </transfer>
 
+    <transfer name="ValidatorConfig">
+        <property name="rules" type="array"/>
+    </transfer>
+
 </transfers>

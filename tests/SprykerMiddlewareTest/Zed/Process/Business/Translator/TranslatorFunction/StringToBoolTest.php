@@ -31,7 +31,7 @@ class StringToBoolTest extends Unit
         $converter = new StringToBool();
         $data = 'True';
 
-        $this->assertEquals(true, $converter->translate($data));
+        $this->assertEquals(true, $converter->translate($data, []));
     }
 
     /**
@@ -42,7 +42,7 @@ class StringToBoolTest extends Unit
         $converter = new StringToBool();
         $data = '0';
 
-        $this->assertEquals(false, $converter->translate($data));
+        $this->assertEquals(false, $converter->translate($data, []));
     }
 
     /**
@@ -53,6 +53,6 @@ class StringToBoolTest extends Unit
         $converter = new StringToBool();
         $data = 1;
 
-        $this->assertEquals(false, $converter->translate($data));
+        $this->assertEquals(false, $converter->translate($data, []));
     }
 }

@@ -10,6 +10,7 @@ namespace SprykerMiddleware\Zed\Process\Business;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
+use Generated\Shared\Transfer\ValidatorConfigTransfer;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
@@ -29,6 +30,9 @@ use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface;
+use SprykerMiddleware\Zed\Process\Business\Validator\PayloadValidator;
+use SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolver;
+use SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
@@ -83,6 +87,20 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         return new Translator(
             $translatorConfigTransfer,
             $this->createTranslatorFunctionResolver(),
+            $this->createArrayManager()
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ValidatorConfigTransfer $validatorConfigTransfer
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Validator\PayloadValidatorInterface
+     */
+    public function createPayloadValidator(ValidatorConfigTransfer $validatorConfigTransfer)
+    {
+        return new PayloadValidator(
+            $validatorConfigTransfer,
+            $this->createValidatorPluginResolver(),
             $this->createArrayManager()
         );
     }
@@ -145,6 +163,14 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     protected function createTranslatorFunctionResolver(): TranslatorFunctionPluginResolverInterface
     {
         return new TranslatorFunctionPluginResolver($this->getProfileConfigurationPluginStack());
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolverInterface
+     */
+    protected function createValidatorPluginResolver(): ValidatorPluginResolverInterface
+    {
+        return new ValidatorPluginResolver($this->getProfileConfigurationPluginStack());
     }
 
     /**

@@ -12,20 +12,5 @@ interface GenericTranslatorFunctionPluginInterface extends TranslatorFunctionPlu
     /**
      * @return string
      */
-    public function getName(): string;
-
-    /**
-     * @return string
-     */
     public function getTranslatorFunctionClassName(): string;
-
-    /**
-     * @param mixed $value
-     * @param array $payload
-     * @param string $key
-     * @param array $options
-     *
-     * @return mixed
-     */
-    public function translate($value, array $payload, string $key, array $options);
 }

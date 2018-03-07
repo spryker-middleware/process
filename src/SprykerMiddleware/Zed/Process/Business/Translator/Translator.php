@@ -165,9 +165,9 @@ class Translator implements TranslatorInterface
     protected function translateValue(array $result, array $payload, string $key, array $translation): array
     {
         $options = isset($translation[static::KEY_OPTIONS]) ? $translation[static::KEY_OPTIONS] : [];
-        /** @var \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface $translateFunction */
-        $translateFunctionPlugin = $this->translatorFunctionResolver->getTranslatorFunctionPluginByName(reset($translation));
 
+        $translateFunctionPlugin = $this->translatorFunctionResolver
+            ->getTranslatorFunctionPluginByName(reset($translation));
         $inputValue = $this->arrayManager->getValueByKey($result, $key);
         $resultValue = $translateFunctionPlugin->translate($inputValue, $payload, $key, $options);
         $this->getProcessLogger()->debug(
