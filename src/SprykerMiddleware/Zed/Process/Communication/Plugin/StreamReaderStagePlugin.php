@@ -20,10 +20,10 @@ class StreamReaderStagePlugin extends AbstractStagePlugin implements StagePlugin
     /**
      * @inheritdoc
      */
-    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream, $originalPayload)
+    public function process($readStream, ReadStreamInterface $inStream, WriteStreamInterface $outStream, $originalPayload)
     {
         return $this->getFactory()
             ->getProcessService()
-            ->read($inStream);
+            ->read($readStream);
     }
 }

@@ -12,10 +12,10 @@ interface ReadStreamInterface extends StreamInterface
     /**
      * @return mixed
      */
-    public function read();
+    public function get();
 
     /**
      * @return mixed
      */
-    public function get();
+    public function read();
 }

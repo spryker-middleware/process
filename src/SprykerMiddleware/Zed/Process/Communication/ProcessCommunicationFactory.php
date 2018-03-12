@@ -35,7 +35,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
      */
     public function createIteratorFactory(): IteratorFactoryInterface
     {
-        return new IteratorFactory();
+        return new IteratorFactory($this->createStreamFactory());
     }
 
     /**

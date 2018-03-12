@@ -15,4 +15,11 @@ interface StreamFactoryInterface
      * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface|\SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
     public function createJsonStream(string $path);
+
+    /**
+     * @param string $path
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
+     */
+    public function createDirectoryStream(string $path);
 }
