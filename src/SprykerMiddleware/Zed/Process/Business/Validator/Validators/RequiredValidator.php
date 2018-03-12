@@ -17,7 +17,7 @@ class RequiredValidator extends AbstractValidator
      */
     public function validate($value, array $payload): bool
     {
-        if (!isset($payload[$this->key])) {
+        if ($value === null) {
             return false;
         }
 
