@@ -17,7 +17,7 @@ class NotBlankValidator extends AbstractValidator
      */
     public function validate($value, array $payload): bool
     {
-        if (!isset($payload[$this->key]) || $value === null || $value === [] || $value === '') {
+        if ($value === null || $value === [] || $value === '') {
             return false;
         }
         return true;
