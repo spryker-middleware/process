@@ -18,4 +18,14 @@ class StreamFactory implements StreamFactoryInterface
     {
         return new JsonStream($path);
     }
+
+    /**
+     * @param string $path
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
+     */
+    public function createDirectoryStream(string $path)
+    {
+        return new DirectoryStream($path);
+    }
 }

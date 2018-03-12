@@ -18,4 +18,11 @@ interface IteratorFactoryInterface
      * @return \Iterator
      */
     public function createNullIterator(ReadStreamInterface $inStream): Iterator;
+
+    /**
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
+     *
+     * @return \Iterator
+     */
+    public function createJsonDirectoryIterator(ReadStreamInterface $inStream): Iterator;
 }
