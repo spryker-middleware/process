@@ -100,8 +100,13 @@ class JsonDirectoryIterator implements Iterator
         if ($this->inStream->eof()) {
             return;
         }
-        $path = $this->inStream->read();
-        $this->innerStream = $this->streamFactory->createJsonStream($path);
-        $this->innerStream->open('r');
+        do {
+            $path = $this->inStream->read();
+            $this->innerStream = $this->streamFactory->createJsonStream($path);
+            $this->innerStream->open('r');
+            if (!$this->innerStream->eof()) {
+                return;
+            }
+        } while (!$this->inStream->eof());
     }
 }
