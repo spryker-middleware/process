@@ -7,7 +7,6 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Iterator;
 
-use Iterator;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 
 interface IteratorFactoryInterface
@@ -15,14 +14,14 @@ interface IteratorFactoryInterface
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      *
-     * @return \Iterator
+     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\IteratorInterface
      */
-    public function createNullIterator(ReadStreamInterface $inStream): Iterator;
+    public function createNullIterator(ReadStreamInterface $inStream): IteratorInterface;
 
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      *
-     * @return \Iterator
+     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\IteratorInterface
      */
-    public function createJsonDirectoryIterator(ReadStreamInterface $inStream): Iterator;
+    public function createJsonDirectoryIterator(ReadStreamInterface $inStream): IteratorInterface;
 }

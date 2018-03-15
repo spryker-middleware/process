@@ -7,17 +7,16 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Iterator;
 
-use Iterator;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Zed\Process\Business\Exception\MethodNotSupportedException;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface;
 
-class JsonDirectoryIterator implements Iterator
+class JsonDirectoryIterator implements IteratorInterface
 {
     /**
      * @var \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
      */
-    protected $inStream;
+    protected $inputStream;
 
     /**
      * @var \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
@@ -30,19 +29,19 @@ class JsonDirectoryIterator implements Iterator
     protected $streamFactory;
 
     /**
-     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inputStream
      * @param \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface $streamFactory
      */
-    public function __construct(ReadStreamInterface $inStream, StreamFactoryInterface $streamFactory)
+    public function __construct(ReadStreamInterface $inputStream, StreamFactoryInterface $streamFactory)
     {
-        $this->inStream = $inStream;
+        $this->inputStream = $inputStream;
         $this->streamFactory = $streamFactory;
     }
 
     /**
      * @inheritdoc
      */
-    public function current()
+    public function current(): ReadStreamInterface
     {
         return $this->innerStream;
     }
@@ -79,7 +78,7 @@ class JsonDirectoryIterator implements Iterator
      */
     public function valid()
     {
-        return !$this->inStream->eof() || !$this->innerStream->eof();
+        return !$this->inputStream->eof() || !$this->innerStream->eof();
     }
 
     /**
@@ -87,7 +86,7 @@ class JsonDirectoryIterator implements Iterator
      */
     public function rewind()
     {
-        $this->inStream->seek(0, SEEK_SET);
+        $this->inputStream->seek(0, SEEK_SET);
         $this->innerStream = null;
         $this->initInnerStreamForNextItem();
     }
@@ -97,16 +96,16 @@ class JsonDirectoryIterator implements Iterator
      */
     protected function initInnerStreamForNextItem()
     {
-        if ($this->inStream->eof()) {
+        if ($this->inputStream->eof()) {
             return;
         }
         do {
-            $path = $this->inStream->read();
+            $path = $this->inputStream->read();
             $this->innerStream = $this->streamFactory->createJsonStream($path);
             $this->innerStream->open('r');
             if (!$this->innerStream->eof()) {
                 return;
             }
-        } while (!$this->inStream->eof());
+        } while (!$this->inputStream->eof());
     }
 }
