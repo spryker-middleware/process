@@ -10,6 +10,7 @@ namespace SprykerMiddleware\Zed\Process\Business;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
+use Generated\Shared\Transfer\ValidatorConfigTransfer;
 
 interface ProcessFacadeInterface
 {
@@ -38,9 +39,19 @@ interface ProcessFacadeInterface
      * @api
      *
      * @param array $payload
-     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
+     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $validatorConfigTransfer
      *
      * @return array
      */
-    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array;
+    public function translate(array $payload, TranslatorConfigTransfer $validatorConfigTransfer): array;
+
+    /**
+     * @api
+     *
+     * @param array $payload
+     * @param \Generated\Shared\Transfer\ValidatorConfigTransfer $validationConfigTransfer
+     *
+     * @return array
+     */
+    public function validate(array $payload, ValidatorConfigTransfer $validationConfigTransfer): array;
 }

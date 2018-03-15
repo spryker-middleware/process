@@ -31,7 +31,7 @@ class IntToFloatTest extends Unit
         $converter = new IntToFloat();
         $data = 12;
 
-        $this->assertEquals(12, $converter->translate($data));
+        $this->assertEquals(12, $converter->translate($data, []));
     }
 
     /**
@@ -42,7 +42,7 @@ class IntToFloatTest extends Unit
         $converter = new IntToFloat();
         $data = 12.2;
 
-        $this->assertEquals('12.2', $converter->translate($data));
+        $this->assertEquals('12.2', $converter->translate($data, []));
     }
 
     /**
@@ -53,6 +53,6 @@ class IntToFloatTest extends Unit
         $converter = new IntToFloat();
         $data = 'FooBar';
 
-        $this->assertEquals('0.0', $converter->translate($data));
+        $this->assertEquals('0.0', $converter->translate($data, []));
     }
 }

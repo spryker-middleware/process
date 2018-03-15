@@ -10,6 +10,7 @@ namespace SprykerMiddleware\Zed\Process\Business;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
+use Generated\Shared\Transfer\ValidatorConfigTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -65,5 +66,20 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
          $this->getFactory()
             ->createProcessor($processSettingsTransfer)
             ->process();
+    }
+
+    /**
+     * @api
+     *
+     * @param array $payload
+     * @param \Generated\Shared\Transfer\ValidatorConfigTransfer $validatorConfigTransfer
+     *
+     * @return array
+     */
+    public function validate(array $payload, ValidatorConfigTransfer $validatorConfigTransfer): array
+    {
+        return $this->getFactory()
+            ->createPayloadValidator($validatorConfigTransfer)
+            ->validate($payload);
     }
 }

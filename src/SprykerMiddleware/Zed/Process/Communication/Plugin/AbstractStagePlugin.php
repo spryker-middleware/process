@@ -8,7 +8,6 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
@@ -16,11 +15,10 @@ abstract class AbstractStagePlugin extends AbstractPlugin implements StagePlugin
 {
     /**
      * @param mixed $payload
-     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      * @param mixed $originalPayload
      *
      * @return mixed
      */
-    abstract public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream, $originalPayload);
+    abstract public function process($payload, WriteStreamInterface $outStream, $originalPayload);
 }

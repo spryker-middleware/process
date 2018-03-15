@@ -18,4 +18,9 @@ interface ConfigurationProfilePluginInterface
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
     public function getTranslatorFunctionPlugins(): array;
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\ValidatorPluginInterface[]
+     */
+    public function getValidatorPlugins(): array;
 }

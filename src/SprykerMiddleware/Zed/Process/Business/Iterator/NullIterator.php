@@ -7,31 +7,30 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Iterator;
 
-use Iterator;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Zed\Process\Business\Exception\MethodNotSupportedException;
 
-class NullIterator implements Iterator
+class NullIterator implements IteratorInterface
 {
     /**
      * @var \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
      */
-    protected $inStream;
+    protected $inputStream;
 
     /**
-     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inputStream
      */
-    public function __construct(ReadStreamInterface $inStream)
+    public function __construct(ReadStreamInterface $inputStream)
     {
-        $this->inStream = $inStream;
+        $this->inputStream = $inputStream;
     }
 
     /**
      * @inheritdoc
      */
-    public function current()
+    public function current(): ReadStreamInterface
     {
-        return $this->inStream;
+        return $this->inputStream;
     }
 
     /**
@@ -39,7 +38,7 @@ class NullIterator implements Iterator
      */
     public function next()
     {
-        return $this->inStream;
+        return $this->inputStream;
     }
 
     /**
@@ -63,7 +62,7 @@ class NullIterator implements Iterator
      */
     public function valid()
     {
-        return !$this->inStream->eof();
+        return !$this->inputStream->eof();
     }
 
     /**
@@ -71,6 +70,6 @@ class NullIterator implements Iterator
      */
     public function rewind()
     {
-        $this->inStream->seek(0, SEEK_SET);
+        $this->inputStream->seek(0, SEEK_SET);
     }
 }

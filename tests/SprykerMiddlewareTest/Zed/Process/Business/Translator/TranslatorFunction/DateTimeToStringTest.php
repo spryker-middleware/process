@@ -37,7 +37,7 @@ class DateTimeToStringTest extends Unit
         );
         $data = new DateTime();
 
-        $this->assertEquals($data->format($format), $converter->translate($data));
+        $this->assertEquals($data->format($format), $converter->translate($data, []));
     }
 
     /**
@@ -48,9 +48,10 @@ class DateTimeToStringTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new DateTimeToString();
+        $converter->setKey('itemKey');
         $data = 0;
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 
     /**
@@ -61,9 +62,10 @@ class DateTimeToStringTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new DateTimeToString();
+        $converter->setKey('itemKey');
         $data = ['Foo'];
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 
     /**
@@ -74,8 +76,9 @@ class DateTimeToStringTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new DateTimeToString();
+        $converter->setKey('itemKey');
         $data = 'Foo';
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 }

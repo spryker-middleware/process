@@ -44,7 +44,7 @@ class WhitelistKeysAssociativeFilterTest extends Unit
             'baz' => 'foobar',
         ];
 
-        $this->assertEquals(['foo' => 'bar', 'bar' => 'baz'], $converter->translate($data));
+        $this->assertEquals(['foo' => 'bar', 'bar' => 'baz'], $converter->translate($data, []));
     }
 
     /**
@@ -69,7 +69,7 @@ class WhitelistKeysAssociativeFilterTest extends Unit
             'foobar',
         ];
 
-        $this->assertEquals(['1' => 'bar', '2' => 'baz'], $converter->translate($data));
+        $this->assertEquals(['1' => 'bar', '2' => 'baz'], $converter->translate($data, []));
     }
 
     /**
@@ -80,8 +80,9 @@ class WhitelistKeysAssociativeFilterTest extends Unit
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException');
 
         $converter = new WhitelistKeysAssociativeFilter();
+        $converter->setKey('itemKey');
         $data = 'foo';
 
-        $converter->translate($data);
+        $converter->translate($data, []);
     }
 }

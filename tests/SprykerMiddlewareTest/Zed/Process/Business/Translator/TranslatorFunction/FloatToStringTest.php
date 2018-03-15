@@ -31,7 +31,7 @@ class FloatToStringTest extends Unit
         $converter = new FloatToString();
         $data = '12.2';
 
-        $this->assertEquals(12.2, $converter->translate($data));
+        $this->assertEquals(12.2, $converter->translate($data, []));
     }
 
     /**
@@ -42,7 +42,7 @@ class FloatToStringTest extends Unit
         $converter = new FloatToString();
         $data = 12.2;
 
-        $this->assertEquals('12.2', $converter->translate($data));
+        $this->assertEquals('12.2', $converter->translate($data, []));
     }
 
     /**
@@ -53,6 +53,6 @@ class FloatToStringTest extends Unit
         $converter = new FloatToString();
         $data = 'FooBar';
 
-        $this->assertEquals('FooBar', $converter->translate($data));
+        $this->assertEquals('FooBar', $converter->translate($data, []));
     }
 }

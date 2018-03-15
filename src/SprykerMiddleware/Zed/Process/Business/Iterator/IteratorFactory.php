@@ -7,18 +7,41 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Iterator;
 
-use Iterator;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface;
 
 class IteratorFactory implements IteratorFactoryInterface
 {
     /**
-     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
-     *
-     * @return \Iterator
+     * @var \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface
      */
-    public function createNullIterator(ReadStreamInterface $inStream): Iterator
+    protected $streamFactory;
+
+    /**
+     * @param \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface $streamFactory
+     */
+    public function __construct(StreamFactoryInterface $streamFactory)
     {
-        return new NullIterator($inStream);
+        $this->streamFactory = $streamFactory;
+    }
+
+    /**
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inputStream
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\IteratorInterface
+     */
+    public function createNullIterator(ReadStreamInterface $inputStream): IteratorInterface
+    {
+        return new NullIterator($inputStream);
+    }
+
+    /**
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inputStream
+     *
+     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\IteratorInterface
+     */
+    public function createJsonDirectoryIterator(ReadStreamInterface $inputStream): IteratorInterface
+    {
+        return new JsonDirectoryIterator($inputStream, $this->streamFactory);
     }
 }
