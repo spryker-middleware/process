@@ -8,16 +8,16 @@
 namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator;
 
 use Generated\Shared\Transfer\IteratorConfigTransfer;
-use Iterator;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Zed\Process\Business\Iterator\IteratorInterface;
 
 interface ProcessIteratorPluginInterface
 {
     /**
-     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
+     * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inputStream
      * @param \Generated\Shared\Transfer\IteratorConfigTransfer $iteratorConfigTransfer
      *
-     * @return \Iterator
+     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\IteratorInterface
      */
-    public function getIterator(ReadStreamInterface $inStream, IteratorConfigTransfer $iteratorConfigTransfer): Iterator;
+    public function getIterator(ReadStreamInterface $inputStream, IteratorConfigTransfer $iteratorConfigTransfer): IteratorInterface;
 }

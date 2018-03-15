@@ -7,7 +7,6 @@
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin;
 
-use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
 
@@ -20,7 +19,7 @@ class StreamWriterStagePlugin extends AbstractStagePlugin implements StagePlugin
     /**
      * @inheritdoc
      */
-    public function process($payload, ReadStreamInterface $inStream, WriteStreamInterface $outStream, $originalPayload)
+    public function process($payload, WriteStreamInterface $outStream, $originalPayload)
     {
         $this->getFactory()
             ->getProcessService()
