@@ -35,4 +35,14 @@
         <property name="rules" type="array"/>
     </transfer>
 
+    <transfer name="ProcessResult">
+        <property name="started" type="int"/>
+        <property name="total" type="int"/>
+        <property name="processed" type="int"/>
+        <property name="failed" type="int"/>
+        <property name="skipped" type="int"/>
+        <property name="execution" type="int"/>
+        <property name="processName" type="string"/>
+    </transfer>
+
 </transfers>
