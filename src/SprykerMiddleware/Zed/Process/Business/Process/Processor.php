@@ -8,6 +8,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Process;
 
 use Exception;
+use Generated\Shared\Transfer\ProcessResultTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
@@ -64,6 +65,12 @@ class Processor implements ProcessorInterface
     protected $processPluginResolver;
 
     /**
+     * @var \Generated\Shared\Transfer\ProcessResultTransfer
+     */
+    protected $processResultTransfer;
+
+
+    /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface $processPluginResolver
@@ -104,6 +111,8 @@ class Processor implements ProcessorInterface
             }
             $this->outputStream->flush();
         } catch (Exception $e) {
+            $this->processResultTransfer->setFailed(1);
+            $this->getProcessLogger()->error('Experienced process error in ' . $this->processSettingsTransfer->getName(), ['exception' => $e, 'item' => isset($item) ? $item : null]);
             throw $e;
         } finally {
             $this->inputStream->close();
@@ -120,7 +129,7 @@ class Processor implements ProcessorInterface
     public function preProcess(): void
     {
         foreach ($this->preProcessStack as $preProcessor) {
-            $preProcessor->process();
+            $preProcessor->process($this->processResultTransfer);
         }
     }
 
@@ -130,7 +139,7 @@ class Processor implements ProcessorInterface
     public function postProcess(): void
     {
         foreach ($this->postProcessStack as $postProcessor) {
-            $postProcessor->process();
+            $postProcessor->process($this->processResultTransfer);
         }
     }
 
@@ -166,5 +175,14 @@ class Processor implements ProcessorInterface
         $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerConfig()->getVerboseLevel());
 
         $this->initLogger($loggerConfig);
+
+        $this->initProcessResultTransfer();
+    }
+
+    private function initProcessResultTransfer()
+    {
+        $this->processResultTransfer = new ProcessResultTransfer();
+        $this->processResultTransfer->setStarted(time());
+        $this->processResultTransfer->setProcessName($this->processSettingsTransfer->getName());
     }
 }

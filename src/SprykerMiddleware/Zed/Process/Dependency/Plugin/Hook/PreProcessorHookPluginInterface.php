@@ -7,10 +7,13 @@
 
 namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook;
 
+use Generated\Shared\Transfer\ProcessResultTransfer;
+
 interface PreProcessorHookPluginInterface
 {
     /**
+     * @param \Generated\Shared\Transfer\ProcessResultTransfer|null $processResultTransfer
      * @return void
      */
-    public function process(): void;
+    public function process(ProcessResultTransfer $processResultTransfer = null): void;
 }
