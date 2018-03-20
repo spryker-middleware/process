@@ -186,5 +186,9 @@ class Processor implements ProcessorInterface
         $this->processResultTransfer = new ProcessResultTransfer();
         $this->processResultTransfer->setStartTime(time());
         $this->processResultTransfer->setProcessName($this->processSettingsTransfer->getName());
+        $this->processResultTransfer->setItemCount(0);
+        $this->processResultTransfer->setSkippedCount(0);
+        $this->processResultTransfer->setProcessedCount(0);
+        $this->processResultTransfer->setFailedCount(0);
     }
 }

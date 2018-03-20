@@ -13,6 +13,7 @@ interface PreProcessorHookPluginInterface
 {
     /**
      * @param \Generated\Shared\Transfer\ProcessResultTransfer|null $processResultTransfer
+     *
      * @return void
      */
     public function process(ProcessResultTransfer $processResultTransfer = null): void;
