@@ -69,7 +69,6 @@ class Processor implements ProcessorInterface
      */
     protected $processResultTransfer;
 
-
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
@@ -111,7 +110,7 @@ class Processor implements ProcessorInterface
             }
             $this->outputStream->flush();
         } catch (Exception $e) {
-            $this->processResultTransfer->setFailed(1);
+            $this->processResultTransfer->setFailedCount(1);
             $this->getProcessLogger()->error('Experienced process error in ' . $this->processSettingsTransfer->getName(), ['exception' => $e, 'item' => isset($item) ? $item : null]);
             throw $e;
         } finally {
@@ -179,10 +178,13 @@ class Processor implements ProcessorInterface
         $this->initProcessResultTransfer();
     }
 
+    /**
+     * @return void
+     */
     private function initProcessResultTransfer()
     {
         $this->processResultTransfer = new ProcessResultTransfer();
-        $this->processResultTransfer->setStarted(time());
+        $this->processResultTransfer->setStartTime(time());
         $this->processResultTransfer->setProcessName($this->processSettingsTransfer->getName());
     }
 }
