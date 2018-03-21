@@ -133,8 +133,6 @@ class Processor implements ProcessorInterface
         $this->processResultTransfer->setEndTime(time());
         $this->getProcessLogger()->info('Middleware process is finished.');
         $this->postProcess();
-        var_dump($this->processResultTransfer->toArray());
-        die;
     }
 
     /**
