@@ -10,7 +10,9 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 use Exception;
 use Generated\Shared\Transfer\ProcessResultTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
+use Generated\Shared\Transfer\StageResultsTransfer;
 use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
+use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
@@ -70,18 +72,26 @@ class Processor implements ProcessorInterface
     protected $processResultTransfer;
 
     /**
+     * @var \SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface
+     */
+    private $configurationSnapshotBuilder;
+
+    /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface $processPluginResolver
+     * @param \SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface $configurationSnapshotBuilder
      */
     public function __construct(
         ProcessSettingsTransfer $processSettingsTransfer,
         PipelineInterface $pipeline,
-        ProcessPluginResolverInterface $processPluginResolver
+        ProcessPluginResolverInterface $processPluginResolver,
+        ConfigurationSnapshotBuilderInterface $configurationSnapshotBuilder
     ) {
         $this->processSettingsTransfer = $processSettingsTransfer;
         $this->pipeline = $pipeline;
         $this->processPluginResolver = $processPluginResolver;
+        $this->configurationSnapshotBuilder = $configurationSnapshotBuilder;
         $this->init();
     }
 
@@ -190,5 +200,18 @@ class Processor implements ProcessorInterface
         $this->processResultTransfer->setSkippedCount(0);
         $this->processResultTransfer->setProcessedCount(0);
         $this->processResultTransfer->setFailedCount(0);
+
+        $processConfigurationTransfer = $this->configurationSnapshotBuilder
+            ->build($this->processPlugin, $this->processSettingsTransfer);
+        $this->processResultTransfer
+            ->setProcessConfiguration($processConfigurationTransfer);
+
+        foreach ($this->processResultTransfer->getProcessConfiguration()->getStagePluginNames() as $stagePluginName) {
+            $stageResultTransfer = new StageResultsTransfer();
+            $stageResultTransfer->setStageName($stagePluginName)
+                ->setInputCount(0)
+                ->setOutputCount(0);
+            $this->processResultTransfer->addStageResult($stageResultTransfer);
+        }
     }
 }

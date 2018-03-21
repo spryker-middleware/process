@@ -56,11 +56,11 @@
     <transfer name="ProcessConfiguration">
         <property name="iteratorPluginName" type="string"/>
         <property name="inputStreamPlugin" type="StreamConfiguration"/>
-        <property name="outputStreamPlugins" type="StreamConfiguration"/>
+        <property name="outputStreamPlugin" type="StreamConfiguration"/>
         <property name="loggerPluginName" type="string"/>
-        <property name="stagePluginsName" type="string[]"/>
-        <property name="preProcessHookPluginsName" type="string[]"/>
-        <property name="postProcessHookPluginsName" type="string[]"/>
+        <property name="stagePluginNames" type="string[]" singular="stagePluginName"/>
+        <property name="preProcessHookPluginNames" type="string[]" singular="preProcessHookPluginName"/>
+        <property name="postProcessHookPluginNames" type="string[]" singular="postProcessHookPluginName"/>
     </transfer>
 
     <transfer name="StreamConfiguration">

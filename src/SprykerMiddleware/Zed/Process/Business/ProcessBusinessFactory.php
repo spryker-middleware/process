@@ -14,6 +14,8 @@ use Generated\Shared\Transfer\ValidatorConfigTransfer;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
+use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilder;
+use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
@@ -52,7 +54,8 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         return new Processor(
             $processSettingsTransfer,
             $this->createPipeline($processSettingsTransfer),
-            $this->createProcessPluginResolver()
+            $this->createProcessPluginResolver(),
+            $this->createConfigurationSnapshotBuilder()
         );
     }
 
@@ -111,6 +114,14 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     public function createArrayManager(): ArrayManagerInterface
     {
         return new ArrayManager();
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface
+     */
+    public function createConfigurationSnapshotBuilder(): ConfigurationSnapshotBuilderInterface
+    {
+        return new ConfigurationSnapshotBuilder();
     }
 
     /**
