@@ -10,12 +10,11 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 use Exception;
 use Generated\Shared\Transfer\ProcessResultTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use Generated\Shared\Transfer\StageResultsTransfer;
 use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
-use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
+use SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface;
 
 class Processor implements ProcessorInterface
 {
@@ -72,26 +71,27 @@ class Processor implements ProcessorInterface
     protected $processResultTransfer;
 
     /**
-     * @var \SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface
+     * @var \SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface
      */
-    private $configurationSnapshotBuilder;
+    protected $processResultHelper;
 
     /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface $processPluginResolver
-     * @param \SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface $configurationSnapshotBuilder
+     * @param \SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface $processResultHelper
      */
     public function __construct(
         ProcessSettingsTransfer $processSettingsTransfer,
         PipelineInterface $pipeline,
         ProcessPluginResolverInterface $processPluginResolver,
-        ConfigurationSnapshotBuilderInterface $configurationSnapshotBuilder
+        ProcessResultHelperInterface $processResultHelper
     ) {
         $this->processSettingsTransfer = $processSettingsTransfer;
         $this->pipeline = $pipeline;
         $this->processPluginResolver = $processPluginResolver;
-        $this->configurationSnapshotBuilder = $configurationSnapshotBuilder;
+        $this->processResultHelper = $processResultHelper;
+        $this->processResultTransfer = new ProcessResultTransfer();
         $this->init();
     }
 
@@ -113,23 +113,28 @@ class Processor implements ProcessorInterface
                     $this->getProcessLogger()->info('Start processing of item', [
                         'itemNo' => $counter++,
                     ]);
-                    $this->pipeline->process($item, $this->outputStream);
+                    $this->pipeline->process($item, $this->outputStream, $this->processResultTransfer);
+                    $this->processResultHelper->increaseProcessedItemCount($this->processResultTransfer);
+                    $this->processResultHelper->increaseItemCount($this->processResultTransfer);
                 } catch (TolerableProcessException $exception) {
+                    $this->processResultHelper->increaseSkippedItemCount($this->processResultTransfer);
                     $this->getProcessLogger()->error('Experienced tolerable process error in ' . $exception->getFile(), ['exception' => $exception]);
                 }
             }
             $this->outputStream->flush();
         } catch (Exception $e) {
-            $this->processResultTransfer->setFailedCount(1);
+            $this->processResultHelper->increaseSkippedItemCount($this->processResultTransfer);
             $this->getProcessLogger()->error('Experienced process error in ' . $this->processSettingsTransfer->getName(), ['exception' => $e, 'item' => isset($item) ? $item : null]);
             throw $e;
         } finally {
             $this->inputStream->close();
             $this->outputStream->close();
         }
-
+        $this->processResultTransfer->setEndTime(time());
         $this->getProcessLogger()->info('Middleware process is finished.');
         $this->postProcess();
+        var_dump($this->processResultTransfer->toArray());
+        die;
     }
 
     /**
@@ -184,34 +189,6 @@ class Processor implements ProcessorInterface
         $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerConfig()->getVerboseLevel());
 
         $this->initLogger($loggerConfig);
-
-        $this->initProcessResultTransfer();
-    }
-
-    /**
-     * @return void
-     */
-    private function initProcessResultTransfer()
-    {
-        $this->processResultTransfer = new ProcessResultTransfer();
-        $this->processResultTransfer->setStartTime(time());
-        $this->processResultTransfer->setProcessName($this->processSettingsTransfer->getName());
-        $this->processResultTransfer->setItemCount(0);
-        $this->processResultTransfer->setSkippedItemCount(0);
-        $this->processResultTransfer->setProcessedItemCount(0);
-        $this->processResultTransfer->setFailedItemCount(0);
-
-        $processConfigurationTransfer = $this->configurationSnapshotBuilder
-            ->build($this->processPlugin, $this->processSettingsTransfer);
-        $this->processResultTransfer
-            ->setProcessConfiguration($processConfigurationTransfer);
-
-        foreach ($this->processResultTransfer->getProcessConfiguration()->getStagePluginNames() as $stagePluginName) {
-            $stageResultTransfer = new StageResultsTransfer();
-            $stageResultTransfer->setStageName($stagePluginName)
-                ->setInputItemCount(0)
-                ->setOutputItemCount(0);
-            $this->processResultTransfer->addStageResult($stageResultTransfer);
-        }
+        $this->processResultHelper->initProcessResultTransfer($this->processResultTransfer, $this->processPlugin, $this->processSettingsTransfer);
     }
 }

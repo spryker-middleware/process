@@ -7,6 +7,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Pipeline;
 
+use Generated\Shared\Transfer\ProcessResultTransfer;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
 interface PipelineInterface
@@ -21,16 +22,18 @@ interface PipelineInterface
     /**
      * @param mixed $payload
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
+     * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
      *
      * @return mixed
      */
-    public function process($payload, WriteStreamInterface $outStream);
+    public function process($payload, WriteStreamInterface $outStream, ProcessResultTransfer $processResultTransfer);
 
     /**
      * @param mixed $payload
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
+     * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
      *
      * @return mixed
      */
-    public function __invoke($payload, WriteStreamInterface $outStream);
+    public function __invoke($payload, WriteStreamInterface $outStream, ProcessResultTransfer $processResultTransfer);
 }

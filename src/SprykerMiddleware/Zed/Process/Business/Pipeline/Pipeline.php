@@ -7,6 +7,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Pipeline;
 
+use Generated\Shared\Transfer\ProcessResultTransfer;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface;
 
@@ -26,8 +27,10 @@ class Pipeline implements PipelineInterface
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface $pipelineProcessor
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[] $stages
      */
-    public function __construct(PipelineProcessorInterface $pipelineProcessor, array $stages)
-    {
+    public function __construct(
+        PipelineProcessorInterface $pipelineProcessor,
+        array $stages
+    ) {
         $this->pipelineProcessor = $pipelineProcessor;
         $this->stages = $stages;
     }
@@ -48,22 +51,24 @@ class Pipeline implements PipelineInterface
     /**
      * @param mixed $payload
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
+     * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
      *
      * @return mixed
      */
-    public function process($payload, WriteStreamInterface $outStream)
+    public function process($payload, WriteStreamInterface $outStream, ProcessResultTransfer $processResultTransfer)
     {
-        return $this->pipelineProcessor->process($this->stages, $payload, $outStream);
+        return $this->pipelineProcessor->process($this->stages, $payload, $outStream, $processResultTransfer);
     }
 
     /**
      * @param mixed $payload
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
+     * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
      *
      * @return mixed
      */
-    public function __invoke($payload, WriteStreamInterface $outStream)
+    public function __invoke($payload, WriteStreamInterface $outStream, ProcessResultTransfer $processResultTransfer)
     {
-        return $this->process($payload, $outStream);
+        return $this->process($payload, $outStream, $processResultTransfer);
     }
 }

@@ -28,6 +28,8 @@ use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolver;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
 use SprykerMiddleware\Zed\Process\Business\Process\ProcessorInterface;
+use SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelper;
+use SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\Translator;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolver;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface;
@@ -55,7 +57,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
             $processSettingsTransfer,
             $this->createPipeline($processSettingsTransfer),
             $this->createProcessPluginResolver(),
-            $this->createConfigurationSnapshotBuilder()
+            $this->createProcessResultHelper()
         );
     }
 
@@ -117,6 +119,14 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @return \SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface
+     */
+    public function createProcessResultHelper(): ProcessResultHelperInterface
+    {
+        return new ProcessResultHelper($this->createConfigurationSnapshotBuilder());
+    }
+
+    /**
      * @return \SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface
      */
     public function createConfigurationSnapshotBuilder(): ConfigurationSnapshotBuilderInterface
@@ -165,7 +175,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     protected function createPipelineProcessor(): PipelineProcessorInterface
     {
-        return new FingersCrossedProcessor();
+        return new FingersCrossedProcessor($this->createProcessResultHelper());
     }
 
     /**
