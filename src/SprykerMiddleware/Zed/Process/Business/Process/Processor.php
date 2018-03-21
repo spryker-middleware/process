@@ -197,9 +197,9 @@ class Processor implements ProcessorInterface
         $this->processResultTransfer->setStartTime(time());
         $this->processResultTransfer->setProcessName($this->processSettingsTransfer->getName());
         $this->processResultTransfer->setItemCount(0);
-        $this->processResultTransfer->setSkippedCount(0);
-        $this->processResultTransfer->setProcessedCount(0);
-        $this->processResultTransfer->setFailedCount(0);
+        $this->processResultTransfer->setSkippedItemCount(0);
+        $this->processResultTransfer->setProcessedItemCount(0);
+        $this->processResultTransfer->setFailedItemCount(0);
 
         $processConfigurationTransfer = $this->configurationSnapshotBuilder
             ->build($this->processPlugin, $this->processSettingsTransfer);
@@ -209,8 +209,8 @@ class Processor implements ProcessorInterface
         foreach ($this->processResultTransfer->getProcessConfiguration()->getStagePluginNames() as $stagePluginName) {
             $stageResultTransfer = new StageResultsTransfer();
             $stageResultTransfer->setStageName($stagePluginName)
-                ->setInputCount(0)
-                ->setOutputCount(0);
+                ->setInputItemCount(0)
+                ->setOutputItemCount(0);
             $this->processResultTransfer->addStageResult($stageResultTransfer);
         }
     }
