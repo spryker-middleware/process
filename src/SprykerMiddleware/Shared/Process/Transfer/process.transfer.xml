@@ -40,17 +40,17 @@
         <property name="startTime" type="int"/>
         <property name="endTime" type="int"/>
         <property name="itemCount" type="int"/>
-        <property name="processedCount" type="int"/>
-        <property name="failedCount" type="int"/>
-        <property name="skippedCount" type="int"/>
+        <property name="processedItemCount" type="int"/>
+        <property name="failedItemCount" type="int"/>
+        <property name="skippedItemCount" type="int"/>
         <property name="stageResults" type="StageResults[]" singular="stageResult"/>
         <property name="processConfiguration" type="ProcessConfiguration"/>
     </transfer>
 
     <transfer name="StageResults">
         <property name="stageName" type="string"/>
-        <property name="inputCount" type="string"/>
-        <property name="outputCount" type="string"/>
+        <property name="inputItemCount" type="string"/>
+        <property name="outputItemCount" type="string"/>
     </transfer>
 
     <transfer name="ProcessConfiguration">
