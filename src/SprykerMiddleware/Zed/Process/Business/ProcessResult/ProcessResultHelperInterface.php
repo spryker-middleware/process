@@ -69,4 +69,13 @@ interface ProcessResultHelperInterface
      * @return \Generated\Shared\Transfer\ProcessResultTransfer
      */
     public function increaseStageOutputItemCount(ProcessResultTransfer $processResultTransfer, string $stagePluginName);
+
+    /**
+     * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
+     * @param string $stagePluginName
+     * @param int $time
+     *
+     * @return \Generated\Shared\Transfer\ProcessResultTransfer
+     */
+    public function increaseStageItemExecutionTime(ProcessResultTransfer $processResultTransfer, string $stagePluginName, int $time);
 }

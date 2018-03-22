@@ -51,6 +51,7 @@
         <property name="stageName" type="string"/>
         <property name="inputItemCount" type="string"/>
         <property name="outputItemCount" type="string"/>
+        <property name="totalExecutionTime" type="int"/>
     </transfer>
 
     <transfer name="ProcessConfiguration">

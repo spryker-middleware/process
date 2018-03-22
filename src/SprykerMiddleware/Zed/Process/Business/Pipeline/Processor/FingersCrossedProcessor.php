@@ -39,7 +39,10 @@ class FingersCrossedProcessor implements PipelineProcessorInterface
         $originalPayload = $payload;
         foreach ($stages as $stage) {
             $this->processResultHelper->increaseStageInputItemCount($processResultTransfer, get_class($stage->getStagePlugin()));
+            $startTime = round(microtime(true) * 1000);
             $payload = call_user_func($stage, $payload, $outStream, $originalPayload);
+            $endTime = round(microtime(true) * 1000);
+            $this->processResultHelper->increaseStageItemExecutionTime($processResultTransfer, get_class($stage->getStagePlugin()), $endTime - $startTime);
             $this->processResultHelper->increaseStageOutputItemCount($processResultTransfer, get_class($stage->getStagePlugin()));
         }
 

@@ -56,7 +56,8 @@ class ProcessResultHelper implements ProcessResultHelperInterface
             $stageResultTransfer = new StageResultsTransfer();
             $stageResultTransfer->setStageName($stagePluginName)
                 ->setInputItemCount(0)
-                ->setOutputItemCount(0);
+                ->setOutputItemCount(0)
+                ->setTotalExecutionTime(0);
             $processResultTransfer->addStageResult($stageResultTransfer);
         }
 
@@ -145,6 +146,25 @@ class ProcessResultHelper implements ProcessResultHelperInterface
             if ($stageResult->getStageName() === $stagePluginName) {
                 $count = $stageResult->getOutputItemCount();
                 $stageResult->setOutputItemCount(++$count);
+
+                return $processResultTransfer;
+            }
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
+     * @param string $stagePluginName
+     * @param int $time
+     *
+     * @return \Generated\Shared\Transfer\ProcessResultTransfer
+     */
+    public function increaseStageItemExecutionTime(ProcessResultTransfer $processResultTransfer, string $stagePluginName, int $time)
+    {
+        foreach ($processResultTransfer->getStageResults() as $stageResult) {
+            if ($stageResult->getStageName() === $stagePluginName) {
+                $totalTime = $stageResult->getTotalExecutionTime();
+                $stageResult->setTotalExecutionTime($totalTime + $time);
 
                 return $processResultTransfer;
             }
