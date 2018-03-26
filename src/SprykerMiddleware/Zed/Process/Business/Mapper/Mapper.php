@@ -28,6 +28,7 @@ class Mapper implements MapperInterface
     const KEY_OLD_KEY = 'old_key';
     const KEY_OPERATION = 'operation';
     const KEY_STRATEGY = 'strategy';
+    const OPTION_ITEM_MAP = 'itemMap';
 
     /**
      * @var \Generated\Shared\Transfer\MapperConfigTransfer
@@ -80,7 +81,7 @@ class Mapper implements MapperInterface
             return $this->mapCallable($result, $payload, $key, $value);
         }
         if (is_array($value)) {
-            return $this->mapKey($result, $payload, $key, reset($value));
+            return $this->mapArray($result, $payload, $key, $value);
         }
         if (is_string($value) || is_int($value)) {
             return $this->mapKey($result, $payload, $key, $value);
@@ -108,6 +109,40 @@ class Mapper implements MapperInterface
         ]);
 
         return $this->arrayManager->putValue($result, $key, $mappedValue);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param array $value
+     *
+     * @return array
+     */
+    protected function mapArray(array $result, array $payload, string $key, array $value): array
+    {
+        $originKey = reset($value);
+        $originArray = $this->arrayManager->getValueByKey($payload, $originKey);
+        $resultArray = $originArray;
+        if (isset($value[static::OPTION_ITEM_MAP])) {
+            $resultArray = [];
+            $rules = $value[static::OPTION_ITEM_MAP];
+            foreach ($originArray as $originItemKey => $item) {
+                $resultItem = $this->prepareResult($item);
+                foreach ($rules as $itemKey => $itemValue) {
+                    $resultItem = $this->mapByRule($resultItem, $item, $itemKey, $itemValue);
+                }
+                $resultArray[$originItemKey] = $resultItem;
+            }
+        }
+        $this->getProcessLogger()->debug(static::OPERATION, [
+            static::KEY_OPERATION => static::OPERATION_MAP_ARRAY,
+            static::KEY_NEW_KEY => $key,
+            static::KEY_OLD_KEY => $value,
+            static::KEY_DATA => $resultArray,
+        ]);
+
+        return $this->arrayManager->putValue($result, $key, $resultArray);
     }
 
     /**
