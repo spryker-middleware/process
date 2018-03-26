@@ -7,16 +7,29 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
+use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+
 class StreamFactory implements StreamFactoryInterface
 {
     /**
      * @param string $path
      *
-     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface|\SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
      */
-    public function createJsonStream(string $path)
+    public function createJsonReadStream(string $path): ReadStreamInterface
     {
-        return new JsonStream($path);
+        return new JsonReadStream($path);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     */
+    public function createJsonWriteStream(string $path): WriteStreamInterface
+    {
+        return new JsonWriteStream($path);
     }
 
     /**
@@ -27,5 +40,17 @@ class StreamFactory implements StreamFactoryInterface
     public function createDirectoryStream(string $path)
     {
         return new DirectoryStream($path);
+    }
+
+    /**
+     * @param string $path
+     * @param string $delimiter
+     * @param string $enclosure
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
+     */
+    public function createCsvReadStream(string $path, string $delimiter = ',', string $enclosure = '"'): ReadStreamInterface
+    {
+        return new CsvReadStream($path, $delimiter, $enclosure);
     }
 }

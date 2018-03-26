@@ -10,11 +10,9 @@ namespace SprykerMiddleware\Shared\Process\Stream;
 interface StreamInterface
 {
     /**
-     * @param string $mode
-     *
      * @return bool
      */
-    public function open(string $mode): bool;
+    public function open(): bool;
 
     /**
      * @return bool

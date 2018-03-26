@@ -90,8 +90,8 @@ class Processor implements ProcessorInterface
         $this->getProcessLogger()->info('Middleware process is started.', ['process' => $this]);
         $counter = 0;
         try {
-            $this->inputStream->open('r');
-            $this->outputStream->open('w');
+            $this->inputStream->open();
+            $this->outputStream->open();
             foreach ($this->iterator as $item) {
                 try {
                     $this->getProcessLogger()->info('Start processing of item', [
