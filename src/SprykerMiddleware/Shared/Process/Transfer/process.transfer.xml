@@ -35,4 +35,38 @@
         <property name="rules" type="array"/>
     </transfer>
 
+    <transfer name="ProcessResult">
+        <property name="processName" type="string"/>
+        <property name="startTime" type="int"/>
+        <property name="endTime" type="int"/>
+        <property name="itemCount" type="int"/>
+        <property name="processedItemCount" type="int"/>
+        <property name="failedItemCount" type="int"/>
+        <property name="skippedItemCount" type="int"/>
+        <property name="stageResults" type="StageResults[]" singular="stageResult"/>
+        <property name="processConfiguration" type="ProcessConfiguration"/>
+    </transfer>
+
+    <transfer name="StageResults">
+        <property name="stageName" type="string"/>
+        <property name="inputItemCount" type="string"/>
+        <property name="outputItemCount" type="string"/>
+        <property name="totalExecutionTime" type="int"/>
+    </transfer>
+
+    <transfer name="ProcessConfiguration">
+        <property name="iteratorPluginName" type="string"/>
+        <property name="inputStreamPlugin" type="StreamConfiguration"/>
+        <property name="outputStreamPlugin" type="StreamConfiguration"/>
+        <property name="loggerPluginName" type="string"/>
+        <property name="stagePluginNames" type="string[]" singular="stagePluginName"/>
+        <property name="preProcessHookPluginNames" type="string[]" singular="preProcessHookPluginName"/>
+        <property name="postProcessHookPluginNames" type="string[]" singular="postProcessHookPluginName"/>
+    </transfer>
+
+    <transfer name="StreamConfiguration">
+        <property name="StreamPluginName" type="string"/>
+        <property name="path" type="string"/>
+    </transfer>
+
 </transfers>

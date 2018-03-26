@@ -16,7 +16,7 @@ class LengthValidator extends AbstractValidator
      * @param mixed $value
      * @param array $payload
      *
-     * @return mixed
+     * @return bool
      */
     public function validate($value, array $payload): bool
     {
