@@ -45,6 +45,7 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\NotEqualToValid
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\RegexValidatorPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\RequiredValidatorPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\TypeValidatorPlugin;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapter;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
 
@@ -60,6 +61,8 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
 
     const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
     const SERVICE_PROCESS = 'PROCESS_SERVICE';
+
+    const DECODER = 'DECODER';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -77,6 +80,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addProcessService($container);
         $container = $this->addGenericTranslatorFunctions($container);
         $container = $this->addGenericValidators($container);
+        $container = $this->addDecoder($container);
 
         return $container;
     }
@@ -314,5 +318,27 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
             new RequiredValidatorPlugin(),
             new TypeValidatorPlugin(),
         ];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addDecoder($container)
+    {
+        $container[static::DECODER] = function () {
+            return $this->createDecoder();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapter
+     */
+    protected function getDecoder()
+    {
+        return new ProcessToSymfonyDecoderAdapter();
     }
 }
