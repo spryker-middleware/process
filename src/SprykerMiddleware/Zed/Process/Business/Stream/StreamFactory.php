@@ -53,4 +53,17 @@ class StreamFactory implements StreamFactoryInterface
     {
         return new CsvReadStream($path, $delimiter, $enclosure);
     }
+
+    /**
+     * @param string $path
+     * @param array $header
+     * @param string $delimiter
+     * @param string $enclosure
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     */
+    public function createCsvWriteStream(string $path, array $header = [], string $delimiter = ',', string $enclosure = '"'): WriteStreamInterface
+    {
+        return new CsvWriteStream($path, $header, $delimiter, $enclosure);
+    }
 }

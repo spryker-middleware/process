@@ -41,4 +41,14 @@ interface StreamFactoryInterface
      * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
      */
     public function createDirectoryStream(string $path);
+
+    /**
+     * @param string $path
+     * @param array $header
+     * @param string $delimiter
+     * @param string $enclosure
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     */
+    public function createCsvWriteStream(string $path, array $header = [], string $delimiter = ',', string $enclosure = '"'): WriteStreamInterface;
 }
