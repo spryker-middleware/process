@@ -9,7 +9,10 @@ namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+use SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizer;
+use SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizerInterface;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
 
 class StreamFactory implements StreamFactoryInterface
 {
