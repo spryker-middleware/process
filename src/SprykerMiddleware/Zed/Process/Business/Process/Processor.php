@@ -117,7 +117,8 @@ class Processor implements ProcessorInterface
                     $this->processResultHelper->increaseProcessedItemCount($this->processResultTransfer);
                     $this->processResultHelper->increaseItemCount($this->processResultTransfer);
                 } catch (TolerableProcessException $exception) {
-                    $this->processResultHelper->increaseSkippedItemCount($this->processResultTransfer);
+                    $this->processResultHelper
+                        ->increaseFailedItemCount($this->processResultTransfer);
                     $this->getProcessLogger()->error('Experienced tolerable process error in ' . $exception->getFile(), ['exception' => $exception]);
                 }
             }
