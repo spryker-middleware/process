@@ -82,4 +82,28 @@ class StreamFactory implements StreamFactoryInterface
     {
         return new CsvWriteStream($path, $header, $delimiter, $enclosure);
     }
+
+    /**
+     * @param string $path
+     * @param string $rootNodeName
+     * @param string $entityNodeName
+     * @param string $version
+     * @param string $encoding
+     * @param string $standalone
+     * @param \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface $encoder
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     */
+    public function createXmlWriteStream(string $path, string $rootNodeName, string $entityNodeName, string $version, string $encoding, string $standalone, ProcessToSymfonyEncoderAdapterInterface $encoder): WriteStreamInterface
+    {
+        return new XmlWriteStream($path, $rootNodeName, $entityNodeName, $version, $encoding, $standalone, $encoder, $this->createXmlStringNormalizer());
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizerInterface
+     */
+    public function createXmlStringNormalizer(): XmlStringNormalizerInterface
+    {
+        return new XmlStringNormalizer();
+    }
 }
