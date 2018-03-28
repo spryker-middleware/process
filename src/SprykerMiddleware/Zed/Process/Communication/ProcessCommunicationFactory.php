@@ -148,4 +148,12 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::DECODER);
     }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface
+     */
+    public function getEncoder()
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::ENCODER);
+    }
 }

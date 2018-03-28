@@ -9,7 +9,10 @@ namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+use SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizer;
+use SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizerInterface;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
 
 class StreamFactory implements StreamFactoryInterface
 {
@@ -65,5 +68,29 @@ class StreamFactory implements StreamFactoryInterface
     public function createXmlReadStream(string $path, string $rootNodeName, ProcessToSymfonyDecoderAdapterInterface $decoder): ReadStreamInterface
     {
         return new XmlReadStream($path, $rootNodeName, $decoder);
+    }
+
+    /**
+     * @param string $path
+     * @param string $rootNodeName
+     * @param string $entityNodeName
+     * @param string $version
+     * @param string $encoding
+     * @param string $standalone
+     * @param \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface $encoder
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     */
+    public function createXmlWriteStream(string $path, string $rootNodeName, string $entityNodeName, string $version, string $encoding, string $standalone, ProcessToSymfonyEncoderAdapterInterface $encoder): WriteStreamInterface
+    {
+        return new XmlWriteStream($path, $rootNodeName, $entityNodeName, $version, $encoding, $standalone, $encoder, $this->createXmlStringNormalizer());
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizerInterface
+     */
+    public function createXmlStringNormalizer(): XmlStringNormalizerInterface
+    {
+        return new XmlStringNormalizer();
     }
 }
