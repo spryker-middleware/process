@@ -9,6 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
 
 class StreamFactory implements StreamFactoryInterface
 {
@@ -52,6 +53,18 @@ class StreamFactory implements StreamFactoryInterface
     public function createCsvReadStream(string $path, string $delimiter = ',', string $enclosure = '"'): ReadStreamInterface
     {
         return new CsvReadStream($path, $delimiter, $enclosure);
+    }
+
+    /**
+     * @param string $path
+     * @param string $rootNodeName
+     * @param \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface $decoder
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
+     */
+    public function createXmlReadStream(string $path, string $rootNodeName, ProcessToSymfonyDecoderAdapterInterface $decoder): ReadStreamInterface
+    {
+        return new XmlReadStream($path, $rootNodeName, $decoder);
     }
 
     /**

@@ -101,7 +101,7 @@ class JsonWriteStream implements WriteStreamInterface
         fwrite($this->handle, json_encode($this->data));
         $result = fflush($this->handle);
         if ($result) {
-            $data = [];
+            $this->data = [];
         }
         return $result;
     }
