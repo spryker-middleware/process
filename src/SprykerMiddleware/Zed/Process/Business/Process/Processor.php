@@ -109,13 +109,13 @@ class Processor implements ProcessorInterface
             $this->inputStream->open('r');
             $this->outputStream->open('w');
             foreach ($this->iterator as $item) {
+                $this->processResultHelper->increaseItemCount($this->processResultTransfer);
                 try {
                     $this->getProcessLogger()->info('Start processing of item', [
                         'itemNo' => $counter++,
                     ]);
                     $this->pipeline->process($item, $this->outputStream, $this->processResultTransfer);
                     $this->processResultHelper->increaseProcessedItemCount($this->processResultTransfer);
-                    $this->processResultHelper->increaseItemCount($this->processResultTransfer);
                 } catch (TolerableProcessException $exception) {
                     $this->processResultHelper->increaseSkippedItemCount($this->processResultTransfer);
                     $this->getProcessLogger()->error('Experienced tolerable process error in ' . $exception->getFile(), ['exception' => $exception]);
