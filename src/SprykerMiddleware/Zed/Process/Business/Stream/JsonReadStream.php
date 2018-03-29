@@ -7,15 +7,14 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
-use DirectoryIterator;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 
-class DirectoryStream implements ReadStreamInterface
+class JsonReadStream implements ReadStreamInterface
 {
     /**
-     * @var \DirectoryIterator
+     * @var resource
      */
-    protected $directoryIterator;
+    protected $handle;
 
     /**
      * @var string
@@ -23,9 +22,9 @@ class DirectoryStream implements ReadStreamInterface
     protected $path;
 
     /**
-     * @var string[]
+     * @var array
      */
-    protected $list;
+    protected $data = [];
 
     /**
      * @var int
@@ -41,47 +40,52 @@ class DirectoryStream implements ReadStreamInterface
     }
 
     /**
-     * @return bool
+     * @inheritdoc
      */
     public function open(): bool
     {
-        if (is_dir($this->path)) {
-            $this->position = 0;
-            return $this->prepareFileList();
-        }
-        return false;
-    }
+        $this->handle = fopen($this->path, 'r');
 
-    /**
-     * @return mixed
-     */
-    public function read()
-    {
-        if (!$this->eof()) {
-            return $this->list[$this->position++];
+        if ($this->handle === false) {
+            return false;
         }
 
-        return false;
-    }
+        $this->data = $this->loadJson();
 
-    /**
-     * @return bool
-     */
-    public function close(): bool
-    {
         return true;
     }
 
     /**
-     * @param int $offset
-     * @param int $whence
-     *
-     * @return int
+     * @inheritdoc
+     */
+    public function close(): bool
+    {
+        if ($this->handle) {
+            return fclose($this->handle);
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function read()
+    {
+        if (!$this->eof()) {
+            return $this->data[$this->position++];
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function seek(int $offset, int $whence): int
     {
         $newPosition = $this->getNewPosition($offset, $whence);
-        if ($newPosition < 0 || $newPosition > count($this->list)) {
+        if ($newPosition < 0 || $newPosition > count($this->data)) {
             return false;
         }
         $this->position = $newPosition;
@@ -94,21 +98,23 @@ class DirectoryStream implements ReadStreamInterface
      */
     public function eof(): bool
     {
-        return $this->position >= count($this->list);
+        return $this->position >= count($this->data);
     }
 
     /**
-     * @return bool
+     * @return mixed
      */
-    protected function prepareFileList()
+    protected function loadJson()
     {
-        $this->directoryIterator = new DirectoryIterator($this->path);
-        foreach ($this->directoryIterator as $item) {
-            if ($item->isFile()) {
-                $this->list[] = $item->getPathname();
-            }
+        $data = '';
+
+        while (!feof($this->handle)) {
+            $data .= fread($this->handle, 1000);
         }
-        return true;
+
+        $this->position = 0;
+
+        return json_decode($data, true);
     }
 
     /**
@@ -130,7 +136,7 @@ class DirectoryStream implements ReadStreamInterface
 
         if ($whence === SEEK_END) {
             $offset = $offset <= 0 ? $offset : 0;
-            $newPosition = count($this->list) + $offset;
+            $newPosition = count($this->data) + $offset;
         }
 
         return $newPosition;

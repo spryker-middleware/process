@@ -101,8 +101,8 @@ class JsonDirectoryIterator implements IteratorInterface
         }
         do {
             $path = $this->inputStream->read();
-            $this->innerStream = $this->streamFactory->createJsonStream($path);
-            $this->innerStream->open('r');
+            $this->innerStream = $this->streamFactory->createJsonReadStream($path);
+            $this->innerStream->open();
             if (!$this->innerStream->eof()) {
                 return;
             }

@@ -124,9 +124,10 @@ class Mapper implements MapperInterface
         $originKey = reset($value);
         $originArray = $this->arrayManager->getValueByKey($payload, $originKey);
         $resultArray = $originArray;
-        if (isset($value[static::OPTION_ITEM_MAP])) {
+        if (is_array($originArray) && isset($value[static::OPTION_ITEM_MAP])) {
             $resultArray = [];
             $rules = $value[static::OPTION_ITEM_MAP];
+            ;
             foreach ($originArray as $originItemKey => $item) {
                 $resultItem = $this->prepareResult($item);
                 foreach ($rules as $itemKey => $itemValue) {

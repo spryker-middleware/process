@@ -9,15 +9,14 @@ namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Stream;
 
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
-use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\InputStreamPluginInterface;
-use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OutputStreamPluginInterface;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
  * @method \SprykerMiddleware\Zed\Process\Communication\ProcessCommunicationFactory getFactory()
  */
-class JsonStreamPlugin extends AbstractPlugin implements InputStreamPluginInterface, OutputStreamPluginInterface
+abstract class AbstractXmlInputStreamPlugin extends AbstractPlugin implements InputStreamPluginInterface
 {
     /**
      * @param string $path
@@ -28,18 +27,20 @@ class JsonStreamPlugin extends AbstractPlugin implements InputStreamPluginInterf
     {
         return $this->getFactory()
             ->createStreamFactory()
-            ->createJsonStream($path);
+            ->createXmlReadStream($path, $this->getRootNode(), $this->getDecoder());
     }
 
     /**
-     * @param string $path
-     *
-     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface
      */
-    public function getOutputStream(string $path): WriteStreamInterface
+    protected function getDecoder(): ProcessToSymfonyDecoderAdapterInterface
     {
         return $this->getFactory()
-            ->createStreamFactory()
-            ->createJsonStream($path);
+            ->getDecoder();
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getRootNode(): string;
 }

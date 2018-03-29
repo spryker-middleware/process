@@ -7,15 +7,14 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
-use DirectoryIterator;
-use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
-class DirectoryStream implements ReadStreamInterface
+class JsonWriteStream implements WriteStreamInterface
 {
     /**
-     * @var \DirectoryIterator
+     * @var resource
      */
-    protected $directoryIterator;
+    protected $handle;
 
     /**
      * @var string
@@ -23,9 +22,9 @@ class DirectoryStream implements ReadStreamInterface
     protected $path;
 
     /**
-     * @var string[]
+     * @var array
      */
-    protected $list;
+    protected $data = [];
 
     /**
      * @var int
@@ -41,47 +40,52 @@ class DirectoryStream implements ReadStreamInterface
     }
 
     /**
-     * @return bool
+     * @inheritdoc
      */
     public function open(): bool
     {
-        if (is_dir($this->path)) {
-            $this->position = 0;
-            return $this->prepareFileList();
-        }
-        return false;
-    }
+        $this->handle = fopen($this->path, 'w');
 
-    /**
-     * @return mixed
-     */
-    public function read()
-    {
-        if (!$this->eof()) {
-            return $this->list[$this->position++];
+        if ($this->handle === false) {
+            return false;
         }
 
-        return false;
-    }
+        $this->data = [];
 
-    /**
-     * @return bool
-     */
-    public function close(): bool
-    {
+        $this->position = 0;
+
         return true;
     }
 
     /**
-     * @param int $offset
-     * @param int $whence
-     *
-     * @return int
+     * @inheritdoc
+     */
+    public function close(): bool
+    {
+        if ($this->handle) {
+            return fclose($this->handle);
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function write($data): int
+    {
+        $this->data[$this->position++] = $data;
+
+        return 1;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function seek(int $offset, int $whence): int
     {
         $newPosition = $this->getNewPosition($offset, $whence);
-        if ($newPosition < 0 || $newPosition > count($this->list)) {
+        if ($newPosition < 0 || $newPosition > count($this->data)) {
             return false;
         }
         $this->position = $newPosition;
@@ -92,23 +96,22 @@ class DirectoryStream implements ReadStreamInterface
     /**
      * @return bool
      */
-    public function eof(): bool
+    public function flush(): bool
     {
-        return $this->position >= count($this->list);
+        fwrite($this->handle, json_encode($this->data));
+        $result = fflush($this->handle);
+        if ($result) {
+            $this->data = [];
+        }
+        return $result;
     }
 
     /**
      * @return bool
      */
-    protected function prepareFileList()
+    public function eof(): bool
     {
-        $this->directoryIterator = new DirectoryIterator($this->path);
-        foreach ($this->directoryIterator as $item) {
-            if ($item->isFile()) {
-                $this->list[] = $item->getPathname();
-            }
-        }
-        return true;
+        return $this->position >= count($this->data);
     }
 
     /**
@@ -130,7 +133,7 @@ class DirectoryStream implements ReadStreamInterface
 
         if ($whence === SEEK_END) {
             $offset = $offset <= 0 ? $offset : 0;
-            $newPosition = count($this->list) + $offset;
+            $newPosition = count($this->data) + $offset;
         }
 
         return $newPosition;

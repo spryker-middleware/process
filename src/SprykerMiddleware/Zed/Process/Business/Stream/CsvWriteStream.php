@@ -7,13 +7,13 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
-use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SplFileObject;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
-class JsonStream implements WriteStreamInterface, ReadStreamInterface
+class CsvWriteStream implements WriteStreamInterface
 {
     /**
-     * @var resource
+     * @var \SplFileObject
      */
     protected $handle;
 
@@ -28,47 +28,55 @@ class JsonStream implements WriteStreamInterface, ReadStreamInterface
     protected $data = [];
 
     /**
-     * @var string
-     */
-    protected $mode = '';
-
-    /**
      * @var int
      */
     protected $position;
 
     /**
-     * @param string $path
+     * @var string
      */
-    public function __construct(string $path)
+    protected $delimiter;
+
+    /**
+     * @var string
+     */
+    protected $enclosure;
+
+    /**
+     * @var array
+     */
+    protected $header;
+
+    /**
+     * @param string $path
+     * @param array $header
+     * @param string $delimiter
+     * @param string $enclosure
+     */
+    public function __construct(string $path, array $header = [], string $delimiter = ',', string $enclosure = '"')
     {
         $this->path = $path;
+        $this->header = $header;
+        $this->delimiter = $delimiter;
+        $this->enclosure = $enclosure;
     }
 
     /**
      * @inheritdoc
      */
-    public function open(string $mode): bool
+    public function open(): bool
     {
-        $this->handle = fopen($this->path, $mode);
+        $this->handle = new SplFileObject($this->path, 'w');
 
         if ($this->handle === false) {
             return false;
         }
 
-        if (strpos($mode, 'r') !== false || strpos($mode, '+') !== false) {
-            $this->data = $this->loadJson();
-        }
+        $this->data = [];
 
-        if (strpos($mode, 'a') !== false) {
-            $this->position = count($this->data);
-        }
+        $this->position = 0;
 
-        if (strpos($mode, 'w') !== false) {
-            $this->position = 0;
-        }
-
-        $this->mode = $mode;
+        $this->handle->fputcsv($this->header, $this->delimiter, $this->enclosure);
 
         return true;
     }
@@ -78,31 +86,9 @@ class JsonStream implements WriteStreamInterface, ReadStreamInterface
      */
     public function close(): bool
     {
-        if ($this->handle) {
-            return fclose($this->handle);
-        }
+        unset($this->handle);
 
-        return false;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function read()
-    {
-        return $this->get();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function get()
-    {
-        if (!$this->eof()) {
-            return $this->data[$this->position++];
-        }
-
-        return false;
+        return true;
     }
 
     /**
@@ -134,9 +120,14 @@ class JsonStream implements WriteStreamInterface, ReadStreamInterface
      */
     public function flush(): bool
     {
-        fwrite($this->handle, json_encode($this->data));
-
-        return fflush($this->handle);
+        foreach ($this->data as $item) {
+            $this->handle->fputcsv($item, $this->delimiter, $this->enclosure);
+        }
+        $result = $this->handle->fflush();
+        if ($result) {
+            $this->data = [];
+        }
+        return $result;
     }
 
     /**
@@ -145,22 +136,6 @@ class JsonStream implements WriteStreamInterface, ReadStreamInterface
     public function eof(): bool
     {
         return $this->position >= count($this->data);
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function loadJson()
-    {
-        $data = '';
-
-        while (!feof($this->handle)) {
-            $data .= fread($this->handle, 1000);
-        }
-
-        $this->position = 0;
-
-        return json_decode($data, true);
     }
 
     /**
