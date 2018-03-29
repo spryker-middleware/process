@@ -117,14 +117,13 @@ class Processor implements ProcessorInterface
                     $this->processResultHelper->increaseProcessedItemCount($this->processResultTransfer);
                     $this->processResultHelper->increaseItemCount($this->processResultTransfer);
                 } catch (TolerableProcessException $exception) {
-                    $this->processResultHelper
-                        ->increaseFailedItemCount($this->processResultTransfer);
+                    $this->processResultHelper->increaseSkippedItemCount($this->processResultTransfer);
                     $this->getProcessLogger()->error('Experienced tolerable process error in ' . $exception->getFile(), ['exception' => $exception]);
                 }
             }
             $this->outputStream->flush();
         } catch (Exception $e) {
-            $this->processResultHelper->increaseSkippedItemCount($this->processResultTransfer);
+            $this->processResultHelper->increaseFailedItemCount($this->processResultTransfer);
             $this->getProcessLogger()->error('Middleware process was stopped. Non tolerable error was occurred.',  ['exception' => $e, 'item' => isset($item) ? $item : null]);
         } finally {
             $this->inputStream->close();
