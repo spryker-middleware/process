@@ -122,7 +122,6 @@ class XmlWriteStream implements WriteStreamInterface
      */
     public function close(): bool
     {
-        $this->xmlWriter->endElement();
         return $this->xmlWriter->endDocument();
     }
 
@@ -176,6 +175,7 @@ class XmlWriteStream implements WriteStreamInterface
     protected function initWriter(): bool
     {
         $this->xmlWriter = new XMLWriter();
+        touch($this->path);
         return $this->xmlWriter->openURI($this->path);
     }
 }
