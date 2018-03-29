@@ -42,18 +42,12 @@ abstract class AbstractXmlOutputStreamPlugin extends AbstractPlugin implements O
     /**
      * @return string
      */
-    protected function getRootNode(): string
-    {
-        return 'root';
-    }
+    abstract protected function getRootNode(): string;
 
     /**
      * @return string
      */
-    protected function getEntityNode(): string
-    {
-        return 'entity';
-    }
+    abstract protected function getEntityNode(): string;
 
     /**
      * @return string
