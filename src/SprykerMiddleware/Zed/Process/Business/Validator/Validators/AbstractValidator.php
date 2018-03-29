@@ -30,7 +30,7 @@ abstract class AbstractValidator implements ValidatorInterface
      * @param mixed $value
      * @param array $payload
      *
-     * @return mixed
+     * @return bool
      */
     abstract public function validate($value, array $payload): bool;
 

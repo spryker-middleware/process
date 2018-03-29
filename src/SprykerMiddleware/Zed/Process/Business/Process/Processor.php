@@ -8,11 +8,13 @@
 namespace SprykerMiddleware\Zed\Process\Business\Process;
 
 use Exception;
+use Generated\Shared\Transfer\ProcessResultTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
+use SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface;
 
 class Processor implements ProcessorInterface
 {
@@ -64,18 +66,32 @@ class Processor implements ProcessorInterface
     protected $processPluginResolver;
 
     /**
+     * @var \Generated\Shared\Transfer\ProcessResultTransfer
+     */
+    protected $processResultTransfer;
+
+    /**
+     * @var \SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface
+     */
+    protected $processResultHelper;
+
+    /**
      * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface $pipeline
      * @param \SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface $processPluginResolver
+     * @param \SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface $processResultHelper
      */
     public function __construct(
         ProcessSettingsTransfer $processSettingsTransfer,
         PipelineInterface $pipeline,
-        ProcessPluginResolverInterface $processPluginResolver
+        ProcessPluginResolverInterface $processPluginResolver,
+        ProcessResultHelperInterface $processResultHelper
     ) {
         $this->processSettingsTransfer = $processSettingsTransfer;
         $this->pipeline = $pipeline;
         $this->processPluginResolver = $processPluginResolver;
+        $this->processResultHelper = $processResultHelper;
+        $this->processResultTransfer = new ProcessResultTransfer();
         $this->init();
     }
 
@@ -93,23 +109,27 @@ class Processor implements ProcessorInterface
             $this->inputStream->open();
             $this->outputStream->open();
             foreach ($this->iterator as $item) {
+                $this->processResultHelper->increaseItemCount($this->processResultTransfer);
                 try {
                     $this->getProcessLogger()->info('Start processing of item', [
                         'itemNo' => $counter++,
                     ]);
-                    $this->pipeline->process($item, $this->outputStream);
+                    $this->pipeline->process($item, $this->outputStream, $this->processResultTransfer);
+                    $this->processResultHelper->increaseProcessedItemCount($this->processResultTransfer);
                 } catch (TolerableProcessException $exception) {
+                    $this->processResultHelper->increaseSkippedItemCount($this->processResultTransfer);
                     $this->getProcessLogger()->error('Experienced tolerable process error in ' . $exception->getFile(), ['exception' => $exception]);
                 }
             }
             $this->outputStream->flush();
         } catch (Exception $e) {
-            throw $e;
+            $this->processResultHelper->increaseFailedItemCount($this->processResultTransfer);
+            $this->getProcessLogger()->error('Middleware process was stopped. Non tolerable error was occurred.',  ['exception' => $e, 'item' => isset($item) ? $item : null]);
         } finally {
             $this->inputStream->close();
             $this->outputStream->close();
         }
-
+        $this->processResultTransfer->setEndTime(time());
         $this->getProcessLogger()->info('Middleware process is finished.');
         $this->postProcess();
     }
@@ -120,7 +140,7 @@ class Processor implements ProcessorInterface
     public function preProcess(): void
     {
         foreach ($this->preProcessStack as $preProcessor) {
-            $preProcessor->process();
+            $preProcessor->process($this->processResultTransfer);
         }
     }
 
@@ -130,7 +150,7 @@ class Processor implements ProcessorInterface
     public function postProcess(): void
     {
         foreach ($this->postProcessStack as $postProcessor) {
-            $postProcessor->process();
+            $postProcessor->process($this->processResultTransfer);
         }
     }
 
@@ -166,5 +186,6 @@ class Processor implements ProcessorInterface
         $loggerConfig->changeLogLevel($this->processSettingsTransfer->getLoggerConfig()->getVerboseLevel());
 
         $this->initLogger($loggerConfig);
+        $this->processResultHelper->initProcessResultTransfer($this->processResultTransfer, $this->processPlugin, $this->processSettingsTransfer);
     }
 }
