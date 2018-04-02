@@ -86,8 +86,9 @@ class CsvWriteStream implements WriteStreamInterface
      */
     public function close(): bool
     {
-        unset($this->handle);
-
+        if ($this->handle) {
+            unset($this->handle);
+        }
         return true;
     }
 

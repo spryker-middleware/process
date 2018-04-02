@@ -114,7 +114,11 @@ class JsonReadStream implements ReadStreamInterface
 
         $this->position = 0;
 
-        return json_decode($data, true);
+        $json = json_decode($data, true);
+        if ((json_last_error() !== JSON_ERROR_NONE)) {
+            throw new \Exception("Invalid json: " . json_last_error_msg());
+        }
+        return $json;
     }
 
     /**
