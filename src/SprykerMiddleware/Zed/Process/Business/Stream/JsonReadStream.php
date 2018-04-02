@@ -8,6 +8,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Zed\Process\Business\Exception\InvalidReadSourceException;
 
 class JsonReadStream implements ReadStreamInterface
 {
@@ -116,7 +117,7 @@ class JsonReadStream implements ReadStreamInterface
 
         $json = json_decode($data, true);
         if ((json_last_error() !== JSON_ERROR_NONE)) {
-            throw new \Exception("Invalid json: " . json_last_error_msg());
+            throw new InvalidReadSourceException("Invalid json: " . json_last_error_msg());
         }
         return $json;
     }
