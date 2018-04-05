@@ -112,7 +112,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \Monolog\Formatter\FormatterInterface|\Monolog\Formatter\FormatterInterface
      */
-    protected function createLogstashFormatter(): FormatterInterface
+    public function createLogstashFormatter(): FormatterInterface
     {
         return new LogstashFormatter(APPLICATION);
     }

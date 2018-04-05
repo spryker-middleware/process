@@ -9,8 +9,8 @@ namespace SprykerMiddleware\Zed\Process\Business\Validator\Validators;
 
 class LengthValidator extends AbstractValidator
 {
-    const OPTION_MIN = 'min';
-    const OPTION_MAX = 'max';
+    public const OPTION_MIN = 'min';
+    public const OPTION_MAX = 'max';
 
     /**
      * @param mixed $value

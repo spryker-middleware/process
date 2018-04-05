@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\TypeValidator;
 
 class TypeValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'Type';
+    public const NAME = 'Type';
 
     /**
      * @return string

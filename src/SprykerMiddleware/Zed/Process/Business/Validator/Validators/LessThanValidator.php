@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Validator\Validators;
 
 class LessThanValidator extends AbstractValidator
 {
-    const OPTION_VALUE = 'value';
+    public const OPTION_VALUE = 'value';
 
     /**
      * @var array

@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\IntToSt
 
 class IntToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'IntToString';
+    public const NAME = 'IntToString';
 
     /**
      * @return string

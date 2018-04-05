@@ -1,4 +1,4 @@
-<?php
+protected <?php
 
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\InListValidator;
 
 class InListValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'InList';
+    public const NAME = 'InList';
 
     /**
      * @return string

@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\DateTim
 
 class DateTimeToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'DateTimeToString';
+    public const NAME = 'DateTimeToString';
 
     /**
      * @return string

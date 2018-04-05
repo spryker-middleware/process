@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\MoneyDe
 
 class MoneyDecimalToIntegerTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'MoneyDecimalToInteger';
+    public const NAME = 'MoneyDecimalToInteger';
 
     /**
      * @return string

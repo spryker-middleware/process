@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Whiteli
 
 class WhitelistKeysAssociativeFilterTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'WhitelistKeysAssociativeFilter';
+    public const NAME = 'WhitelistKeysAssociativeFilter';
 
     /**
      * @return string

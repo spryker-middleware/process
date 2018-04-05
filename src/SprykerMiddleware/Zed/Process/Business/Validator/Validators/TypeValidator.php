@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Validator\Validators;
 
 class TypeValidator extends AbstractValidator
 {
-    const OPTION_TYPE = 'type';
+    public const OPTION_TYPE = 'type';
 
     /**
      * @var array

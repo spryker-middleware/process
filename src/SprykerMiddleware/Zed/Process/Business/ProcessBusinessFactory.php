@@ -139,7 +139,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
      */
-    protected function createPipeline(
+    public function createPipeline(
         ProcessSettingsTransfer $processSettingsTransfer
     ): PipelineInterface {
         return new Pipeline(
@@ -153,7 +153,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
      */
-    protected function getStages(
+    public function getStages(
         ProcessSettingsTransfer $processSettingsTransfer
     ): array {
         return $this->createStageListBuilder()
@@ -163,7 +163,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface
      */
-    protected function createStageListBuilder(): StageListBuilderInterface
+    public function createStageListBuilder(): StageListBuilderInterface
     {
         return new StageListBuilder(
             $this->createProcessPluginResolver()
@@ -173,7 +173,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface
      */
-    protected function createPipelineProcessor(): PipelineProcessorInterface
+    public function createPipelineProcessor(): PipelineProcessorInterface
     {
         return new FingersCrossedProcessor($this->createProcessResultHelper());
     }
@@ -181,7 +181,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface
      */
-    protected function createTranslatorFunctionResolver(): TranslatorFunctionPluginResolverInterface
+    public function createTranslatorFunctionResolver(): TranslatorFunctionPluginResolverInterface
     {
         return new TranslatorFunctionPluginResolver($this->getProfileConfigurationPluginStack());
     }
@@ -189,7 +189,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolverInterface
      */
-    protected function createValidatorPluginResolver(): ValidatorPluginResolverInterface
+    public function createValidatorPluginResolver(): ValidatorPluginResolverInterface
     {
         return new ValidatorPluginResolver($this->getProfileConfigurationPluginStack());
     }
@@ -197,7 +197,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
-    protected function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
+    public function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN);
     }
@@ -205,7 +205,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
      */
-    protected function getProfileConfigurationPluginStack(): array
+    public function getProfileConfigurationPluginStack(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_CONFIGURATION_PROFILES);
     }

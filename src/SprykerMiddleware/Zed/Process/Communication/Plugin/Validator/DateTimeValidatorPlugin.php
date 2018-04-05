@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\DateTimeValidato
 
 class DateTimeValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'DateTime';
+    public const NAME = 'DateTime';
 
     /**
      * @return string

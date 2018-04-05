@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\RegexValidator;
 
 class RegexValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'Regex';
+    public const NAME = 'Regex';
 
     /**
      * @return string

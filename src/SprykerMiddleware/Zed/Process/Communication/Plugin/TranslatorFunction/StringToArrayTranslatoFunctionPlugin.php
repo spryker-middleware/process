@@ -14,7 +14,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\StringT
  */
 class StringToArrayTranslatoFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'StringToArray';
+    public const NAME = 'StringToArray';
 
     /**
      * @return string

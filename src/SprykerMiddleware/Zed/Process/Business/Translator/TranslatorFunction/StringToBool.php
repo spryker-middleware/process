@@ -9,7 +9,8 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 class StringToBool extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
-    const VALUE_TRUE = 'true';
+    public const VALUE_TRUE = 'true';
+
     /**
      * @param string $value
      * @param array $payload

@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\IntToFl
 
 class IntToFloatTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'IntToFloat';
+    public const NAME = 'IntToFloat';
 
     /**
      * @return string

@@ -7,10 +7,11 @@
 
 namespace SprykerMiddleware\Service\Process;
 
+use Spryker\Service\Kernel\AbstractServiceFactory;
 use SprykerMiddleware\Service\Process\Model\StreamService;
 use SprykerMiddleware\Service\Process\Model\StreamServiceInterface;
 
-class ProcessServiceFactory
+class ProcessServiceFactory extends AbstractServiceFactory
 {
     /**
      * @return \SprykerMiddleware\Service\Process\Model\StreamServiceInterface

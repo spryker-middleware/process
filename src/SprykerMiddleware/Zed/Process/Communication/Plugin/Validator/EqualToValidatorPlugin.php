@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\EqualToValidator
 
 class EqualToValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'EqualTo';
+    public const NAME = 'EqualTo';
 
     /**
      * @return string

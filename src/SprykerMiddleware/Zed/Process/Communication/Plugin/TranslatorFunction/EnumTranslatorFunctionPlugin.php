@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Enum;
 
 class EnumTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'Enum';
+    public const NAME = 'Enum';
 
     /**
      * @return string

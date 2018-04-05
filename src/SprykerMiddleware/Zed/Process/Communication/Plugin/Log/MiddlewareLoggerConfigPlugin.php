@@ -16,7 +16,7 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPl
  */
 class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareLoggerConfigPluginInterface
 {
-    const CHANNEL_NAME = 'SprykerMiddleware';
+    protected const CHANNEL_NAME = 'SprykerMiddleware';
 
     /**
      * @var \Monolog\Handler\AbstractHandler[]

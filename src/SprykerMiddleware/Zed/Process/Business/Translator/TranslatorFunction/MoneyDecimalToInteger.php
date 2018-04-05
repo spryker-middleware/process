@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorExc
 
 class MoneyDecimalToInteger extends AbstractTranslatorFunction
 {
-    const PRICE_PRECISION = 100;
+    protected const PRICE_PRECISION = 100;
 
     /**
      * @param float $value
