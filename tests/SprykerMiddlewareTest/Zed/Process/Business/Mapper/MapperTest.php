@@ -106,6 +106,16 @@ class MapperTest extends Unit
                     'price' => 12.80,
                 ],
             ],
+            'delivery' => [
+                [
+                    'locale' => 'en_GB',
+                    'is_allowed' => true,
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'is_allowed' => false,
+                ],
+            ],
             'values' => [
                 'attributes' => [
                     'color' => 'white',
@@ -155,6 +165,13 @@ class MapperTest extends Unit
                 'de_DE' => 12.50,
                 'nl_NL' => 12.80,
             ],
+            'delivery' => [
+                'delivery',
+                'itemMap' => [
+                    'en_GB' => true,
+                    'de_DE' => false,
+                ]
+            ]
         ];
     }
 
@@ -179,6 +196,14 @@ class MapperTest extends Unit
                 $result = [];
                 foreach ($payload['prices'] as $name) {
                     $result[$name['locale']] = $name['price'];
+                }
+
+                return $result;
+            },
+            'delivery' => function ($payload) {
+                $result[] = 'delivery';
+                foreach ($payload['delivery'] as $delivery) {
+                    $result['itemMap'][$delivery['locale']] = $delivery['is_allowed'];
                 }
 
                 return $result;
