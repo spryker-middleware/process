@@ -13,13 +13,6 @@ use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 interface PipelineInterface
 {
     /**
-     * @param callable $operation
-     *
-     * @return static
-     */
-    public function pipe(callable $operation);
-
-    /**
      * @param mixed $payload
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
@@ -27,13 +20,4 @@ interface PipelineInterface
      * @return mixed
      */
     public function process($payload, WriteStreamInterface $outStream, ProcessResultTransfer $processResultTransfer);
-
-    /**
-     * @param mixed $payload
-     * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
-     * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
-     *
-     * @return mixed
-     */
-    public function __invoke($payload, WriteStreamInterface $outStream, ProcessResultTransfer $processResultTransfer);
 }

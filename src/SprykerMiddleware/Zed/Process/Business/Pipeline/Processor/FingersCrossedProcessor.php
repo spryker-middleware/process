@@ -27,7 +27,7 @@ class FingersCrossedProcessor implements PipelineProcessorInterface
     }
 
     /**
-     * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[] $stages
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[] $stages
      * @param mixed $payload
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
@@ -38,12 +38,12 @@ class FingersCrossedProcessor implements PipelineProcessorInterface
     {
         $originalPayload = $payload;
         foreach ($stages as $stage) {
-            $this->processResultHelper->increaseStageInputItemCount($processResultTransfer, $stage->getStagePlugin()->getName());
+            $this->processResultHelper->increaseStageInputItemCount($processResultTransfer, $stage->getName());
             $startTime = round(microtime(true) * 1000);
-            $payload = call_user_func($stage, $payload, $outStream, $originalPayload);
+            $payload = $stage->process($payload, $outStream, $originalPayload);
             $endTime = round(microtime(true) * 1000);
-            $this->processResultHelper->increaseStageItemExecutionTime($processResultTransfer, $stage->getStagePlugin()->getName(), $endTime - $startTime);
-            $this->processResultHelper->increaseStageOutputItemCount($processResultTransfer, $stage->getStagePlugin()->getName());
+            $this->processResultHelper->increaseStageItemExecutionTime($processResultTransfer, $stage->getName(), $endTime - $startTime);
+            $this->processResultHelper->increaseStageOutputItemCount($processResultTransfer, $stage->getName());
         }
 
         return $payload;

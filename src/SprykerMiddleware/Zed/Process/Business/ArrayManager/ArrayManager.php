@@ -76,7 +76,6 @@ class ArrayManager implements ArrayManagerInterface
      *      'prices.1.price',
      * ]`
      *
-     *
      * @param array $payload
      * @param string $key
      *

@@ -23,8 +23,8 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Transla
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactoryInterface;
 use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactory;
 use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactoryInterface;
-use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**

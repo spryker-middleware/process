@@ -23,8 +23,7 @@ class ConfigurationSnapshotBuilder implements ConfigurationSnapshotBuilderInterf
     public function build(
         ProcessConfigurationPluginInterface $processConfigurationPlugin,
         ProcessSettingsTransfer $processSettingsTransfer
-    ): ProcessConfigurationTransfer
-    {
+    ): ProcessConfigurationTransfer {
         $processConfigurationTransfer = (new ProcessConfigurationTransfer())
             ->setIteratorPluginName($processConfigurationPlugin->getIteratorPlugin()->getName())
             ->setLoggerPluginName($processConfigurationPlugin->getLoggerPlugin()->getName());
@@ -47,8 +46,7 @@ class ConfigurationSnapshotBuilder implements ConfigurationSnapshotBuilderInterf
         ProcessConfigurationTransfer $processConfigurationTransfer,
         ProcessConfigurationPluginInterface $processConfigurationPlugin,
         ProcessSettingsTransfer $processSettingsTransfer
-    ): ProcessConfigurationTransfer
-    {
+    ): ProcessConfigurationTransfer {
         $inputStreamPluginTransfer = (new StreamConfigurationTransfer())
             ->setStreamPluginName($processConfigurationPlugin->getInputStreamPlugin()->getName())
             ->setPath($processSettingsTransfer->getInputPath());
@@ -72,8 +70,7 @@ class ConfigurationSnapshotBuilder implements ConfigurationSnapshotBuilderInterf
     protected function buildStagesConfigurationSnapshot(
         ProcessConfigurationTransfer $processConfigurationTransfer,
         ProcessConfigurationPluginInterface $processConfigurationPlugin
-    ): ProcessConfigurationTransfer
-    {
+    ): ProcessConfigurationTransfer {
         foreach ($processConfigurationPlugin->getStagePlugins() as $stagePlugin) {
             $processConfigurationTransfer->addStagePluginName($stagePlugin->getName());
         }
@@ -90,8 +87,7 @@ class ConfigurationSnapshotBuilder implements ConfigurationSnapshotBuilderInterf
     private function buildHooksConfigurationSnapshot(
         ProcessConfigurationTransfer $processConfigurationTransfer,
         ProcessConfigurationPluginInterface $processConfigurationPlugin
-    ): ProcessConfigurationTransfer
-    {
+    ): ProcessConfigurationTransfer {
         foreach ($processConfigurationPlugin->getPreProcessorHookPlugins() as $preHookPlugin) {
             $processConfigurationTransfer->addPreProcessHookPluginName($preHookPlugin->getName());
         }

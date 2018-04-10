@@ -22,8 +22,6 @@ use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\FingersCrossedProcessor;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface;
-use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilder;
-use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolver;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
@@ -144,29 +142,8 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     ): PipelineInterface {
         return new Pipeline(
             $this->createPipelineProcessor(),
-            $this->getStages($processSettingsTransfer)
-        );
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
-     */
-    public function getStages(
-        ProcessSettingsTransfer $processSettingsTransfer
-    ): array {
-        return $this->createStageListBuilder()
-            ->buildStageList($processSettingsTransfer);
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface
-     */
-    public function createStageListBuilder(): StageListBuilderInterface
-    {
-        return new StageListBuilder(
-            $this->createProcessPluginResolver()
+            $this->createProcessPluginResolver(),
+            $processSettingsTransfer
         );
     }
 

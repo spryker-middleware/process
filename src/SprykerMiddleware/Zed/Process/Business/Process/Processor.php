@@ -96,8 +96,6 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @throws \Exception
-     *
      * @return void
      */
     public function process(): void
@@ -124,7 +122,7 @@ class Processor implements ProcessorInterface
             $this->outputStream->flush();
         } catch (Exception $e) {
             $this->processResultHelper->increaseFailedItemCount($this->processResultTransfer);
-            $this->getProcessLogger()->error('Middleware process was stopped. Non tolerable error was occurred.',  ['exception' => $e, 'item' => isset($item) ? $item : null]);
+            $this->getProcessLogger()->error('Middleware process was stopped. Non tolerable error was occurred.', ['exception' => $e, 'item' => isset($item) ? $item : null]);
         } finally {
             $this->inputStream->close();
             $this->outputStream->close();

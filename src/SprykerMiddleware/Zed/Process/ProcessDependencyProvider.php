@@ -46,8 +46,8 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\RegexValidatorP
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\RequiredValidatorPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\TypeValidatorPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapter;
-use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapter;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapter;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
@@ -333,7 +333,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     protected function addDecoder($container)
     {
         $container[static::DECODER] = function () {
-            return $this->createDecoder();
+            return $this->getDecoder();
         };
 
         return $container;

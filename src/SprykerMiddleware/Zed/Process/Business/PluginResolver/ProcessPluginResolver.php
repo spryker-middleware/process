@@ -29,8 +29,8 @@ class ProcessPluginResolver implements ProcessPluginResolverInterface
     {
         $this->configurationProfilePluginsStack = $configurationProfilePluginsStack;
         foreach ($this->configurationProfilePluginsStack as $profile) {
-            foreach ($profile->getProcessConfigurationPlugins() as $process) {
-                $this->processPluginsStack[$processConfig->getProcessName()] = $process;
+            foreach ($profile->getProcessConfigurationPlugins() as $processConfig) {
+                $this->processPluginsStack[$processConfig->getProcessName()] = $processConfig;
             }
         }
     }

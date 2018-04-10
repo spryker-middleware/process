@@ -13,7 +13,7 @@ use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 interface PipelineProcessorInterface
 {
     /**
-     * @param \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[] $stages
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface[] $stages
      * @param mixed $payload
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      * @param \Generated\Shared\Transfer\ProcessResultTransfer $processResultTransfer
