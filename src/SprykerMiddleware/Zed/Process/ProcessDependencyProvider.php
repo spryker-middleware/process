@@ -47,6 +47,8 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\RequiredValidat
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Validator\TypeValidatorPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapter;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapter;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceBridge;
 
@@ -352,17 +354,17 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapter
+     * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface
      */
-    protected function getDecoder()
+    protected function getDecoder(): ProcessToSymfonyDecoderAdapterInterface
     {
         return new ProcessToSymfonyDecoderAdapter();
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapter
+     * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface
      */
-    protected function getEncoder()
+    protected function getEncoder(): ProcessToSymfonyEncoderAdapterInterface
     {
         return new ProcessToSymfonyEncoderAdapter();
     }

@@ -16,6 +16,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
  */
 class StreamWriterStagePlugin extends AbstractStagePlugin implements StagePluginInterface
 {
+    protected const PLUGIN_NAME = 'StreamWriterStagePlugin';
+
     /**
      * @inheritdoc
      */
@@ -26,5 +28,21 @@ class StreamWriterStagePlugin extends AbstractStagePlugin implements StagePlugin
             ->write($outStream, $payload);
 
         return $payload;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return static::STAGE_TYPE_WRITER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return static::PLUGIN_NAME;
     }
 }

@@ -23,6 +23,8 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Transla
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactoryInterface;
 use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactory;
 use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactoryInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -144,7 +146,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface
      */
-    public function getDecoder()
+    public function getDecoder(): ProcessToSymfonyDecoderAdapterInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::DECODER);
     }
@@ -152,7 +154,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface
      */
-    public function getEncoder()
+    public function getEncoder(): ProcessToSymfonyEncoderAdapterInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::ENCODER);
     }

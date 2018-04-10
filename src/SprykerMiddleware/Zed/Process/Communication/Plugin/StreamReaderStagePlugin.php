@@ -16,6 +16,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\StagePluginInterface;
  */
 class StreamReaderStagePlugin extends AbstractStagePlugin implements StagePluginInterface
 {
+    protected const PLUGIN_NAME = 'StreamReaderStagePlugin';
+
     /**
      * @inheritdoc
      */
@@ -24,5 +26,21 @@ class StreamReaderStagePlugin extends AbstractStagePlugin implements StagePlugin
         return $this->getFactory()
             ->getProcessService()
             ->read($inputStream);
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return static::STAGE_TYPE_READER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return static::PLUGIN_NAME;
     }
 }

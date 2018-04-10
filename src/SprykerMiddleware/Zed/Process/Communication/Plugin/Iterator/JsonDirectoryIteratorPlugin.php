@@ -19,6 +19,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Iterator\ProcessIteratorPlug
  */
 class JsonDirectoryIteratorPlugin extends AbstractPlugin implements ProcessIteratorPluginInterface
 {
+    protected const PLUGIN_NAME = 'JsonDirectoryIteratorPlugin';
+
     /**
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      * @param \Generated\Shared\Transfer\IteratorConfigTransfer $iteratorConfigTransfer
@@ -30,5 +32,13 @@ class JsonDirectoryIteratorPlugin extends AbstractPlugin implements ProcessItera
         return $this->getFactory()
             ->createIteratorFactory()
             ->createJsonDirectoryIterator($inStream);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return static::PLUGIN_NAME;
     }
 }

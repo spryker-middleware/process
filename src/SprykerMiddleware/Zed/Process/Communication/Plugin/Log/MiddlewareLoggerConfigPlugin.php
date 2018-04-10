@@ -17,6 +17,7 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPl
 class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareLoggerConfigPluginInterface
 {
     protected const CHANNEL_NAME = 'SprykerMiddleware';
+    protected const PLUGIN_NAME = 'MiddlewareLoggerConfigPlugin';
 
     /**
      * @var \Monolog\Handler\AbstractHandler[]
@@ -64,5 +65,13 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
         foreach ($this->handlers as $handler) {
             $handler->setLevel($level);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return static::PLUGIN_NAME;
     }
 }
