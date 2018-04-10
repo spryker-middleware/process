@@ -8,13 +8,17 @@
 namespace SprykerMiddlewareTest\Zed\Process\Business\Iterator;
 
 use Codeception\Test\Unit;
+use PHPUnit\Framework\MockObject\MockObject;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Zed\Process\Business\Iterator\JsonDirectoryIterator;
 use SprykerMiddleware\Zed\Process\Business\Iterator\NullIterator;
+use SprykerMiddleware\Zed\Process\Business\Stream\JsonReadStream;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface;
 
 class AbstractInteratorTest extends Unit
 {
+    const VALUE_JSON_PATH = '/test';
+
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Iterator\NullIterator
      */
@@ -22,12 +26,25 @@ class AbstractInteratorTest extends Unit
     {
         return new NullIterator($this->getReadStreamMock());
     }
+
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\JsonDirectoryIterator
+     * @return MockObject|JsonDirectoryIterator
      */
-    protected function getJsonDirectoryIterator(): JsonDirectoryIterator
+    protected function getJsonDirectoryIteratorMock(): JsonDirectoryIterator
     {
-        return new JsonDirectoryIterator($this->getReadStreamMock(), $this->getStreamFactoryMock());
+        $mock = $this->getMockBuilder(JsonDirectoryIterator::class)
+            ->setConstructorArgs([$this->getReadStreamMock(), $this->getStreamFactoryMock()])
+            ->setMethods(['initInnerStreamForNextItem'])
+            ->getMock();
+
+        $mock->method('initInnerStreamForNextItem')->willReturn($this->getJsonReadStream());
+
+        $reflection = new \ReflectionClass($mock);
+        $reflectionPropety = $reflection->getProperty('innerStream');
+        $reflectionPropety->setAccessible(true);
+        $reflectionPropety->setValue($mock, $this->getJsonReadStream());
+
+        return $mock;
     }
 
     protected function getReadStreamMock()
@@ -43,5 +60,10 @@ class AbstractInteratorTest extends Unit
     {
         return $this->getMockBuilder(StreamFactoryInterface::class)
             ->getMock();
+    }
+
+    protected function getJsonReadStream()
+    {
+        return new JsonReadStream(self::VALUE_JSON_PATH);
     }
 }
