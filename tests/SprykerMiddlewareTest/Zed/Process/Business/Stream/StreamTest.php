@@ -8,6 +8,7 @@
 namespace SprykerMiddlewareTest\Zed\Process\Business\Stream;
 
 use Codeception\Test\Unit;
+use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory;
 use SprykerMiddlewareTest\Zed\Process\StreamMocks;
 
 /**
@@ -35,14 +36,16 @@ class StreamTest extends Unit
         ],
     ];
 
-    const PATH_CSV = '/tmp/csv_write_stream.csv';
+    const FILE_CSV_WRITE = '/tmp/csv_write_stream.csv';
+
+    const PATH_SUPPORT_STREAM_FILES =  __DIR__ . '/../../_support/stream/files/';
 
     /**
      * @return void
      */
     public function testCsvReadStream(): void
     {
-        $stream = $this->getCsvReadStream();
+        $stream = $this->getCsvReadStream(self::PATH_SUPPORT_STREAM_FILES . 'csv_read_stream_test.csv');
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
@@ -61,7 +64,7 @@ class StreamTest extends Unit
      */
     public function testCsvWriteStream(): void
     {
-        $stream = $this->getCsvWriteStream(self::PATH_CSV);
+        $stream = $this->getCsvWriteStream(self::FILE_CSV_WRITE);
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
@@ -72,8 +75,43 @@ class StreamTest extends Unit
         $this->assertEquals($stream->eof(), true);
         $this->assertEquals($stream->close(), true);
 
-        unlink(self::PATH_CSV);
+        unlink(self::FILE_CSV_WRITE);
+    }
+
+    /**
+     * @return void
+     */
+    public function testDirectoryStream(): void
+    {
+        $stream = $this->getDirectoryStream(self::PATH_SUPPORT_STREAM_FILES);
+
+        $this->assertEquals($stream->open(), true);
+        $this->assertEquals($stream->eof(), false);
+        $this->assertEquals($stream->seek(1, SEEK_SET), true);
+        $this->assertTrue(!is_string($stream->read()));
+        $this->assertTrue((bool) $stream->seek(0, SEEK_SET));
+        $this->assertTrue(is_string($stream->read()), true);
+        $this->assertTrue($stream->close(), true);
+    }
+
+    public function testJsonReadStream(): void
+    {
+
+    }
+
+    public function testJsonWriteStream(): void
+    {
+
+    }
+
+    public function testXmlReadStream(): void
+    {
+
     }
 
 
+    public function testXmlWriteStream(): void
+    {
+
+    }
 }

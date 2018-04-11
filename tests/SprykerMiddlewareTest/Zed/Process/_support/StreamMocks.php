@@ -10,16 +10,22 @@ namespace SprykerMiddlewareTest\Zed\Process;
 use Codeception\Test\Unit;
 use SprykerMiddleware\Zed\Process\Business\Stream\CsvReadStream;
 use SprykerMiddleware\Zed\Process\Business\Stream\CsvWriteStream;
+use SprykerMiddleware\Zed\Process\Business\Stream\DirectoryStream;
 
 trait StreamMocks
 {
-    protected function getCsvReadStream(): CsvReadStream
+    protected function getCsvReadStream(string $path): CsvReadStream
     {
-        return new CsvReadStream(__DIR__ . '/stream/files/csv_read_stream_test.csv');
+        return new CsvReadStream($path);
     }
 
     protected function getCsvWriteStream(string $path): CsvWriteStream
     {
         return new CsvWriteStream($path);
+    }
+
+    protected function getDirectoryStream(string $path): DirectoryStream
+    {
+        return new DirectoryStream($path);
     }
 }
