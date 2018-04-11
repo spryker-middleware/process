@@ -32,14 +32,6 @@ class StreamReaderStagePlugin extends AbstractPlugin implements StagePluginInter
     /**
      * @return string
      */
-    public function getType(): string
-    {
-        return static::STAGE_TYPE_READER;
-    }
-
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return static::PLUGIN_NAME;

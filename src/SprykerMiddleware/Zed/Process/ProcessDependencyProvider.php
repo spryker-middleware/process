@@ -54,13 +54,13 @@ use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServic
 
 class ProcessDependencyProvider extends AbstractBundleDependencyProvider
 {
-    public const MIDDLEWARE_DEFAULT_PROCESSES = 'MIDDLEWARE_DEFAULT_PROCESSES';
+    public const MIDDLEWARE_PROCESSES = 'MIDDLEWARE_PROCESSES';
     public const MIDDLEWARE_CONFIGURATION_PROFILES = 'MIDDLEWARE_CONFIGURATION_PROFILES';
     public const MIDDLEWARE_LOG_HANDLERS = 'MIDDLEWARE_LOG_HANDLERS';
     public const MIDDLEWARE_LOG_PROCESSORS = 'MIDDLEWARE_LOG_PROCESSORS';
-    public const MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN';
-    public const MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS = 'MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS';
-    public const MIDDLEWARE_GENERIC_VALIDATORS = 'MIDDLEWARE_GENERIC_VALIDATORS';
+    public const MIDDLEWARE_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_LOG_CONFIG_PLUGIN';
+    public const MIDDLEWARE_TRANSLATOR_FUNCTIONS = 'MIDDLEWARE_TRANSLATOR_FUNCTIONS';
+    public const MIDDLEWARE_VALIDATORS = 'MIDDLEWARE_VALIDATORS';
 
     public const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
     public const SERVICE_PROCESS = 'PROCESS_SERVICE';
@@ -77,13 +77,13 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = parent::provideCommunicationLayerDependencies($container);
 
-        $container = $this->addDefaultProcessesStack($container);
-        $container = $this->addDefaultLoggerConfigPlugin($container);
+        $container = $this->addProcessesStack($container);
+        $container = $this->addMiddlewareLoggerConfigPlugin($container);
         $container = $this->addLogHandlers($container);
         $container = $this->addLogProcessors($container);
         $container = $this->addProcessService($container);
-        $container = $this->addGenericTranslatorFunctions($container);
-        $container = $this->addGenericValidators($container);
+        $container = $this->addTranslatorFunctions($container);
+        $container = $this->addValidators($container);
         $container = $this->addDecoder($container);
         $container = $this->addEncoder($container);
 
@@ -123,10 +123,10 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addDefaultProcessesStack($container): Container
+    protected function addProcessesStack($container): Container
     {
-        $container[static::MIDDLEWARE_DEFAULT_PROCESSES] = function () {
-            return $this->getDefaultProcessesPluginsStack();
+        $container[static::MIDDLEWARE_PROCESSES] = function () {
+            return $this->getProcessesPluginsStack();
         };
 
         return $container;
@@ -135,7 +135,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
-    protected function getDefaultProcessesPluginsStack(): array
+    protected function getProcessesPluginsStack(): array
     {
         return [];
     }
@@ -209,10 +209,10 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addDefaultLoggerConfigPlugin($container): Container
+    protected function addMiddlewareLoggerConfigPlugin($container): Container
     {
-        $container[static::MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN] = function () {
-            return $this->getDefaultLoggerConfigPlugin();
+        $container[static::MIDDLEWARE_LOG_CONFIG_PLUGIN] = function () {
+            return $this->getMiddlewareLoggerConfigPlugin();
         };
 
         return $container;
@@ -223,10 +223,10 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addGenericTranslatorFunctions($container): Container
+    protected function addTranslatorFunctions($container): Container
     {
-        $container[static::MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS] = function () {
-            return $this->getGenericTranslatorFunctionsStack();
+        $container[static::MIDDLEWARE_TRANSLATOR_FUNCTIONS] = function () {
+            return $this->getTranslatorFunctionsStack();
         };
 
         return $container;
@@ -237,10 +237,10 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addGenericValidators($container): Container
+    protected function addValidators($container): Container
     {
-        $container[static::MIDDLEWARE_GENERIC_VALIDATORS] = function () {
-            return $this->getGenericValidatorsStack();
+        $container[static::MIDDLEWARE_VALIDATORS] = function () {
+            return $this->getValidatorsStack();
         };
 
         return $container;
@@ -249,7 +249,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
-    protected function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
+    protected function getMiddlewareLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
     {
         return new MiddlewareLoggerConfigPlugin();
     }
@@ -278,7 +278,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
-    protected function getGenericTranslatorFunctionsStack(): array
+    protected function getTranslatorFunctionsStack(): array
     {
         return [
             new ArrayToStringTranslatorFunctionPlugin(),
@@ -306,7 +306,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\ValidatorPluginInterface[]
      */
-    protected function getGenericValidatorsStack(): array
+    protected function getValidatorsStack(): array
     {
         return [
             new DateTimeValidatorPlugin(),

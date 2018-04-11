@@ -22,7 +22,7 @@ class DefaultConfigurationProfilePlugin extends AbstractPlugin implements Config
     public function getProcessConfigurationPlugins(): array
     {
         return $this->getFactory()
-            ->getDefaultProcessesPlugins();
+            ->getProcessesPlugins();
     }
 
     /**
@@ -31,7 +31,7 @@ class DefaultConfigurationProfilePlugin extends AbstractPlugin implements Config
     public function getTranslatorFunctionPlugins(): array
     {
         return $this->getFactory()
-            ->getGenericTranslatorFunctionsPlugins();
+            ->getTranslatorFunctionsPlugins();
     }
 
     /**
@@ -40,6 +40,6 @@ class DefaultConfigurationProfilePlugin extends AbstractPlugin implements Config
     public function getValidatorPlugins(): array
     {
         return $this->getFactory()
-            ->getGenericValidatorPlugins();
+            ->getValidatorPlugins();
     }
 }

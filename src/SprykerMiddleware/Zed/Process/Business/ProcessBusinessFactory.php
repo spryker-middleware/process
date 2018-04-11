@@ -176,7 +176,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     public function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_LOG_CONFIG_PLUGIN);
     }
 
     /**

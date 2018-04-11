@@ -91,9 +91,9 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
-    public function getDefaultProcessesPlugins(): array
+    public function getProcessesPlugins(): array
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_DEFAULT_PROCESSES);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
     }
 
     /**
@@ -122,17 +122,17 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
-    public function getGenericTranslatorFunctionsPlugins(): array
+    public function getTranslatorFunctionsPlugins(): array
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_TRANSLATOR_FUNCTIONS);
     }
 
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\ValidatorPluginInterface[]
      */
-    public function getGenericValidatorPlugins()
+    public function getValidatorPlugins()
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_GENERIC_VALIDATORS);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_VALIDATORS);
     }
 
     /**

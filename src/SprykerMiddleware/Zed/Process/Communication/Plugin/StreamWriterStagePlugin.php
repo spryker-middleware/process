@@ -34,14 +34,6 @@ class StreamWriterStagePlugin extends AbstractPlugin implements StagePluginInter
     /**
      * @return string
      */
-    public function getType(): string
-    {
-        return static::STAGE_TYPE_WRITER;
-    }
-
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return static::PLUGIN_NAME;
