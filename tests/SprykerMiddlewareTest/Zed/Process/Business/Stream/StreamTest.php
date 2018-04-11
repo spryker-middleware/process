@@ -18,7 +18,7 @@ use SprykerMiddlewareTest\Zed\Process\StreamMocks;
  * @group Stream
  * @group CsvReadStreamTest
  */
-class ReadStreamMocksTest extends Unit
+class StreamTest extends Unit
 {
     use StreamMocks;
 
@@ -35,12 +35,14 @@ class ReadStreamMocksTest extends Unit
         ],
     ];
 
+    const PATH_CSV = '/tmp/csv_write_stream.csv';
+
     /**
      * @return void
      */
     public function testCsvReadStream(): void
     {
-        $stream = $this->getCsvStream();
+        $stream = $this->getCsvReadStream();
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
@@ -53,4 +55,25 @@ class ReadStreamMocksTest extends Unit
         $this->assertEquals($stream->read(), [0 => '3']);
         $this->assertEquals($stream->close(), true);
     }
+
+    /**
+     * @return void
+     */
+    public function testCsvWriteStream(): void
+    {
+        $stream = $this->getCsvWriteStream(self::PATH_CSV);
+
+        $this->assertEquals($stream->open(), true);
+        $this->assertEquals($stream->eof(), true);
+        $this->assertEquals($stream->write(self::VALUE_CSV_ARRAY[0]), true);
+        $this->assertEquals($stream->write(self::VALUE_CSV_ARRAY[1]), true);
+        $this->assertEquals($stream->seek(1, SEEK_SET), true);
+        $this->assertEquals($stream->flush(), true);
+        $this->assertEquals($stream->eof(), true);
+        $this->assertEquals($stream->close(), true);
+
+        unlink(self::PATH_CSV);
+    }
+
+
 }
