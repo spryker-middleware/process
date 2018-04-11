@@ -12,6 +12,7 @@ use SprykerMiddleware\Zed\Process\Business\Stream\CsvReadStream;
 use SprykerMiddleware\Zed\Process\Business\Stream\CsvWriteStream;
 use SprykerMiddleware\Zed\Process\Business\Stream\DirectoryStream;
 use SprykerMiddleware\Zed\Process\Business\Stream\JsonReadStream;
+use SprykerMiddleware\Zed\Process\Business\Stream\JsonWriteStream;
 
 trait StreamMocks
 {
@@ -33,5 +34,10 @@ trait StreamMocks
     protected function getJsonReadStream(string $path): JsonReadStream
     {
         return new JsonReadStream($path);
+    }
+
+    protected function getJsonWriteStream(string $path): JsonWriteStream
+    {
+        return new JsonWriteStream($path);
     }
 }

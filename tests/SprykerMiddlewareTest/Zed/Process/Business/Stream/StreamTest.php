@@ -37,6 +37,7 @@ class StreamTest extends Unit
     ];
 
     const FILE_CSV_WRITE = '/tmp/csv_write_stream.csv';
+    const FILE_JSON_WRITE = '/tmp/json_write_stream.csv';
 
     const PATH_SUPPORT_STREAM_FILES =  __DIR__ . '/../../_support/stream/files/';
 
@@ -115,7 +116,16 @@ class StreamTest extends Unit
 
     public function testJsonWriteStream(): void
     {
+        $stream = $this->getJsonWriteStream(self::FILE_JSON_WRITE);
 
+        $this->assertEquals($stream->open(), true);
+        $this->assertEquals($stream->eof(), true);
+        $this->assertEquals($stream->write(self::VALUE_CSV_ARRAY[0]), true);
+        $this->assertEquals($stream->write(self::VALUE_CSV_ARRAY[1]), true);
+        $this->assertEquals($stream->seek(1, SEEK_SET), true);
+        $this->assertEquals($stream->flush(), true);
+        $this->assertEquals($stream->eof(), true);
+        $this->assertEquals($stream->close(), true);
     }
 
     public function testXmlReadStream(): void
