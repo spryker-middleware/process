@@ -94,9 +94,9 @@ class StreamFactory implements StreamFactoryInterface
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
-    public function createXmlWriteStream(string $path, string $rootNodeName, string $entityNodeName, string $version, string $encoding, string $standalone, ProcessToSymfonyEncoderAdapterInterface $encoder): WriteStreamInterface
+    public function createXmlWriteStream(string $path, string $rootNodeName, string $entityNodeName, ProcessToSymfonyEncoderAdapterInterface $encoder, string $version = null, string $encoding = null, string $standalone = null): WriteStreamInterface
     {
-        return new XmlWriteStream($path, $rootNodeName, $entityNodeName, $version, $encoding, $standalone, $encoder, $this->createXmlStringNormalizer());
+        return new XmlWriteStream($path, $rootNodeName, $entityNodeName, $encoder, $this->createXmlStringNormalizer(), $version, $encoding, $standalone);
     }
 
     /**

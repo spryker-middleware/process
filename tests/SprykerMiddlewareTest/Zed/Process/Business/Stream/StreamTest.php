@@ -9,6 +9,9 @@ namespace SprykerMiddlewareTest\Zed\Process\Business\Stream;
 
 use Codeception\Test\Unit;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory;
+use SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizer;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapter;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapter;
 
 /**
  * @group SprykerMiddlewareTest
@@ -23,7 +26,7 @@ class StreamTest extends Unit
     /** @var StreamFactory */
     protected $factory;
 
-    const VALUE_CSV_ARRAY = [
+    const VALUE_TEST_ARRAY = [
         0 => [
             0 => 'Row11',
             1 => 'Row12',
@@ -37,7 +40,8 @@ class StreamTest extends Unit
     ];
 
     const FILE_CSV_WRITE = '/tmp/csv_write_stream.csv';
-    const FILE_JSON_WRITE = '/tmp/json_write_stream.csv';
+    const FILE_JSON_WRITE = '/tmp/json_write_stream.json';
+    const FILE_XML_WRITE = '/tmp/xml_write_stream.xml';
 
     const PATH_SUPPORT_STREAM_FILES =  __DIR__ . '/../../_support/stream/files/';
 
@@ -56,9 +60,9 @@ class StreamTest extends Unit
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
-        $this->assertEquals($stream->read(), self::VALUE_CSV_ARRAY[0]);
+        $this->assertEquals($stream->read(), self::VALUE_TEST_ARRAY[0]);
         $this->assertEquals($stream->eof(), false);
-        $this->assertEquals($stream->read(), self::VALUE_CSV_ARRAY[1]);
+        $this->assertEquals($stream->read(), self::VALUE_TEST_ARRAY[1]);
         $this->assertEquals($stream->read(), null);
         $this->assertEquals($stream->eof(), true);
         $this->assertEquals($stream->seek(-1, SEEK_END), 0);
@@ -75,8 +79,8 @@ class StreamTest extends Unit
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
-        $this->assertEquals($stream->write(self::VALUE_CSV_ARRAY[0]), true);
-        $this->assertEquals($stream->write(self::VALUE_CSV_ARRAY[1]), true);
+        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[0]), true);
+        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[1]), true);
         $this->assertEquals($stream->seek(1, SEEK_SET), true);
         $this->assertEquals($stream->flush(), true);
         $this->assertEquals($stream->eof(), true);
@@ -94,7 +98,7 @@ class StreamTest extends Unit
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
-        $this->assertEquals($stream->seek(2, SEEK_SET), true);
+        $this->assertEquals($stream->seek(3, SEEK_SET), true);
         $this->assertTrue(!is_string($stream->read()));
         $this->assertTrue((bool) $stream->seek(0, SEEK_SET));
         $this->assertTrue(is_string($stream->read()), true);
@@ -120,28 +124,66 @@ class StreamTest extends Unit
         $this->assertEquals($stream->close(), true);
     }
 
+    /**
+     * @return void
+     */
     public function testJsonWriteStream(): void
     {
         $stream = $this->factory->createJsonWriteStream(self::FILE_JSON_WRITE);
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
-        $this->assertEquals($stream->write(self::VALUE_CSV_ARRAY[0]), true);
-        $this->assertEquals($stream->write(self::VALUE_CSV_ARRAY[1]), true);
+        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[0]), true);
+        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[1]), true);
         $this->assertEquals($stream->seek(1, SEEK_SET), true);
         $this->assertEquals($stream->flush(), true);
         $this->assertEquals($stream->eof(), true);
         $this->assertEquals($stream->close(), true);
+
+        unlink(self::FILE_JSON_WRITE);
     }
 
+    /**
+     * @return void
+     */
     public function testXmlReadStream(): void
     {
+        $stream = $this->factory->createXmlReadStream(self::PATH_SUPPORT_STREAM_FILES . 'xml_read_stream_test.xml', 'food', new ProcessToSymfonyDecoderAdapter());
 
+        $this->assertEquals($stream->open(), true);
+        $this->assertEquals($stream->eof(), false);
+        $this->assertEquals($stream->seek(0, 0), -1);
+
+        while (!$stream->eof()) {
+            $this->assertEquals(is_array($stream->read()), true);
+        }
+
+        $this->assertEquals($stream->eof(), true);
+        $this->assertEquals($stream->close(), true);
     }
 
 
+    /**
+     * @return void
+     */
     public function testXmlWriteStream(): void
     {
+        $stream = $this->factory->createXmlWriteStream(
+            self::FILE_XML_WRITE,
+            'breakfast_menu',
+            'food',
+            new ProcessToSymfonyEncoderAdapter()
+        );
 
+        $this->assertEquals($stream->open(), true);
+        $this->assertEquals($stream->eof(), true);
+        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[0]), true);
+        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[1]), true);
+        $this->assertEquals($stream->seek(1, SEEK_SET), true);
+        $this->assertEquals($stream->flush(), true);
+        $this->assertEquals($stream->eof(), true);
+        $this->assertEquals($stream->close(), true);
+
+        unlink(self::FILE_XML_WRITE);
     }
 }

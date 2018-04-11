@@ -57,7 +57,7 @@ interface StreamFactoryInterface
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
-    public function createXmlWriteStream(string $path, string $rootNodeName, string $entityNodeName, string $version, string $encoding, string $standalone, ProcessToSymfonyEncoderAdapterInterface $encoder): WriteStreamInterface;
+    public function createXmlWriteStream(string $path, string $rootNodeName, string $entityNodeName, ProcessToSymfonyEncoderAdapterInterface $encoder, string $version = null, string $encoding = null, string $standalone = null): WriteStreamInterface;
 
     /**
      * @param string $path

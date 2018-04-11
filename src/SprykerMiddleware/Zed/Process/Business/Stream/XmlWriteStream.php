@@ -89,8 +89,16 @@ class XmlWriteStream implements WriteStreamInterface
      * @param \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface $encoder
      * @param \SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizerInterface $xmlStringNormalizer
      */
-    public function __construct(string $path, string $rootNodeName, string $entityNodeName, string $version, string $encoding, string $standalone, ProcessToSymfonyEncoderAdapterInterface $encoder, XmlStringNormalizerInterface $xmlStringNormalizer)
-    {
+    public function __construct(
+        string $path,
+        string $rootNodeName,
+        string $entityNodeName,
+        ProcessToSymfonyEncoderAdapterInterface $encoder,
+        XmlStringNormalizerInterface $xmlStringNormalizer,
+        string $version = null,
+        string $encoding = null,
+        string $standalone = null
+    ) {
         $this->path = $path;
         $this->rootNodeName = $rootNodeName;
         $this->entityNodeName = $entityNodeName;
@@ -125,13 +133,13 @@ class XmlWriteStream implements WriteStreamInterface
         if ($this->xmlWriter) {
             $this->xmlWriter->endDocument();
         }
-        return false;
+        return true;
     }
 
     /**
      * @inheritdoc
      */
-    public function write($data): int
+    public function write(array $data): int
     {
         $xmlString = $this->encoder->encode($data, 'xml', $this->getContext());
         $normalizedXmlString = $this->xmlStringNormalizer->normalizeXmlString($xmlString);
