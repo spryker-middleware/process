@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
 use Closure;
 use Generated\Shared\Transfer\MapperConfigTransfer;
-use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 

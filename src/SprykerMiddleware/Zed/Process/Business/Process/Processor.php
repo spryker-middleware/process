@@ -10,7 +10,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 use Exception;
 use Generated\Shared\Transfer\ProcessResultTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;

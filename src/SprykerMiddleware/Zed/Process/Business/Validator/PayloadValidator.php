@@ -8,7 +8,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Validator;
 
 use Generated\Shared\Transfer\ValidatorConfigTransfer;
-use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Exception\InvalidItemException;
 use SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolverInterface;
