@@ -87,16 +87,30 @@ class StreamTest extends Unit
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
-        $this->assertEquals($stream->seek(1, SEEK_SET), true);
+        $this->assertEquals($stream->seek(2, SEEK_SET), true);
         $this->assertTrue(!is_string($stream->read()));
         $this->assertTrue((bool) $stream->seek(0, SEEK_SET));
         $this->assertTrue(is_string($stream->read()), true);
         $this->assertTrue($stream->close(), true);
     }
 
+    /**
+     * @return void
+     */
     public function testJsonReadStream(): void
     {
+        $stream = $this->getJsonReadStream(self::PATH_SUPPORT_STREAM_FILES . 'json_read_stream_test.json');
 
+        $this->assertEquals($stream->open(), true);
+        $this->assertEquals($stream->eof(), false);
+
+        if (!$stream->eof()) {
+            $this->assertEquals(is_array($stream->read()), true);
+            $this->assertEquals($stream->seek(0, SEEK_END), true);
+        }
+
+        $this->assertEquals($stream->eof(), true);
+        $this->assertEquals($stream->close(), true);
     }
 
     public function testJsonWriteStream(): void

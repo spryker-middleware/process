@@ -11,6 +11,7 @@ use Codeception\Test\Unit;
 use SprykerMiddleware\Zed\Process\Business\Stream\CsvReadStream;
 use SprykerMiddleware\Zed\Process\Business\Stream\CsvWriteStream;
 use SprykerMiddleware\Zed\Process\Business\Stream\DirectoryStream;
+use SprykerMiddleware\Zed\Process\Business\Stream\JsonReadStream;
 
 trait StreamMocks
 {
@@ -27,5 +28,10 @@ trait StreamMocks
     protected function getDirectoryStream(string $path): DirectoryStream
     {
         return new DirectoryStream($path);
+    }
+
+    protected function getJsonReadStream(string $path): JsonReadStream
+    {
+        return new JsonReadStream($path);
     }
 }
