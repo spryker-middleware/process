@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerMiddleware\Zed\Process\Communication\Stream;
+namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Stream;
 
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
@@ -17,6 +17,11 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OutputStreamPluginInt
  */
 abstract class AbstractCsvOutputStreamPlugin extends AbstractPlugin implements OutputStreamPluginInterface
 {
+    /**
+     * @return string
+     */
+    abstract public function getName(): string;
+
     /**
      * @param string $path
      *

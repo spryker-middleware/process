@@ -11,7 +11,8 @@ use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorExc
 
 class ExcludeValuesAssociativeFilter extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
-    const OPTION_EXCLUDE_VALUES = 'excludeValues';
+    public const OPTION_EXCLUDE_VALUES = 'excludeValues';
+
     /**
      * @var array
      */

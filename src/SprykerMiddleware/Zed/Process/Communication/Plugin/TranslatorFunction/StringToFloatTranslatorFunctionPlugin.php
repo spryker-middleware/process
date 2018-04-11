@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\StringT
 
 class StringToFloatTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'StringToFloat';
+    public const NAME = 'StringToFloat';
 
     /**
      * @return string

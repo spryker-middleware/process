@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\RequiredValidato
 
 class RequiredValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'Required';
+    public const NAME = 'Required';
 
     /**
      * @return string

@@ -17,13 +17,13 @@ class PayloadValidator implements PayloadValidatorInterface
 {
     use MiddlewareLoggerTrait;
 
-    const KEY_IS_VALID = 'isValid';
-    const KEY_ITEM = 'item';
-    const KEY_KEY = 'key';
-    const KEY_OPTIONS = 'options';
-    const KEY_VALIDATION_RULE = 'rule';
-    const KEY_VALUE = 'value';
-    const OPERATION = 'Validation';
+    protected const KEY_IS_VALID = 'isValid';
+    protected const KEY_ITEM = 'item';
+    protected const KEY_KEY = 'key';
+    protected const KEY_OPTIONS = 'options';
+    protected const KEY_VALIDATION_RULE = 'rule';
+    protected const KEY_VALUE = 'value';
+    protected const OPERATION = 'Validation';
 
     /**
      * @var \Generated\Shared\Transfer\ValidatorConfigTransfer

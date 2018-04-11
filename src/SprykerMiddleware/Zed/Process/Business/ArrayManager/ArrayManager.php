@@ -52,6 +52,30 @@ class ArrayManager implements ArrayManagerInterface
     }
 
     /**
+     * Returns list of full paths to nested array items.
+     *
+     * E.g.
+     * `$payload = [
+     *      'prices' => [
+     *          [
+     *              'currency' => 'EUR',
+     *              'price' => '12.90',
+     *          ],
+     *          [
+     *              'currency' => 'USD',
+     *              'price' => '12.90',
+     *          ]
+     *      ]
+     * ]`
+     * `$key = 'prices.*.price'`
+     *
+     * will return
+     *
+     * `[
+     *      'prices.0.price',
+     *      'prices.1.price',
+     * ]`
+     *
      * @param array $payload
      * @param string $key
      *

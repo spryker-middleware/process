@@ -9,7 +9,8 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 
 class Enum extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
-    const OPTION_MAP = 'map';
+    public const OPTION_MAP = 'map';
+
     /**
      * @var array
      */

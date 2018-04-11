@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Exclude
 
 class ExcludeKeysAssociativeFilterTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'ExcludeKeysAssociativeFilter';
+    public const NAME = 'ExcludeKeysAssociativeFilter';
 
     /**
      * @return string

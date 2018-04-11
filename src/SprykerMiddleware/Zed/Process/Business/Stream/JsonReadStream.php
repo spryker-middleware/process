@@ -103,6 +103,8 @@ class JsonReadStream implements ReadStreamInterface
     }
 
     /**
+     * @throws \SprykerMiddleware\Zed\Process\Business\Exception\InvalidReadSourceException
+     *
      * @return mixed
      */
     protected function loadJson()

@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorExc
 
 class StringToArray extends AbstractTranslatorFunction
 {
-    const OPTION_DELIMITER = 'delimiter';
+    public const OPTION_DELIMITER = 'delimiter';
 
     /**
      * @var array

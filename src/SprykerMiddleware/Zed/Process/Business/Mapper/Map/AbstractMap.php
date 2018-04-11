@@ -28,7 +28,7 @@ abstract class AbstractMap implements MapInterface
      *
      * @return array
      */
-    protected function readMapFromFile(string $mapFilePath): array
+    protected function readMapFromJsonFile(string $mapFilePath): array
     {
         return json_decode(file_get_contents($mapFilePath), true);
     }

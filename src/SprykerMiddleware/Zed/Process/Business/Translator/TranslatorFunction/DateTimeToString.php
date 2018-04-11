@@ -12,11 +12,12 @@ use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorExc
 
 class DateTimeToString extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
+    public const FORMAT = 'format';
     /**
      * @var array
      */
     protected $requiredOptions = [
-        'format',
+        self::FORMAT,
     ];
 
     /**
@@ -33,6 +34,6 @@ class DateTimeToString extends AbstractTranslatorFunction implements TranslatorF
             throw new WrongTypeValueTranslatorException(static::class, $this->key, '\DateTime', $value);
         }
 
-        return $value->format($this->options['format']);
+        return $value->format($this->options[static::FORMAT]);
     }
 }

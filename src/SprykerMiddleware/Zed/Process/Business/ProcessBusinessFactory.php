@@ -22,8 +22,6 @@ use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\FingersCrossedProcessor;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface;
-use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilder;
-use SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolver;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\Process\Processor;
@@ -139,41 +137,20 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface
      */
-    protected function createPipeline(
+    public function createPipeline(
         ProcessSettingsTransfer $processSettingsTransfer
     ): PipelineInterface {
         return new Pipeline(
             $this->createPipelineProcessor(),
-            $this->getStages($processSettingsTransfer)
-        );
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ProcessSettingsTransfer $processSettingsTransfer
-     *
-     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageInterface[]
-     */
-    protected function getStages(
-        ProcessSettingsTransfer $processSettingsTransfer
-    ): array {
-        return $this->createStageListBuilder()
-            ->buildStageList($processSettingsTransfer);
-    }
-
-    /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Stage\StageListBuilderInterface
-     */
-    protected function createStageListBuilder(): StageListBuilderInterface
-    {
-        return new StageListBuilder(
-            $this->createProcessPluginResolver()
+            $this->createProcessPluginResolver(),
+            $processSettingsTransfer
         );
     }
 
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\PipelineProcessorInterface
      */
-    protected function createPipelineProcessor(): PipelineProcessorInterface
+    public function createPipelineProcessor(): PipelineProcessorInterface
     {
         return new FingersCrossedProcessor($this->createProcessResultHelper());
     }
@@ -181,7 +158,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface
      */
-    protected function createTranslatorFunctionResolver(): TranslatorFunctionPluginResolverInterface
+    public function createTranslatorFunctionResolver(): TranslatorFunctionPluginResolverInterface
     {
         return new TranslatorFunctionPluginResolver($this->getProfileConfigurationPluginStack());
     }
@@ -189,7 +166,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolverInterface
      */
-    protected function createValidatorPluginResolver(): ValidatorPluginResolverInterface
+    public function createValidatorPluginResolver(): ValidatorPluginResolverInterface
     {
         return new ValidatorPluginResolver($this->getProfileConfigurationPluginStack());
     }
@@ -197,15 +174,15 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLoggerConfigPluginInterface
      */
-    protected function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
+    public function getDefaultLoggerConfigPlugin(): MiddlewareLoggerConfigPluginInterface
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_DEFAULT_LOG_CONFIG_PLUGIN);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_LOG_CONFIG_PLUGIN);
     }
 
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
      */
-    protected function getProfileConfigurationPluginStack(): array
+    public function getProfileConfigurationPluginStack(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_CONFIGURATION_PROFILES);
     }

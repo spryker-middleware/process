@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\StringT
 
 class StringToBoolTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'StringToBool';
+    public const NAME = 'StringToBool';
 
     /**
      * @return string

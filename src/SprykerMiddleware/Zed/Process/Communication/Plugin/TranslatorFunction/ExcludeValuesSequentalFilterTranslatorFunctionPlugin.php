@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Exclude
 
 class ExcludeValuesSequentalFilterTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'ExcludeValuesSequentalFilter';
+    public const NAME = 'ExcludeValuesSequentalFilter';
 
     /**
      * @return string

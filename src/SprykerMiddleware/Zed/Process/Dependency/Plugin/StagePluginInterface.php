@@ -12,6 +12,11 @@ use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 interface StagePluginInterface
 {
     /**
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * @param mixed $payload
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      * @param mixed $originalPayload

@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\NotEqualToValida
 
 class NotEqualToValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'NotEqualTo';
+    public const NAME = 'NotEqualTo';
 
     /**
      * @return string

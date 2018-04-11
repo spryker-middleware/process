@@ -16,13 +16,13 @@ class Translator implements TranslatorInterface
 {
     use MiddlewareLoggerTrait;
 
-    const OPERATION = 'Translation';
+    protected const OPERATION = 'Translation';
 
-    const KEY_OPTIONS = 'options';
-    const KEY_KEY = 'key';
-    const KEY_OPERATION_TYPE = 'operation_type';
-    const KEY_AFFECTED_DATA = 'affected_data';
-    const KEY_RESULTED_DATA = 'resulted_data';
+    protected const KEY_OPTIONS = 'options';
+    protected const KEY_KEY = 'key';
+    protected const KEY_OPERATION_TYPE = 'operation_type';
+    protected const KEY_AFFECTED_DATA = 'affected_data';
+    protected const KEY_RESULTED_DATA = 'resulted_data';
 
     /**
      * @var \Generated\Shared\Transfer\TranslatorConfigTransfer

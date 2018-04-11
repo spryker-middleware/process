@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\LengthValidator;
 
 class LengthValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'Length';
+    public const NAME = 'Length';
 
     /**
      * @return string

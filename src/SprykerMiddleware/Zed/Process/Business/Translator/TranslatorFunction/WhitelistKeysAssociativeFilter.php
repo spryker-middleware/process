@@ -11,7 +11,8 @@ use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorExc
 
 class WhitelistKeysAssociativeFilter extends AbstractTranslatorFunction implements TranslatorFunctionInterface
 {
-    const OPTION_WHITELIST_KEYS = 'whitelistKeys';
+    public const OPTION_WHITELIST_KEYS = 'whitelistKeys';
+
     /**
      * @var array
      */

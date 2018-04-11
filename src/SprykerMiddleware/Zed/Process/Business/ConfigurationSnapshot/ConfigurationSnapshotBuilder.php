@@ -24,9 +24,10 @@ class ConfigurationSnapshotBuilder implements ConfigurationSnapshotBuilderInterf
         ProcessConfigurationPluginInterface $processConfigurationPlugin,
         ProcessSettingsTransfer $processSettingsTransfer
     ): ProcessConfigurationTransfer {
-        $processConfigurationTransfer = new ProcessConfigurationTransfer();
-        $processConfigurationTransfer->setIteratorPluginName(get_class($processConfigurationPlugin->getIteratorPlugin()));
-        $processConfigurationTransfer->setLoggerPluginName(get_class($processConfigurationPlugin->getLoggerPlugin()));
+        $processConfigurationTransfer = (new ProcessConfigurationTransfer())
+            ->setIteratorPluginName($processConfigurationPlugin->getIteratorPlugin()->getName())
+            ->setLoggerPluginName($processConfigurationPlugin->getLoggerPlugin()->getName());
+
         $this->buildStreamConfigurationSnapshot($processConfigurationTransfer, $processConfigurationPlugin, $processSettingsTransfer);
         $this->buildStagesConfigurationSnapshot($processConfigurationTransfer, $processConfigurationPlugin);
         $this->buildHooksConfigurationSnapshot($processConfigurationTransfer, $processConfigurationPlugin);
@@ -46,14 +47,15 @@ class ConfigurationSnapshotBuilder implements ConfigurationSnapshotBuilderInterf
         ProcessConfigurationPluginInterface $processConfigurationPlugin,
         ProcessSettingsTransfer $processSettingsTransfer
     ): ProcessConfigurationTransfer {
-        $inputStreamPluginTransfer = new StreamConfigurationTransfer();
-        $inputStreamPluginTransfer->setStreamPluginName(get_class($processConfigurationPlugin->getInputStreamPlugin()));
-        $inputStreamPluginTransfer->setPath($processSettingsTransfer->getInputPath());
+        $inputStreamPluginTransfer = (new StreamConfigurationTransfer())
+            ->setStreamPluginName($processConfigurationPlugin->getInputStreamPlugin()->getName())
+            ->setPath($processSettingsTransfer->getInputPath());
+
         $processConfigurationTransfer->setInputStreamPlugin($inputStreamPluginTransfer);
 
-        $outputStreamPluginTransfer = new StreamConfigurationTransfer();
-        $outputStreamPluginTransfer->setStreamPluginName(get_class($processConfigurationPlugin->getOutputStreamPlugin()));
-        $outputStreamPluginTransfer->setPath($processSettingsTransfer->getOutputPath());
+        $outputStreamPluginTransfer = (new StreamConfigurationTransfer())
+            ->setStreamPluginName($processConfigurationPlugin->getOutputStreamPlugin()->getName())
+            ->setPath($processSettingsTransfer->getOutputPath());
         $processConfigurationTransfer->setOutputStreamPlugin($outputStreamPluginTransfer);
 
         return $processConfigurationTransfer;
@@ -70,7 +72,7 @@ class ConfigurationSnapshotBuilder implements ConfigurationSnapshotBuilderInterf
         ProcessConfigurationPluginInterface $processConfigurationPlugin
     ): ProcessConfigurationTransfer {
         foreach ($processConfigurationPlugin->getStagePlugins() as $stagePlugin) {
-            $processConfigurationTransfer->addStagePluginName(get_class($stagePlugin));
+            $processConfigurationTransfer->addStagePluginName($stagePlugin->getName());
         }
 
         return $processConfigurationTransfer;
@@ -87,11 +89,11 @@ class ConfigurationSnapshotBuilder implements ConfigurationSnapshotBuilderInterf
         ProcessConfigurationPluginInterface $processConfigurationPlugin
     ): ProcessConfigurationTransfer {
         foreach ($processConfigurationPlugin->getPreProcessorHookPlugins() as $preHookPlugin) {
-            $processConfigurationTransfer->addPreProcessHookPluginName(get_class($preHookPlugin));
+            $processConfigurationTransfer->addPreProcessHookPluginName($preHookPlugin->getName());
         }
 
         foreach ($processConfigurationPlugin->getPostProcessorHookPlugins() as $postHookPlugin) {
-            $processConfigurationTransfer->addPostProcessHookPluginName(get_class($postHookPlugin));
+            $processConfigurationTransfer->addPostProcessHookPluginName($postHookPlugin->getName());
         }
 
         return $processConfigurationTransfer;
