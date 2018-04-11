@@ -9,7 +9,6 @@ namespace SprykerMiddlewareTest\Zed\Process\Business\Stream;
 
 use Codeception\Test\Unit;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory;
-use SprykerMiddlewareTest\Zed\Process\StreamMocks;
 
 /**
  * @group SprykerMiddlewareTest
@@ -21,7 +20,8 @@ use SprykerMiddlewareTest\Zed\Process\StreamMocks;
  */
 class StreamTest extends Unit
 {
-    use StreamMocks;
+    /** @var StreamFactory */
+    protected $factory;
 
     const VALUE_CSV_ARRAY = [
         0 => [
@@ -41,12 +41,18 @@ class StreamTest extends Unit
 
     const PATH_SUPPORT_STREAM_FILES =  __DIR__ . '/../../_support/stream/files/';
 
+    public function __construct(?string $name = null, array $data = [], string $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->factory = new StreamFactory();
+    }
+
     /**
      * @return void
      */
     public function testCsvReadStream(): void
     {
-        $stream = $this->getCsvReadStream(self::PATH_SUPPORT_STREAM_FILES . 'csv_read_stream_test.csv');
+        $stream = $this->factory->createCsvReadStream(self::PATH_SUPPORT_STREAM_FILES . 'csv_read_stream_test.csv');
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
@@ -65,7 +71,7 @@ class StreamTest extends Unit
      */
     public function testCsvWriteStream(): void
     {
-        $stream = $this->getCsvWriteStream(self::FILE_CSV_WRITE);
+        $stream = $this->factory->createCsvWriteStream(self::FILE_CSV_WRITE);
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
@@ -84,7 +90,7 @@ class StreamTest extends Unit
      */
     public function testDirectoryStream(): void
     {
-        $stream = $this->getDirectoryStream(self::PATH_SUPPORT_STREAM_FILES);
+        $stream = $this->factory->createDirectoryStream(self::PATH_SUPPORT_STREAM_FILES);
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
@@ -100,7 +106,7 @@ class StreamTest extends Unit
      */
     public function testJsonReadStream(): void
     {
-        $stream = $this->getJsonReadStream(self::PATH_SUPPORT_STREAM_FILES . 'json_read_stream_test.json');
+        $stream = $this->factory->createJsonReadStream(self::PATH_SUPPORT_STREAM_FILES . 'json_read_stream_test.json');
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
@@ -116,7 +122,7 @@ class StreamTest extends Unit
 
     public function testJsonWriteStream(): void
     {
-        $stream = $this->getJsonWriteStream(self::FILE_JSON_WRITE);
+        $stream = $this->factory->createJsonWriteStream(self::FILE_JSON_WRITE);
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
