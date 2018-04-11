@@ -15,7 +15,7 @@ use SprykerMiddleware\Zed\Process\Business\Iterator\NullIterator;
 use SprykerMiddleware\Zed\Process\Business\Stream\JsonReadStream;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface;
 
-class AbstractInteratorTest extends Unit
+class AbstractIteratorTest extends Unit
 {
     const VALUE_JSON_PATH = '/test';
 
@@ -34,13 +34,13 @@ class AbstractInteratorTest extends Unit
     {
         $mock = $this->getMockBuilder(JsonDirectoryIterator::class)
             ->setConstructorArgs([$this->getReadStreamMock(), $this->getStreamFactoryMock()])
-            ->setMethods(['initInnerStreamForNextItem'])
+            ->setMethods(['initJsonStreamForNextItem'])
             ->getMock();
 
-        $mock->method('initInnerStreamForNextItem')->willReturn($this->getJsonReadStream());
+        $mock->method('initJsonStreamForNextItem')->willReturn($this->getJsonReadStream());
 
         $reflection = new \ReflectionClass($mock);
-        $reflectionPropety = $reflection->getProperty('innerStream');
+        $reflectionPropety = $reflection->getProperty('jsonStream');
         $reflectionPropety->setAccessible(true);
         $reflectionPropety->setValue($mock, $this->getJsonReadStream());
 

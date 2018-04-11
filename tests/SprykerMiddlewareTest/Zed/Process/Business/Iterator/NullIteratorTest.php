@@ -17,7 +17,7 @@ use SprykerMiddleware\Zed\Process\Business\Exception\MethodNotSupportedException
  * @group Iterator
  * @group NullIteratorTest
  */
-class NullIteratorTest extends AbstractInteratorTest
+class NullIteratorTest extends AbstractIteratorTest
 {
     /**
      * @return void

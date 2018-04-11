@@ -15,7 +15,7 @@ namespace SprykerMiddlewareTest\Zed\Process\Business\Iterator;
  * @group Iterator
  * @group JsonDirectoryIteratorTest
  */
-class JsonDirectoryIteratorTest extends AbstractInteratorTest
+class JsonDirectoryIteratorTest extends AbstractIteratorTest
 {
     /**
      * @return void
