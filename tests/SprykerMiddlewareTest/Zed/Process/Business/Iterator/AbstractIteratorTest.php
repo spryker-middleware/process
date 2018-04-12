@@ -17,7 +17,7 @@ use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface;
 
 class AbstractIteratorTest extends Unit
 {
-    const VALUE_JSON_PATH = '/test';
+    protected const VALUE_JSON_PATH = '/test';
 
     /**
      * @return \SprykerMiddleware\Zed\Process\Business\Iterator\NullIterator

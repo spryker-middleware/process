@@ -26,7 +26,7 @@ class StreamTest extends Unit
     /** @var StreamFactory */
     protected $factory;
 
-    const VALUE_TEST_ARRAY = [
+    protected const VALUE_TEST_ARRAY = [
         0 => [
             0 => 'Row11',
             1 => 'Row12',
@@ -39,11 +39,11 @@ class StreamTest extends Unit
         ],
     ];
 
-    const FILE_CSV_WRITE = '/tmp/csv_write_stream.csv';
-    const FILE_JSON_WRITE = '/tmp/json_write_stream.json';
-    const FILE_XML_WRITE = '/tmp/xml_write_stream.xml';
+    protected const FILE_CSV_WRITE = '/tmp/csv_write_stream.csv';
+    protected const FILE_JSON_WRITE = '/tmp/json_write_stream.json';
+    protected const FILE_XML_WRITE = '/tmp/xml_write_stream.xml';
 
-    const PATH_SUPPORT_STREAM_FILES =  __DIR__ . '/../../_support/stream/files/';
+    protected const PATH_SUPPORT_STREAM_FILES =  __DIR__ . '/../../_support/stream/files/';
 
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {

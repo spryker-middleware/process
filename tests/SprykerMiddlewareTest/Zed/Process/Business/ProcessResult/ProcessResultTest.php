@@ -26,25 +26,25 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigu
  */
 class ProcessResultTest extends Unit
 {
-    const VALUE_ITEM_COUNT = 1;
+    protected const VALUE_ITEM_COUNT = 1;
 
-    const VALUE_SKIPPED_ITEM_COUNT = 1;
+    protected const VALUE_SKIPPED_ITEM_COUNT = 1;
 
-    const VALUE_PROCESSED_ITEM_COUNT = 1;
+    protected const VALUE_PROCESSED_ITEM_COUNT = 1;
 
-    const VALUE_FAILED_ITEM_COUNT = 1;
+    protected const VALUE_FAILED_ITEM_COUNT = 1;
 
-    const VALUE_PROCESS_NAME = 'Process name';
+    protected const VALUE_PROCESS_NAME = 'Process name';
 
-    const VALUE_PLUGIN_NAME = 'Stage name';
+    protected const VALUE_PLUGIN_NAME = 'Stage name';
 
-    const VALUE_INPUT_ITEM_COUNT = 1;
+    protected const VALUE_INPUT_ITEM_COUNT = 1;
 
-    const VALUE_OUTPUT_ITEM_COUNT = 1;
+    protected const VALUE_OUTPUT_ITEM_COUNT = 1;
 
-    const VALUE_EXECUTION_TIME = 1000;
+    protected const VALUE_EXECUTION_TIME = 1000;
 
-    const VALUE_ADDITIONAL_EXECUTION_TIME = 1000;
+    protected const VALUE_ADDITIONAL_EXECUTION_TIME = 1000;
 
 
 //    public function testInitProcessResultTransfer()
