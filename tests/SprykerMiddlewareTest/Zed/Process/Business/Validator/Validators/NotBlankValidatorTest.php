@@ -31,13 +31,9 @@ class NotBlankValidatorTest extends Unit
         $validator->setKey('validationKey');
 
         $this->assertFalse($validator->validate('', ['validationKey' => '']));
-
         $this->assertTrue($validator->validate(30, ['validationKey' => 30]));
-
         $this->assertFalse($validator->validate(null, ['validationKey' => null]));
-
         $this->assertFalse($validator->validate([], ['validationKey' => []]));
-
         $this->assertTrue($validator->validate(10, ['key' => []]));
     }
 }
