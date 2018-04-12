@@ -14,6 +14,10 @@ use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\StageResultsTransfer;
 use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilder;
 use SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelper;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Iterator\NullIteratorPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\Log\MiddlewareLoggerConfigPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamReaderStagePlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamWriterStagePlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface;
 
 /**
@@ -38,24 +42,39 @@ class ProcessResultTest extends Unit
 
     protected const VALUE_PLUGIN_NAME = 'Stage name';
 
-    protected const VALUE_INPUT_ITEM_COUNT = 1;
+    protected const VALUE_INPUT_ITEM_COUNT = 0;
 
-    protected const VALUE_OUTPUT_ITEM_COUNT = 1;
+    protected const VALUE_OUTPUT_ITEM_COUNT = 0;
 
     protected const VALUE_EXECUTION_TIME = 1000;
 
     protected const VALUE_ADDITIONAL_EXECUTION_TIME = 1000;
 
+    protected const VALUE_INIT_RESULT = [
+        0 => self::VALUE_PLUGIN_NAME,
+        1 => 'StreamReaderStagePlugin',
+        2 => 'StreamWriterStagePlugin',
+    ];
 
-//    public function testInitProcessResultTransfer()
-//    {
-//        $processResultHelper = $this->getProccessResultHelper();
-//        $processResultTransfer = $this->getProcessResultTransfer();
-//        $configurationBuilder = $this->getConfigurationSnapshotBuilder();
-//        $processSettingsTranfer = $this->getProcessSettingsTransfer();
-//
-//        $processResultHelper->initProcessResultTransfer($processResultTransfer, $this->getProcessConfigurationPluginMock(), $processSettingsTranfer);
-//    }
+    /**
+     * @return void
+     */
+    public function testInitProcessResultTransfer(): void
+    {
+        $processResultHelper = $this->getProccessResultHelper();
+        $processResultTransfer = $this->getProcessResultTransfer();
+        $configurationBuilder = $this->getConfigurationSnapshotBuilder();
+        $processSettingsTranfer = $this->getProcessSettingsTransfer();
+
+        $processResultTransfer = $processResultHelper->initProcessResultTransfer($processResultTransfer, $this->getProcessConfigurationPluginMock(), $processSettingsTranfer);
+
+        /** @var StageResultsTransfer $stageResult */
+        foreach ($processResultTransfer->getStageResults() as $key => $stageResult) {
+            $this->assertEquals($stageResult->getStageName(), self::VALUE_INIT_RESULT[$key]);
+            $this->assertEquals($stageResult->getInputItemCount(), self::VALUE_INPUT_ITEM_COUNT);
+            $this->assertEquals($stageResult->getOutputItemCount(), self::VALUE_OUTPUT_ITEM_COUNT);
+        }
+    }
 
     /**
      * @return void
@@ -155,7 +174,7 @@ class ProcessResultTest extends Unit
         $processResultTransfer->setProcessedItemCount(self::VALUE_PROCESSED_ITEM_COUNT);
         $processResultTransfer->setFailedItemCount(self::VALUE_FAILED_ITEM_COUNT);
         $processResultTransfer->setEndTime(time());
-        $processResultTransfer->setProcessConfiguration($this->getProcessConfigurationTransferMock());
+        $processResultTransfer->setProcessConfiguration(new ProcessConfigurationTransfer());
         $processResultTransfer->setStageResults($this->getStageResults());
 
         return $processResultTransfer;
@@ -212,9 +231,12 @@ class ProcessResultTest extends Unit
         return $processSettingTransfer;
     }
 
-    protected function getProcessConfigurationPluginMock()
+    /**
+     * @return ProcessConfigurationPluginInterface
+     */
+    protected function getProcessConfigurationPluginMock(): ProcessConfigurationPluginInterface
     {
-        return $this->getMockBuilder(ProcessConfigurationPluginInterface::class)
+        $mock = $this->getMockBuilder(ProcessConfigurationPluginInterface::class)
             ->setMethods([
                 'getProcessName',
                 'getInputStreamPlugin',
@@ -228,16 +250,9 @@ class ProcessResultTest extends Unit
             ->disableProxyingToOriginalMethods()
             ->disableOriginalClone()
             ->getMock();
-    }
 
-    protected function getProcessConfigurationTransferMock()
-    {
-        $transfer = new ProcessConfigurationTransfer();
+        $mock->method('getStagePlugins')->willReturn([new StreamReaderStagePlugin(), new StreamWriterStagePlugin()]);
 
-        $transfer->setStagePluginNames([
-            'name1', 'name2', 'name3'
-        ]);
-
-        return $transfer;
+        return $mock;
     }
 }
