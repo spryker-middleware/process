@@ -9,14 +9,11 @@ namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
 use Closure;
 use Generated\Shared\Transfer\MapperConfigTransfer;
-use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 
 class Mapper implements MapperInterface
 {
-    use MiddlewareLoggerTrait;
-
     protected const OPERATION = 'Mapping';
     protected const OPERATION_COPY_ORIGINAL_DATA = 'Copy original data';
     protected const OPERATION_MAP_ARRAY = 'Map array';

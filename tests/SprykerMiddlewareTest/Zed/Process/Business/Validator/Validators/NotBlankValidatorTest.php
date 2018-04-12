@@ -38,6 +38,6 @@ class NotBlankValidatorTest extends Unit
 
         $this->assertFalse($validator->validate([], ['validationKey' => []]));
 
-        $this->assertFalse($validator->validate(10, ['key' => []]));
+        $this->assertTrue($validator->validate(10, ['key' => []]));
     }
 }
