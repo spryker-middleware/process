@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\InListValidator;
 
 class InListValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'InList';
+    public const NAME = 'InList';
 
     /**
      * @return string

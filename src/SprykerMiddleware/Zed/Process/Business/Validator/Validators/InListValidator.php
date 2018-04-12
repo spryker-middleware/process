@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Validator\Validators;
 
 class InListValidator extends AbstractValidator
 {
-    const OPTION_VALUES = 'values';
+    public const OPTION_VALUES = 'values';
 
     /**
      * @var array

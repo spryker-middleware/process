@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\BoolToS
 
 class BoolToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
-    const NAME = 'BoolToString';
+    public const NAME = 'BoolToString';
 
     /**
      * @return string

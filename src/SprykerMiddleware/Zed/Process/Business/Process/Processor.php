@@ -10,7 +10,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Process;
 use Exception;
 use Generated\Shared\Transfer\ProcessResultTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
@@ -96,8 +96,6 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @throws \Exception
-     *
      * @return void
      */
     public function process(): void
@@ -124,7 +122,7 @@ class Processor implements ProcessorInterface
             $this->outputStream->flush();
         } catch (Exception $e) {
             $this->processResultHelper->increaseFailedItemCount($this->processResultTransfer);
-            $this->getProcessLogger()->error('Middleware process was stopped. Non tolerable error was occurred.',  ['exception' => $e, 'item' => isset($item) ? $item : null]);
+            $this->getProcessLogger()->error('Middleware process was stopped. Non tolerable error was occurred.', ['exception' => $e, 'item' => isset($item) ? $item : null]);
         } finally {
             $this->inputStream->close();
             $this->outputStream->close();

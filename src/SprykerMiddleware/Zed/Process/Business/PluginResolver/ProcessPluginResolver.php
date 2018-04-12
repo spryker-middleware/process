@@ -18,11 +18,21 @@ class ProcessPluginResolver implements ProcessPluginResolverInterface
     protected $configurationProfilePluginsStack;
 
     /**
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
+     */
+    protected $processPluginsStack;
+
+    /**
      * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[] $configurationProfilePluginsStack
      */
     public function __construct(array $configurationProfilePluginsStack)
     {
         $this->configurationProfilePluginsStack = $configurationProfilePluginsStack;
+        foreach ($this->configurationProfilePluginsStack as $profile) {
+            foreach ($profile->getProcessConfigurationPlugins() as $processConfig) {
+                $this->processPluginsStack[$processConfig->getProcessName()] = $processConfig;
+            }
+        }
     }
 
     /**
@@ -34,12 +44,8 @@ class ProcessPluginResolver implements ProcessPluginResolverInterface
      */
     public function getProcessConfigurationPluginByProcessName(string $processName): ProcessConfigurationPluginInterface
     {
-        foreach ($this->configurationProfilePluginsStack as $profile) {
-            foreach ($profile->getProcessConfigurationPlugins() as $processConfig) {
-                if ($processConfig->getProcessName() === $processName) {
-                    return $processConfig;
-                }
-            }
+        if (isset($this->processPluginsStack[$processName])) {
+            return $this->processPluginsStack[$processName];
         }
 
         throw new ProcessConfigurationNotFoundException();

@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Business\Validator\Validators;
 
 class RegexValidator extends AbstractValidator
 {
-    const OPTION_PATTERN = 'pattern';
+    public const OPTION_PATTERN = 'pattern';
 
     /**
      * @var array

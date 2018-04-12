@@ -9,26 +9,26 @@ namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
 use Closure;
 use Generated\Shared\Transfer\MapperConfigTransfer;
-use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
-use SprykerMiddleware\Shared\Process\ProcessConfig;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
+use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 
 class Mapper implements MapperInterface
 {
     use MiddlewareLoggerTrait;
 
-    const OPERATION = 'Mapping';
-    const OPERATION_COPY_ORIGINAL_DATA = 'Copy original data';
-    const OPERATION_MAP_ARRAY = 'Map array';
-    const OPERATION_MAP_CALLABLE = 'Map callable';
-    const OPERATION_MAP_KEY = 'Map key';
+    protected const OPERATION = 'Mapping';
+    protected const OPERATION_COPY_ORIGINAL_DATA = 'Copy original data';
+    protected const OPERATION_MAP_ARRAY = 'Map array';
+    protected const OPERATION_MAP_CALLABLE = 'Map callable';
+    protected const OPERATION_MAP_KEY = 'Map key';
 
-    const KEY_DATA = 'data';
-    const KEY_NEW_KEY = 'new_key';
-    const KEY_OLD_KEY = 'old_key';
-    const KEY_OPERATION = 'operation';
-    const KEY_STRATEGY = 'strategy';
-    const OPTION_ITEM_MAP = 'itemMap';
+    protected const KEY_DATA = 'data';
+    protected const KEY_NEW_KEY = 'new_key';
+    protected const KEY_OLD_KEY = 'old_key';
+    protected const KEY_OPERATION = 'operation';
+    protected const KEY_STRATEGY = 'strategy';
+    protected const OPTION_ITEM_MAP = 'itemMap';
 
     /**
      * @var \Generated\Shared\Transfer\MapperConfigTransfer
@@ -174,7 +174,7 @@ class Mapper implements MapperInterface
      */
     protected function prepareResult(array $payload): array
     {
-        if ($this->mapperConfigTransfer->getStrategy() === ProcessConfig::MAPPER_STRATEGY_COPY_UNKNOWN) {
+        if ($this->mapperConfigTransfer->getStrategy() === MapInterface::MAPPER_STRATEGY_COPY_UNKNOWN) {
             $this->getProcessLogger()->debug(static::OPERATION, [
                 static::KEY_OPERATION => static::OPERATION_COPY_ORIGINAL_DATA,
                 static::KEY_STRATEGY => $this->mapperConfigTransfer->getStrategy(),

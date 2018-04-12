@@ -17,6 +17,10 @@ use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 class ProcessService extends AbstractService implements ProcessServiceInterface
 {
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
      *
      * @return mixed
@@ -29,6 +33,10 @@ class ProcessService extends AbstractService implements ProcessServiceInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $stream
      * @param mixed $data
      *

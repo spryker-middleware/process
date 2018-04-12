@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorExc
 
 class ArrayToString extends AbstractTranslatorFunction
 {
-    const OPTION_GLUE = 'glue';
+    public const OPTION_GLUE = 'glue';
 
     /**
      * @var array

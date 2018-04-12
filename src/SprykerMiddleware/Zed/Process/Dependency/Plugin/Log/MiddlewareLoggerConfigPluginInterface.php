@@ -12,6 +12,11 @@ use Spryker\Shared\Log\Config\LoggerConfigInterface;
 interface MiddlewareLoggerConfigPluginInterface extends LoggerConfigInterface
 {
     /**
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * Sets minimum logging level at which all handlers will be triggered.
      *
      * @param int|string $level Level or level name

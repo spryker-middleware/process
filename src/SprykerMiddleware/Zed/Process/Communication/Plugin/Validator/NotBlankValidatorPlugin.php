@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\NotBlankValidato
 
 class NotBlankValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'NotBlank';
+    public const NAME = 'NotBlank';
 
     /**
      * @return string

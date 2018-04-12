@@ -22,20 +22,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ProcessConsole extends Console
 {
-    const COMMAND_NAME = 'middleware:process:run';
-    const DESCRIPTION = 'Run middleware process';
-    const OPTION_PROCESS_NAME = 'process';
-    const OPTION_ITERATOR_OFFSET = 'skip';
-    const OPTION_ITERATOR_LIMIT = 'limit';
-    const OPTION_LOG_LEVEL = 'flagLogLevel';
-    const OPTION_INPUT = 'input';
-    const OPTION_OUTPUT = 'output';
-    const OPTION_PROCESS_NAME_SHORTCUT = 'p';
-    const OPTION_ITERATOR_OFFSET_SHORTCUT = 's';
-    const OPTION_ITERATOR_LIMIT_SHORTCUT = 'l';
-    const OPTION_LOG_LEVEL_SHORTCUT = 'f';
-    const OPTION_INPUT_SHORTCUT = 'i';
-    const OPTION_OUTPUT_SHORTCUT = 'o';
+    protected const COMMAND_NAME = 'middleware:process:run';
+    protected const DESCRIPTION = 'Run middleware process';
+    protected const OPTION_PROCESS_NAME = 'process';
+    protected const OPTION_ITERATOR_OFFSET = 'skip';
+    protected const OPTION_ITERATOR_LIMIT = 'limit';
+    protected const OPTION_LOG_LEVEL = 'flagLogLevel';
+    protected const OPTION_INPUT = 'input';
+    protected const OPTION_OUTPUT = 'output';
+    protected const OPTION_PROCESS_NAME_SHORTCUT = 'p';
+    protected const OPTION_ITERATOR_OFFSET_SHORTCUT = 's';
+    protected const OPTION_ITERATOR_LIMIT_SHORTCUT = 'l';
+    protected const OPTION_LOG_LEVEL_SHORTCUT = 'f';
+    protected const OPTION_INPUT_SHORTCUT = 'i';
+    protected const OPTION_OUTPUT_SHORTCUT = 'o';
 
     /**
      * @var int

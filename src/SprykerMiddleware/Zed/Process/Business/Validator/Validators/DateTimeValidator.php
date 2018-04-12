@@ -12,8 +12,8 @@ use DateTimeInterface;
 
 class DateTimeValidator extends AbstractValidator
 {
-    const OPTION_FORMAT = 'format';
-    const DEFAULT_FORMAT = 'Y-m-d H:i:s';
+    public const OPTION_FORMAT = 'format';
+    public const DEFAULT_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @param mixed $value

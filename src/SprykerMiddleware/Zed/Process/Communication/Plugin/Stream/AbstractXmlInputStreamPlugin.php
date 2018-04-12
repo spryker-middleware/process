@@ -19,6 +19,11 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\InputStreamPluginInte
 abstract class AbstractXmlInputStreamPlugin extends AbstractPlugin implements InputStreamPluginInterface
 {
     /**
+     * @return string
+     */
+    abstract public function getName(): string;
+
+    /**
      * @param string $path
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface

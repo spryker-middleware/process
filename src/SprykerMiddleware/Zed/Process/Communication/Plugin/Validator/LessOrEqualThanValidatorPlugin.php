@@ -11,7 +11,7 @@ use SprykerMiddleware\Zed\Process\Business\Validator\Validators\LessOrEqualThanV
 
 class LessOrEqualThanValidatorPlugin extends AbstractGenericValidatorPlugin
 {
-    const NAME = 'LessOrEqualThan';
+    public const NAME = 'LessOrEqualThan';
 
     /**
      * @return string

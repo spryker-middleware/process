@@ -23,6 +23,8 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Transla
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactoryInterface;
 use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactory;
 use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactoryInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
+use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
@@ -89,9 +91,9 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
-    public function getDefaultProcessesPlugins(): array
+    public function getProcessesPlugins(): array
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_DEFAULT_PROCESSES);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_PROCESSES);
     }
 
     /**
@@ -112,7 +114,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \Monolog\Formatter\FormatterInterface|\Monolog\Formatter\FormatterInterface
      */
-    protected function createLogstashFormatter(): FormatterInterface
+    public function createLogstashFormatter(): FormatterInterface
     {
         return new LogstashFormatter(APPLICATION);
     }
@@ -120,17 +122,17 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
-    public function getGenericTranslatorFunctionsPlugins(): array
+    public function getTranslatorFunctionsPlugins(): array
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_GENERIC_TRANSLATOR_FUNCTIONS);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_TRANSLATOR_FUNCTIONS);
     }
 
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\ValidatorPluginInterface[]
      */
-    public function getGenericValidatorPlugins()
+    public function getValidatorPlugins()
     {
-        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_GENERIC_VALIDATORS);
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_VALIDATORS);
     }
 
     /**
@@ -144,7 +146,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface
      */
-    public function getDecoder()
+    public function getDecoder(): ProcessToSymfonyDecoderAdapterInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::DECODER);
     }
@@ -152,7 +154,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface
      */
-    public function getEncoder()
+    public function getEncoder(): ProcessToSymfonyEncoderAdapterInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::ENCODER);
     }

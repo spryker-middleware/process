@@ -23,11 +23,11 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigu
  */
 class PluginResolverTest extends Unit
 {
-    const PROCESS_1 = 'process1';
-    const PROCESS_2 = 'process2';
-    const PROCESS_3 = 'process3';
-    const PROCESS_4 = 'process4';
-    const UNKNOWN_PROCESS = 'unknownProcess';
+    private const PROCESS_1 = 'process1';
+    private const PROCESS_2 = 'process2';
+    private const PROCESS_3 = 'process3';
+    private const PROCESS_4 = 'process4';
+    private const UNKNOWN_PROCESS = 'unknownProcess';
 
     /**
      * @return void

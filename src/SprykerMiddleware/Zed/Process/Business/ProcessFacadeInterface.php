@@ -15,7 +15,11 @@ use Generated\Shared\Transfer\ValidatorConfigTransfer;
 interface ProcessFacadeInterface
 {
     /**
-     * {@inheritdoc}
+     * Specification:
+     * - Runs middleware process according to provided configuration.
+     * - Reads data from input stream.
+     * - Process each data item in pipeline.
+     * - Writes result to output stream.
      *
      * @api
      *
@@ -26,6 +30,9 @@ interface ProcessFacadeInterface
     public function process(ProcessSettingsTransfer $processSettingsTransfer): void;
 
     /**
+     * Specification:
+     * - Maps given payload using mapping rules that are specified in $mapperConfigTransfer
+     *
      * @api
      *
      * @param array $payload
@@ -36,16 +43,22 @@ interface ProcessFacadeInterface
     public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array;
 
     /**
+     * Specification:
+     * - Translates given payload using dictionary that is specified in $translatorConfigTransfer
+     *
      * @api
      *
      * @param array $payload
-     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $validatorConfigTransfer
+     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      *
      * @return array
      */
-    public function translate(array $payload, TranslatorConfigTransfer $validatorConfigTransfer): array;
+    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array;
 
     /**
+     * Specification:
+     * - Validates given payload using validation rules that are specified in $validationConfigTransfer
+     *
      * @api
      *
      * @param array $payload

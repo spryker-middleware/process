@@ -12,6 +12,11 @@ use Generated\Shared\Transfer\ProcessResultTransfer;
 interface PreProcessorHookPluginInterface
 {
     /**
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * @param \Generated\Shared\Transfer\ProcessResultTransfer|null $processResultTransfer
      *
      * @return void
