@@ -10,9 +10,9 @@ namespace SprykerMiddlewareTest\Zed\Process\Business\Mapper;
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Monolog\Logger;
-use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
-use SprykerMiddleware\Shared\Process\ProcessConfig;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
+use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
 
 /**
@@ -32,10 +32,10 @@ class MapperTest extends Unit
      */
     public function testStrategies()
     {
-        $mapper = $this->getMapper($this->getMapperConfigTransfer(ProcessConfig::MAPPER_STRATEGY_COPY_UNKNOWN, []));
+        $mapper = $this->getMapper($this->getMapperConfigTransfer(MapInterface::MAPPER_STRATEGY_COPY_UNKNOWN, []));
         $this->assertEquals($this->getOriginalPayload(), $mapper->map($this->getOriginalPayload()));
 
-        $mapper = $this->getMapper($this->getMapperConfigTransfer(ProcessConfig::MAPPER_STRATEGY_SKIP_UNKNOWN, []));
+        $mapper = $this->getMapper($this->getMapperConfigTransfer(MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN, []));
         $this->assertEquals([], $mapper->map($this->getOriginalPayload()));
     }
 
@@ -45,7 +45,7 @@ class MapperTest extends Unit
     public function testMapping()
     {
         $mapper = $this->getMapper($this->getMapperConfigTransfer(
-            ProcessConfig::MAPPER_STRATEGY_SKIP_UNKNOWN,
+            MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN,
             $this->getMapping()
         ));
         $this->assertEquals($this->getMappedPayload(), $mapper->map($this->getOriginalPayload()));

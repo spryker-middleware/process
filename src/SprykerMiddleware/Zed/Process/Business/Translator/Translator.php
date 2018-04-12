@@ -8,7 +8,7 @@
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use SprykerMiddleware\Shared\Process\Log\MiddlewareLoggerTrait;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface;
 
