@@ -50,7 +50,7 @@ class ProcessResultTest extends Unit
 
     protected const VALUE_ADDITIONAL_EXECUTION_TIME = 1000;
 
-    protected const VALUE_INIT_RESULT = [
+    protected const VALUE_INIT_RESULT_NAMES = [
         0 => self::VALUE_PLUGIN_NAME,
         1 => 'StreamReaderStagePlugin',
         2 => 'StreamWriterStagePlugin',
@@ -70,7 +70,7 @@ class ProcessResultTest extends Unit
 
         /** @var StageResultsTransfer $stageResult */
         foreach ($processResultTransfer->getStageResults() as $key => $stageResult) {
-            $this->assertEquals($stageResult->getStageName(), self::VALUE_INIT_RESULT[$key]);
+            $this->assertEquals($stageResult->getStageName(), self::VALUE_INIT_RESULT_NAMES[$key]);
             $this->assertEquals($stageResult->getInputItemCount(), self::VALUE_INPUT_ITEM_COUNT);
             $this->assertEquals($stageResult->getOutputItemCount(), self::VALUE_OUTPUT_ITEM_COUNT);
         }
