@@ -9,7 +9,6 @@ namespace SprykerMiddlewareTest\Zed\Process\Business\Stream;
 
 use Codeception\Test\Unit;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory;
-use SprykerMiddleware\Zed\Process\Business\Stream\XmlStringNormalizer\XmlStringNormalizer;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapter;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapter;
 
@@ -23,7 +22,7 @@ use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAda
  */
 class StreamTest extends Unit
 {
-    /** @var StreamFactory */
+    /** @var \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory */
     protected $factory;
 
     protected const VALUE_TEST_ARRAY = [
@@ -43,8 +42,13 @@ class StreamTest extends Unit
     protected const FILE_JSON_WRITE = '/tmp/json_write_stream.json';
     protected const FILE_XML_WRITE = '/tmp/xml_write_stream.xml';
 
-    protected const PATH_SUPPORT_STREAM_FILES =  __DIR__ . '/../../_support/stream/files/';
+    protected const PATH_SUPPORT_STREAM_FILES = __DIR__ . '/../../_support/stream/files/';
 
+    /**
+     * @param null|string $name
+     * @param array $data
+     * @param string $dataName
+     */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
@@ -60,9 +64,9 @@ class StreamTest extends Unit
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
-        $this->assertEquals($stream->read(), self::VALUE_TEST_ARRAY[0]);
+        $this->assertEquals($stream->read(), static::VALUE_TEST_ARRAY[0]);
         $this->assertEquals($stream->eof(), false);
-        $this->assertEquals($stream->read(), self::VALUE_TEST_ARRAY[1]);
+        $this->assertEquals($stream->read(), static::VALUE_TEST_ARRAY[1]);
         $this->assertEquals($stream->read(), null);
         $this->assertEquals($stream->eof(), true);
         $this->assertEquals($stream->seek(-1, SEEK_END), 0);
@@ -79,8 +83,8 @@ class StreamTest extends Unit
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
-        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[0]), true);
-        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[1]), true);
+        $this->assertEquals($stream->write(static::VALUE_TEST_ARRAY[0]), true);
+        $this->assertEquals($stream->write(static::VALUE_TEST_ARRAY[1]), true);
         $this->assertEquals($stream->seek(1, SEEK_SET), true);
         $this->assertEquals($stream->flush(), true);
         $this->assertEquals($stream->eof(), true);
@@ -94,13 +98,13 @@ class StreamTest extends Unit
      */
     public function testDirectoryStream(): void
     {
-        $stream = $this->factory->createDirectoryStream(self::PATH_SUPPORT_STREAM_FILES);
+        $stream = $this->factory->createDirectoryStream(static::PATH_SUPPORT_STREAM_FILES);
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
         $this->assertEquals($stream->seek(3, SEEK_SET), true);
         $this->assertTrue(!is_string($stream->read()));
-        $this->assertTrue((bool) $stream->seek(0, SEEK_SET));
+        $this->assertTrue((bool)$stream->seek(0, SEEK_SET));
         $this->assertTrue(is_string($stream->read()), true);
         $this->assertTrue($stream->close(), true);
     }
@@ -162,7 +166,6 @@ class StreamTest extends Unit
         $this->assertEquals($stream->close(), true);
     }
 
-
     /**
      * @return void
      */
@@ -177,13 +180,13 @@ class StreamTest extends Unit
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
-        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[0]), true);
-        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[1]), true);
+        $this->assertEquals($stream->write(static::VALUE_TEST_ARRAY[0]), true);
+        $this->assertEquals($stream->write(static::VALUE_TEST_ARRAY[1]), true);
         $this->assertEquals($stream->seek(1, SEEK_SET), true);
         $this->assertEquals($stream->flush(), true);
         $this->assertEquals($stream->eof(), true);
         $this->assertEquals($stream->close(), true);
 
-        unlink(self::FILE_XML_WRITE);
+        unlink(static::FILE_XML_WRITE);
     }
 }

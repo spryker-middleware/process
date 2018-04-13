@@ -8,12 +8,15 @@
 namespace SprykerMiddleware\Zed\Process\Business\Validator;
 
 use Generated\Shared\Transfer\ValidatorConfigTransfer;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Exception\InvalidItemException;
 use SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolverInterface;
 
 class PayloadValidator implements PayloadValidatorInterface
 {
+    use MiddlewareLoggerTrait;
+
     protected const KEY_IS_VALID = 'isValid';
     protected const KEY_ITEM = 'item';
     protected const KEY_KEY = 'key';

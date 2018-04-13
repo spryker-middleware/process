@@ -49,7 +49,10 @@ class ConfigurationSnapshotBuilderTest extends Unit
         $this->assertEquals($expectedTransfer->getPostProcessHookPluginNames()[0], 'ReportPostProcessorHookPlugin');
     }
 
-    protected function getProcessConfigurationPluginMock()
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface
+     */
+    protected function getProcessConfigurationPluginMock(): ProcessConfigurationPluginInterface
     {
         $mock = $this->getMockBuilder(ProcessConfigurationPluginInterface::class)
             ->setMethods([
@@ -78,7 +81,7 @@ class ConfigurationSnapshotBuilderTest extends Unit
     }
 
     /**
-     * @return ProcessConfigurationTransfer
+     * @return \Generated\Shared\Transfer\ProcessConfigurationTransfer
      */
     protected function getExpectedProcessConfigurationTransfer(): ProcessConfigurationTransfer
     {

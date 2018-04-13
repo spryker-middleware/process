@@ -10,6 +10,7 @@ namespace SprykerMiddlewareTest\Zed\Process\Business\Mapper;
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Monolog\Logger;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
@@ -24,6 +25,8 @@ use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
  */
 class MapperTest extends Unit
 {
+    use MiddlewareLoggerTrait;
+
     /**
      * @return void
      */
@@ -167,8 +170,8 @@ class MapperTest extends Unit
                 'itemMap' => [
                     'en_GB' => true,
                     'de_DE' => false,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

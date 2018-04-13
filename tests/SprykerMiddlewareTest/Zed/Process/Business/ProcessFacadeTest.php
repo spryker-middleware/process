@@ -52,7 +52,7 @@ class ProcessFacadeTest extends Unit
             'order_reference' => '22222222',
             'payment' => 'CASH',
             'store' => 'GB',
-        ]
+        ],
     ];
 
     /**
@@ -68,7 +68,7 @@ class ProcessFacadeTest extends Unit
     }
 
     /**
-     * @return ProcessFacade
+     * @return \SprykerMiddleware\Zed\Process\Business\ProcessFacade
      */
     protected function getProcessFacade(): ProcessFacade
     {
@@ -76,7 +76,7 @@ class ProcessFacadeTest extends Unit
     }
 
     /**
-     * @return ProcessSettingsTransfer
+     * @return \Generated\Shared\Transfer\ProcessSettingsTransfer
      */
     protected function getProcessSettingsTransfer(): ProcessSettingsTransfer
     {
@@ -91,9 +91,8 @@ class ProcessFacadeTest extends Unit
         return $transfer;
     }
 
-
     /**
-     * @return Container
+     * @return \Spryker\Zed\Kernel\Container
      */
     private function getContainer(): Container
     {
@@ -108,9 +107,9 @@ class ProcessFacadeTest extends Unit
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Zed\Kernel\Container $container
      *
-     * @return ProcessFacadeInterface
+     * @return \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface
      */
     protected function prepareFacade(Container $container): ProcessFacadeInterface
     {
@@ -150,7 +149,7 @@ class ProcessFacadeTest extends Unit
         $mock->method('getOutputStreamPlugin')->willReturn(new JsonOutputStreamPlugin());
         $mock->method('getPostProcessorHookPlugins')->willReturn([]);
         $mock->method('getPreProcessorHookPlugins')->willReturn([]);
-        $mock->method('getProcessName')->willReturn(self::VALUE_PROCESS_NAME);
+        $mock->method('getProcessName')->willReturn(static::VALUE_PROCESS_NAME);
 
         return $mock;
     }

@@ -7,8 +7,6 @@
 
 namespace SprykerMiddlewareTest\Zed\Process\Business\Iterator;
 
-use SprykerMiddleware\Zed\Process\Business\Exception\MethodNotSupportedException;
-
 /**
  * @group SprykerMiddlewareTest
  * @group Zed

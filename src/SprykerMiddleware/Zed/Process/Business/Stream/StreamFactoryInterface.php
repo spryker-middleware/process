@@ -50,10 +50,10 @@ interface StreamFactoryInterface
      * @param string $path
      * @param string $rootNodeName
      * @param string $entityNodeName
-     * @param string $version
-     * @param string $encoding
-     * @param string $standalone
      * @param \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface $encoder
+     * @param string|null $version
+     * @param string|null $encoding
+     * @param string|null $standalone
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */

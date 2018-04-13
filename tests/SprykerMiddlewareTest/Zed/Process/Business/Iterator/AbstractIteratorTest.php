@@ -8,7 +8,7 @@
 namespace SprykerMiddlewareTest\Zed\Process\Business\Iterator;
 
 use Codeception\Test\Unit;
-use PHPUnit\Framework\MockObject\MockObject;
+use ReflectionClass;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Zed\Process\Business\Iterator\JsonDirectoryIterator;
 use SprykerMiddleware\Zed\Process\Business\Iterator\NullIterator;
@@ -28,7 +28,7 @@ class AbstractIteratorTest extends Unit
     }
 
     /**
-     * @return MockObject|JsonDirectoryIterator
+     * @return \SprykerMiddleware\Zed\Process\Business\Iterator\JsonDirectoryIterator
      */
     protected function getJsonDirectoryIteratorMock(): JsonDirectoryIterator
     {
@@ -39,15 +39,18 @@ class AbstractIteratorTest extends Unit
 
         $mock->method('initJsonStreamForNextItem')->willReturn($this->getJsonReadStream());
 
-        $reflection = new \ReflectionClass($mock);
-        $reflectionPropety = $reflection->getProperty('jsonStream');
-        $reflectionPropety->setAccessible(true);
-        $reflectionPropety->setValue($mock, $this->getJsonReadStream());
+        $reflection = new ReflectionClass($mock);
+        $reflectionProperty = $reflection->getProperty('jsonStream');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($mock, $this->getJsonReadStream());
 
         return $mock;
     }
 
-    protected function getReadStreamMock()
+    /**
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
+     */
+    protected function getReadStreamMock(): ReadStreamInterface
     {
         $mock = $this->getMockBuilder(ReadStreamInterface::class)
             ->getMock();
@@ -56,14 +59,20 @@ class AbstractIteratorTest extends Unit
         return $mock;
     }
 
-    protected function getStreamFactoryMock()
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface
+     */
+    protected function getStreamFactoryMock(): StreamFactoryInterface
     {
         return $this->getMockBuilder(StreamFactoryInterface::class)
             ->getMock();
     }
 
-    protected function getJsonReadStream()
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Stream\JsonReadStream
+     */
+    protected function getJsonReadStream(): JsonReadStream
     {
-        return new JsonReadStream(self::VALUE_JSON_PATH);
+        return new JsonReadStream(static::VALUE_JSON_PATH);
     }
 }

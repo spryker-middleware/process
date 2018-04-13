@@ -7,15 +7,16 @@
 
 namespace SprykerMiddlewareTest\Zed\Process\Business\ProcessResult;
 
+use ArrayObject;
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\ProcessConfigurationTransfer;
 use Generated\Shared\Transfer\ProcessResultTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
 use Generated\Shared\Transfer\StageResultsTransfer;
 use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilder;
+use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface;
 use SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelper;
-use SprykerMiddleware\Zed\Process\Communication\Plugin\Iterator\NullIteratorPlugin;
-use SprykerMiddleware\Zed\Process\Communication\Plugin\Log\MiddlewareLoggerConfigPlugin;
+use SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamReaderStagePlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamWriterStagePlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface;
@@ -61,18 +62,17 @@ class ProcessResultTest extends Unit
      */
     public function testInitProcessResultTransfer(): void
     {
-        $processResultHelper = $this->getProccessResultHelper();
+        $processResultHelper = $this->getProcessResultHelper();
         $processResultTransfer = $this->getProcessResultTransfer();
-        $configurationBuilder = $this->getConfigurationSnapshotBuilder();
-        $processSettingsTranfer = $this->getProcessSettingsTransfer();
+        $processSettingsTransfer = $this->getProcessSettingsTransfer();
 
-        $processResultTransfer = $processResultHelper->initProcessResultTransfer($processResultTransfer, $this->getProcessConfigurationPluginMock(), $processSettingsTranfer);
+        $processResultTransfer = $processResultHelper->initProcessResultTransfer($processResultTransfer, $this->getProcessConfigurationPluginMock(), $processSettingsTransfer);
 
-        /** @var StageResultsTransfer $stageResult */
+        /** @var \Generated\Shared\Transfer\StageResultsTransfer $stageResult */
         foreach ($processResultTransfer->getStageResults() as $key => $stageResult) {
-            $this->assertEquals($stageResult->getStageName(), self::VALUE_INIT_RESULT_NAMES[$key]);
-            $this->assertEquals($stageResult->getInputItemCount(), self::VALUE_INPUT_ITEM_COUNT);
-            $this->assertEquals($stageResult->getOutputItemCount(), self::VALUE_OUTPUT_ITEM_COUNT);
+            $this->assertEquals($stageResult->getStageName(), static::VALUE_INIT_RESULT_NAMES[$key]);
+            $this->assertEquals($stageResult->getInputItemCount(), static::VALUE_INPUT_ITEM_COUNT);
+            $this->assertEquals($stageResult->getOutputItemCount(), static::VALUE_OUTPUT_ITEM_COUNT);
         }
     }
 
@@ -81,10 +81,10 @@ class ProcessResultTest extends Unit
      */
     public function testIncreaseProcessedItemCount(): void
     {
-        $processResultHelper = $this->getProccessResultHelper();
+        $processResultHelper = $this->getProcessResultHelper();
         $processResultTransfer = $processResultHelper->increaseProcessedItemCount($this->getProcessResultTransfer());
 
-        $this->assertEquals($processResultTransfer->getProcessedItemCount(),self::VALUE_PROCESSED_ITEM_COUNT + 1);
+        $this->assertEquals($processResultTransfer->getProcessedItemCount(), static::VALUE_PROCESSED_ITEM_COUNT + 1);
     }
 
     /**
@@ -92,10 +92,10 @@ class ProcessResultTest extends Unit
      */
     public function testIncreaseSkippedItemCount(): void
     {
-        $processResultHelper = $this->getProccessResultHelper();
+        $processResultHelper = $this->getProcessResultHelper();
         $processResultTransfer = $processResultHelper->increaseSkippedItemCount($this->getProcessResultTransfer());
 
-        $this->assertEquals($processResultTransfer->getSkippedItemCount(),self::VALUE_SKIPPED_ITEM_COUNT + 1);
+        $this->assertEquals($processResultTransfer->getSkippedItemCount(), static::VALUE_SKIPPED_ITEM_COUNT + 1);
     }
 
     /**
@@ -103,10 +103,10 @@ class ProcessResultTest extends Unit
      */
     public function testIncreaseItemCount(): void
     {
-        $processResultHelper = $this->getProccessResultHelper();
+        $processResultHelper = $this->getProcessResultHelper();
         $processResultTransfer = $processResultHelper->increaseItemCount($this->getProcessResultTransfer());
 
-        $this->assertEquals($processResultTransfer->getItemCount(),self::VALUE_ITEM_COUNT + 1);
+        $this->assertEquals($processResultTransfer->getItemCount(), static::VALUE_ITEM_COUNT + 1);
     }
 
     /**
@@ -114,10 +114,10 @@ class ProcessResultTest extends Unit
      */
     public function testIncreaseFailedItemCount(): void
     {
-        $processResultHelper = $this->getProccessResultHelper();
+        $processResultHelper = $this->getProcessResultHelper();
         $processResultTransfer = $processResultHelper->increaseFailedItemCount($this->getProcessResultTransfer());
 
-        $this->assertEquals($processResultTransfer->getFailedItemCount(),self::VALUE_FAILED_ITEM_COUNT + 1);
+        $this->assertEquals($processResultTransfer->getFailedItemCount(), static::VALUE_FAILED_ITEM_COUNT + 1);
     }
 
     /**
@@ -125,10 +125,10 @@ class ProcessResultTest extends Unit
      */
     public function testIncreaseStageInputItemCount(): void
     {
-        $processResultHelper = $this->getProccessResultHelper();
-        $processResultTransfer = $processResultHelper->increaseStageInputItemCount($this->getProcessResultTransfer(), self::VALUE_PLUGIN_NAME);
+        $processResultHelper = $this->getProcessResultHelper();
+        $processResultTransfer = $processResultHelper->increaseStageInputItemCount($this->getProcessResultTransfer(), static::VALUE_PLUGIN_NAME);
 
-        $this->assertEquals($processResultTransfer->getStageResults()[0]->getInputItemCount(), self::VALUE_INPUT_ITEM_COUNT + 1);
+        $this->assertEquals($processResultTransfer->getStageResults()[0]->getInputItemCount(), static::VALUE_INPUT_ITEM_COUNT + 1);
     }
 
     /**
@@ -136,10 +136,10 @@ class ProcessResultTest extends Unit
      */
     public function testIncreaseStageOutputItemCount(): void
     {
-        $processResultHelper = $this->getProccessResultHelper();
-        $processResultTransfer = $processResultHelper->increaseStageOutputItemCount($this->getProcessResultTransfer(), self::VALUE_PLUGIN_NAME);
+        $processResultHelper = $this->getProcessResultHelper();
+        $processResultTransfer = $processResultHelper->increaseStageOutputItemCount($this->getProcessResultTransfer(), static::VALUE_PLUGIN_NAME);
 
-        $this->assertEquals($processResultTransfer->getStageResults()[0]->getOutputItemCount(), self::VALUE_OUTPUT_ITEM_COUNT + 1);
+        $this->assertEquals($processResultTransfer->getStageResults()[0]->getOutputItemCount(), static::VALUE_OUTPUT_ITEM_COUNT + 1);
     }
 
     /**
@@ -147,18 +147,17 @@ class ProcessResultTest extends Unit
      */
     public function testIncreaseStageItemExecutionTime(): void
     {
-        $processResultHelper = $this->getProccessResultHelper();
+        $processResultHelper = $this->getProcessResultHelper();
         $processResultTransfer = $processResultHelper->increaseStageItemExecutionTime(
             $this->getProcessResultTransfer(),
-            self::VALUE_PLUGIN_NAME,
-            self::VALUE_ADDITIONAL_EXECUTION_TIME
+            static::VALUE_PLUGIN_NAME,
+            static::VALUE_ADDITIONAL_EXECUTION_TIME
         );
 
         $this->assertEquals(
             $processResultTransfer->getStageResults()[0]->getTotalExecutionTime(),
-            self::VALUE_EXECUTION_TIME + self::VALUE_ADDITIONAL_EXECUTION_TIME
+            static::VALUE_EXECUTION_TIME + static::VALUE_ADDITIONAL_EXECUTION_TIME
         );
-
     }
 
     /**
@@ -169,10 +168,10 @@ class ProcessResultTest extends Unit
         $processResultTransfer = new ProcessResultTransfer();
         $processResultTransfer->setStartTime(time());
         $processResultTransfer->setProcessName('Process name');
-        $processResultTransfer->setItemCount(self::VALUE_ITEM_COUNT);
-        $processResultTransfer->setSkippedItemCount(self::VALUE_SKIPPED_ITEM_COUNT);
-        $processResultTransfer->setProcessedItemCount(self::VALUE_PROCESSED_ITEM_COUNT);
-        $processResultTransfer->setFailedItemCount(self::VALUE_FAILED_ITEM_COUNT);
+        $processResultTransfer->setItemCount(static::VALUE_ITEM_COUNT);
+        $processResultTransfer->setSkippedItemCount(static::VALUE_SKIPPED_ITEM_COUNT);
+        $processResultTransfer->setProcessedItemCount(static::VALUE_PROCESSED_ITEM_COUNT);
+        $processResultTransfer->setFailedItemCount(static::VALUE_FAILED_ITEM_COUNT);
         $processResultTransfer->setEndTime(time());
         $processResultTransfer->setProcessConfiguration(new ProcessConfigurationTransfer());
         $processResultTransfer->setStageResults($this->getStageResults());
@@ -181,17 +180,17 @@ class ProcessResultTest extends Unit
     }
 
     /**
-     * @return ConfigurationSnapshotBuilder
+     * @return \SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface
      */
-    protected function getConfigurationSnapshotBuilder(): ConfigurationSnapshotBuilder
+    protected function getConfigurationSnapshotBuilder(): ConfigurationSnapshotBuilderInterface
     {
         return new ConfigurationSnapshotBuilder();
     }
 
     /**
-     * @return ProcessResultHelper
+     * @return \SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface
      */
-    protected function getProccessResultHelper(): ProcessResultHelper
+    protected function getProcessResultHelper(): ProcessResultHelperInterface
     {
         return new ProcessResultHelper($this->getConfigurationSnapshotBuilder());
     }
@@ -199,30 +198,30 @@ class ProcessResultTest extends Unit
     /**
      * @return \ArrayObject
      */
-    protected function getStageResults(): \ArrayObject
+    protected function getStageResults(): ArrayObject
     {
-        $object = new \ArrayObject();
+        $object = new ArrayObject();
         $object->append($this->getStageResultsTransfer());
 
         return $object;
     }
 
     /**
-     * @return StageResultsTransfer
+     * @return \Generated\Shared\Transfer\StageResultsTransfer
      */
-    protected function  getStageResultsTransfer(): StageResultsTransfer
+    protected function getStageResultsTransfer(): StageResultsTransfer
     {
         $stageResultsTransfer = new StageResultsTransfer();
-        $stageResultsTransfer->setStageName(self::VALUE_PLUGIN_NAME);
-        $stageResultsTransfer->setInputItemCount(self::VALUE_INPUT_ITEM_COUNT);
-        $stageResultsTransfer->setOutputItemCount(self::VALUE_OUTPUT_ITEM_COUNT);
-        $stageResultsTransfer->setTotalExecutionTime(self::VALUE_EXECUTION_TIME);
+        $stageResultsTransfer->setStageName(static::VALUE_PLUGIN_NAME);
+        $stageResultsTransfer->setInputItemCount(static::VALUE_INPUT_ITEM_COUNT);
+        $stageResultsTransfer->setOutputItemCount(static::VALUE_OUTPUT_ITEM_COUNT);
+        $stageResultsTransfer->setTotalExecutionTime(static::VALUE_EXECUTION_TIME);
 
         return $stageResultsTransfer;
     }
 
     /**
-     * @return ProcessSettingsTransfer
+     * @return \Generated\Shared\Transfer\ProcessSettingsTransfer
      */
     protected function getProcessSettingsTransfer(): ProcessSettingsTransfer
     {
@@ -232,7 +231,7 @@ class ProcessResultTest extends Unit
     }
 
     /**
-     * @return ProcessConfigurationPluginInterface
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface
      */
     protected function getProcessConfigurationPluginMock(): ProcessConfigurationPluginInterface
     {

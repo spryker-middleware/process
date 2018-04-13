@@ -8,11 +8,14 @@
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface;
 
 class Translator implements TranslatorInterface
 {
+    use MiddlewareLoggerTrait;
+
     protected const OPERATION = 'Translation';
 
     protected const KEY_OPTIONS = 'options';
