@@ -60,7 +60,7 @@ class StreamTest extends Unit
      */
     public function testCsvReadStream(): void
     {
-        $stream = $this->factory->createCsvReadStream(self::PATH_SUPPORT_STREAM_FILES . 'csv_read_stream_test.csv');
+        $stream = $this->factory->createCsvReadStream(static::PATH_SUPPORT_STREAM_FILES . 'csv_read_stream_test.csv');
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
@@ -79,7 +79,7 @@ class StreamTest extends Unit
      */
     public function testCsvWriteStream(): void
     {
-        $stream = $this->factory->createCsvWriteStream(self::FILE_CSV_WRITE);
+        $stream = $this->factory->createCsvWriteStream(static::FILE_CSV_WRITE);
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
@@ -90,7 +90,7 @@ class StreamTest extends Unit
         $this->assertEquals($stream->eof(), true);
         $this->assertEquals($stream->close(), true);
 
-        unlink(self::FILE_CSV_WRITE);
+        unlink(static::FILE_CSV_WRITE);
     }
 
     /**
@@ -114,7 +114,7 @@ class StreamTest extends Unit
      */
     public function testJsonReadStream(): void
     {
-        $stream = $this->factory->createJsonReadStream(self::PATH_SUPPORT_STREAM_FILES . 'json_read_stream_test.json');
+        $stream = $this->factory->createJsonReadStream(static::PATH_SUPPORT_STREAM_FILES . 'json_read_stream_test.json');
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
@@ -133,18 +133,18 @@ class StreamTest extends Unit
      */
     public function testJsonWriteStream(): void
     {
-        $stream = $this->factory->createJsonWriteStream(self::FILE_JSON_WRITE);
+        $stream = $this->factory->createJsonWriteStream(static::FILE_JSON_WRITE);
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), true);
-        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[0]), true);
-        $this->assertEquals($stream->write(self::VALUE_TEST_ARRAY[1]), true);
+        $this->assertEquals($stream->write(static::VALUE_TEST_ARRAY[0]), true);
+        $this->assertEquals($stream->write(static::VALUE_TEST_ARRAY[1]), true);
         $this->assertEquals($stream->seek(1, SEEK_SET), true);
         $this->assertEquals($stream->flush(), true);
         $this->assertEquals($stream->eof(), true);
         $this->assertEquals($stream->close(), true);
 
-        unlink(self::FILE_JSON_WRITE);
+        unlink(static::FILE_JSON_WRITE);
     }
 
     /**
@@ -152,7 +152,7 @@ class StreamTest extends Unit
      */
     public function testXmlReadStream(): void
     {
-        $stream = $this->factory->createXmlReadStream(self::PATH_SUPPORT_STREAM_FILES . 'xml_read_stream_test.xml', 'food', new ProcessToSymfonyDecoderAdapter());
+        $stream = $this->factory->createXmlReadStream(static::PATH_SUPPORT_STREAM_FILES . 'xml_read_stream_test.xml', 'food', new ProcessToSymfonyDecoderAdapter());
 
         $this->assertEquals($stream->open(), true);
         $this->assertEquals($stream->eof(), false);
@@ -172,7 +172,7 @@ class StreamTest extends Unit
     public function testXmlWriteStream(): void
     {
         $stream = $this->factory->createXmlWriteStream(
-            self::FILE_XML_WRITE,
+            static::FILE_XML_WRITE,
             'breakfast_menu',
             'food',
             new ProcessToSymfonyEncoderAdapter()
