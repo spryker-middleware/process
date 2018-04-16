@@ -5,12 +5,13 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerMiddleware\Zed\Process\Business\Validator;
+namespace SprykerMiddlewareTest\Zed\Process\Business\Validator;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\ValidatorConfigTransfer;
 use Monolog\Logger;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
+use SprykerMiddleware\Zed\Process\Business\Validator\PayloadValidator;
 use SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolver;
 
 /**

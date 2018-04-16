@@ -14,7 +14,7 @@ interface WriteStreamInterface extends StreamInterface
      *
      * @return int
      */
-    public function write($data): int;
+    public function write(array $data): int;
 
     /**
      * @return bool

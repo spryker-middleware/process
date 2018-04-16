@@ -95,7 +95,7 @@ class CsvWriteStream implements WriteStreamInterface
     /**
      * @inheritdoc
      */
-    public function write($data): int
+    public function write(array $data): int
     {
         $this->data[$this->position++] = $data;
 
@@ -127,6 +127,7 @@ class CsvWriteStream implements WriteStreamInterface
         $result = $this->handle->fflush();
         if ($result) {
             $this->data = [];
+            $this->position = 0;
         }
         return $result;
     }

@@ -50,14 +50,14 @@ interface StreamFactoryInterface
      * @param string $path
      * @param string $rootNodeName
      * @param string $entityNodeName
-     * @param string $version
-     * @param string $encoding
-     * @param string $standalone
      * @param \SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface $encoder
+     * @param string|null $version
+     * @param string|null $encoding
+     * @param string|null $standalone
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
-    public function createXmlWriteStream(string $path, string $rootNodeName, string $entityNodeName, string $version, string $encoding, string $standalone, ProcessToSymfonyEncoderAdapterInterface $encoder): WriteStreamInterface;
+    public function createXmlWriteStream(string $path, string $rootNodeName, string $entityNodeName, ProcessToSymfonyEncoderAdapterInterface $encoder, string $version = null, string $encoding = null, string $standalone = null): WriteStreamInterface;
 
     /**
      * @param string $path
