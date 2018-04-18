@@ -24,6 +24,7 @@ class Mapper implements MapperInterface
     protected const OPERATION_MAP_ARRAY = 'Map array';
     protected const OPERATION_MAP_CALLABLE = 'Map callable';
     protected const OPERATION_MAP_KEY = 'Map key';
+    protected const OPERATION_SELF_REFERENCED_KEY = 'Map self referenced key';
 
     protected const KEY_DATA = 'data';
     protected const KEY_NEW_KEY = 'new_key';
@@ -115,7 +116,7 @@ class Mapper implements MapperInterface
         }
 
         $this->getProcessLogger()->debug(static::OPERATION, [
-            static::KEY_OPERATION => static::OPERATION_MAP_KEY,
+            static::KEY_OPERATION => static::OPERATION_SELF_REFERENCED_KEY,
             static::KEY_NEW_KEY => $neededKey,
             static::KEY_OLD_KEY => $value,
             static::KEY_DATA => $mappedValue,
