@@ -11,6 +11,8 @@ use Closure;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
+use SprykerMiddleware\Zed\Process\Business\Exception\InvalidReferenceException;
+use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
 
 class Mapper implements MapperInterface
@@ -28,7 +30,9 @@ class Mapper implements MapperInterface
     protected const KEY_OLD_KEY = 'old_key';
     protected const KEY_OPERATION = 'operation';
     protected const KEY_STRATEGY = 'strategy';
+
     protected const OPTION_ITEM_MAP = 'itemMap';
+    protected const OPTION_DYNAMIC_IDENTIFIER = '&';
 
     /**
      * @var \Generated\Shared\Transfer\MapperConfigTransfer
@@ -77,6 +81,9 @@ class Mapper implements MapperInterface
      */
     protected function mapByRule(array $result, array $payload, string $key, $value): array
     {
+        if (strpos($key,static::OPTION_DYNAMIC_IDENTIFIER) === 0) {
+            return $this->mapDynamic($result, $payload, $key, $value);
+        }
         if ($value instanceof Closure) {
             return $this->mapCallable($result, $payload, $key, $value);
         }
@@ -88,6 +95,33 @@ class Mapper implements MapperInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param string $value
+     *
+     * @return array
+     */
+    protected function mapDynamic(array $result, array $payload, string $key, string $value) {
+        $mappedValue = $this->arrayManager->getValueByKey($payload, $value);
+        $reference = explode(static::OPTION_DYNAMIC_IDENTIFIER, $key)[1];
+        $neededKey = $this->arrayManager->getValueByKey($payload, $reference);
+
+        if (!$neededKey) {
+            throw new InvalidReferenceException(sprintf('%s key doesn\'t exist in payload.', $reference));
+        }
+
+        $this->getProcessLogger()->debug(static::OPERATION, [
+            static::KEY_OPERATION => static::OPERATION_MAP_KEY,
+            static::KEY_NEW_KEY => $neededKey,
+            static::KEY_OLD_KEY => $value,
+            static::KEY_DATA => $mappedValue,
+        ]);
+
+        return $this->arrayManager->putValue($result, $neededKey, $mappedValue);
     }
 
     /**
