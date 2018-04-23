@@ -51,10 +51,6 @@ class ArrayMapper extends AbstractMapper
                 ->setMap($rules);
 
             foreach ($originArray as $originItemKey => $item) {
-//                $resultItem = $item;
-//                foreach ($rules as $itemKey => $itemValue) {
-//                    $resultItem = $this->payloadMapper->map($item);
-//                }
                 $resultArray[$originItemKey] = $this->payloadMapper->map($item, $mapperConfig);
             }
         }
