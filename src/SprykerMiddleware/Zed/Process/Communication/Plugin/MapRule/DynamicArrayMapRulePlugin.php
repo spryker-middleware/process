@@ -1,8 +1,8 @@
 <?php
 
 /**
- * This file is part of the Spryker Demoshop.
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule;
@@ -40,10 +40,6 @@ class DynamicArrayMapRulePlugin extends AbstractPlugin implements MapRulePluginI
      */
     public function isApplicable(string $key, $value): bool
     {
-//        if (!$value instanceof \Closure) {
-//            var_dump($key, $value);
-//            var_dump(is_array($value));
-//        }
         return is_array($value);
     }
 }
