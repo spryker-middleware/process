@@ -22,12 +22,13 @@ class ClosureMapRulePlugin extends AbstractPlugin implements MapRulePluginInterf
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function map(array $result, array $payload, string $key, $value): array
+    public function map(array $result, array $payload, string $key, $value, string $strategy): array
     {
-        return $this->getFacade()->mapByClosure($result, $payload, $key, $value);
+        return $this->getFacade()->mapByClosure($result, $payload, $key, $value, $strategy);
     }
 
     /**

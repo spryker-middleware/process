@@ -14,8 +14,9 @@ interface MapperInterface
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function map(array $result, array $payload, string $key, $value): array;
+    public function map(array $result, array $payload, string $key, $value, string $strategy): array;
 }

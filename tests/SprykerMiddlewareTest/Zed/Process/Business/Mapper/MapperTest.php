@@ -42,11 +42,11 @@ class MapperTest extends Unit
      */
     public function testStrategies()
     {
-        $mapper = $this->getMapper($this->getMapperConfigTransfer(MapInterface::MAPPER_STRATEGY_COPY_UNKNOWN, []));
-        $this->assertEquals($this->getOriginalPayload(), $mapper->map($this->getOriginalPayload()));
+        $mapper = $this->getMapper();
+        $this->assertEquals($this->getOriginalPayload(), $mapper->map($this->getOriginalPayload(), $this->getMapperConfigTransfer(MapInterface::MAPPER_STRATEGY_COPY_UNKNOWN, [])));
 
-        $mapper = $this->getMapper($this->getMapperConfigTransfer(MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN, []));
-        $this->assertEquals([], $mapper->map($this->getOriginalPayload()));
+        $mapper = $this->getMapper();
+        $this->assertEquals([], $mapper->map($this->getOriginalPayload(), $this->getMapperConfigTransfer(MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN, [])));
     }
 
     /**
@@ -54,14 +54,14 @@ class MapperTest extends Unit
      */
     public function testKeyMapper(): void
     {
-        $mapper = $this->getMapper($this->getMapperConfigTransfer(
+        $mapper = $this->getMapper();
+
+        $this->assertEquals($mapper->map($this->getOriginalPayload(), $this->getMapperConfigTransfer(
             MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN,
             [
                 'categories' => 'values.categories',
             ]
-        ));
-
-        $this->assertEquals($mapper->map($this->getOriginalPayload()), [
+        )), [
             'categories' => [
                 'category1',
                 'category2',
@@ -74,7 +74,9 @@ class MapperTest extends Unit
      */
     public function testClosureMapper(): void
     {
-        $mapper = $this->getMapper($this->getMapperConfigTransfer(
+        $mapper = $this->getMapper();
+
+        $this->assertEquals($mapper->map($this->getOriginalPayload(), $this->getMapperConfigTransfer(
             MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN,
             [
                 'names' => function ($payload) {
@@ -86,9 +88,7 @@ class MapperTest extends Unit
                     return $result;
                 },
             ]
-        ));
-
-        $this->assertEquals($mapper->map($this->getOriginalPayload()), [
+        )), [
             'names' => [
                 'en_GB' => 'name-en',
                 'de_DE' => 'name-de',
@@ -102,28 +102,26 @@ class MapperTest extends Unit
      */
     public function testDynamicMapper(): void
     {
-        $mapper = $this->getMapper($this->getMapperConfigTransfer(
+        $mapper = $this->getMapper();
+
+        $this->assertEquals($mapper->map($this->getOriginalPayload(), $this->getMapperConfigTransfer(
             MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN,
             [
                 '&values.attributes.color' => 'values.attributes.color',
             ]
-        ));
-
-        $this->assertEquals($mapper->map($this->getOriginalPayload()), [
+        )), [
             'white' => 'white',
         ]);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
-     *
      * @return \SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapper
      */
-    protected function getMapper(MapperConfigTransfer $mapperConfigTransfer)
+    protected function getMapper()
     {
         $mapper = $this->getMockBuilder(PayloadMapper::class)
             ->enableOriginalConstructor()
-            ->setConstructorArgs([$mapperConfigTransfer, new ArrayManager(), $this->getMapperPluginsStack()])
+            ->setConstructorArgs([new ArrayManager(), $this->getMapperPluginsStack()])
             ->setMethods(['getProcessLogger'])
             ->getMock();
 

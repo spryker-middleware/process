@@ -29,24 +29,22 @@ class TranslatorTest extends Unit
      */
     public function testTranslating()
     {
-        $translator = $this->getTranslator($this->getTranslatorConfigTransfer($this->getDictionary()));
+        $translator = $this->getTranslator();
 
-        $this->assertEquals($this->getTranslatedPayload(), $translator->translate($this->getOriginalPayload()));
+        $this->assertEquals($this->getTranslatedPayload(), $translator->translate($this->getOriginalPayload(), $this->getTranslatorConfigTransfer($this->getDictionary())));
     }
 
     /**
-     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
-     *
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\Translator
      */
-    protected function getTranslator(TranslatorConfigTransfer $translatorConfigTransfer)
+    protected function getTranslator()
     {
         $loggerMock = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator = $this->getMockBuilder(Translator::class)
             ->enableOriginalConstructor()
-            ->setConstructorArgs([$translatorConfigTransfer, new TranslatorFunctionPluginResolver([]), new ArrayManager()])
+            ->setConstructorArgs([new TranslatorFunctionPluginResolver([]), new ArrayManager()])
             ->setMethods(['getProcessLogger'])
             ->getMock();
         $translator->method('getProcessLogger')->willReturn($loggerMock);

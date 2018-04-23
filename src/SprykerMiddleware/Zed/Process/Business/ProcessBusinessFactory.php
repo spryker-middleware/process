@@ -7,10 +7,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business;
 
-use Generated\Shared\Transfer\MapperConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
-use Generated\Shared\Transfer\TranslatorConfigTransfer;
-use Generated\Shared\Transfer\ValidatorConfigTransfer;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
@@ -77,10 +74,9 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapperInterface
      */
-    public function createPayloadMapper(MapperConfigTransfer $mapperConfigTransfer): PayloadMapperInterface
+    public function createPayloadMapper(): PayloadMapperInterface
     {
         return new PayloadMapper(
-            $mapperConfigTransfer,
             $this->createArrayManager(),
             $this->getMapperConfigurationPluginStack()
         );
@@ -91,7 +87,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     public function createArrayMapper(): ArrayMapper
     {
-        return new ArrayMapper($this->createArrayManager());
+        return new ArrayMapper($this->createArrayManager(), $this->createPayloadMapper());
     }
 
     /**
@@ -115,7 +111,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
      */
     public function createDynamicArrayMapper(): DynamicArrayMapper
     {
-        return new DynamicArrayMapper($this->createArrayManager());
+        return new DynamicArrayMapper($this->createArrayManager(), $this->createPayloadMapper());
     }
 
     /**
@@ -127,28 +123,22 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
-     *
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorInterface
      */
-    public function createTranslator(TranslatorConfigTransfer $translatorConfigTransfer): TranslatorInterface
+    public function createTranslator(): TranslatorInterface
     {
         return new Translator(
-            $translatorConfigTransfer,
             $this->createTranslatorFunctionResolver(),
             $this->createArrayManager()
         );
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ValidatorConfigTransfer $validatorConfigTransfer
-     *
      * @return \SprykerMiddleware\Zed\Process\Business\Validator\PayloadValidatorInterface
      */
-    public function createPayloadValidator(ValidatorConfigTransfer $validatorConfigTransfer)
+    public function createPayloadValidator()
     {
         return new PayloadValidator(
-            $validatorConfigTransfer,
             $this->createValidatorPluginResolver(),
             $this->createArrayManager()
         );
@@ -234,7 +224,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\RuleMap\MapRulePluginInterface[]
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\MapRule\MapRulePluginInterface[]
      */
     public function getMapperConfigurationPluginStack(): array
     {

@@ -26,11 +26,6 @@ class PayloadValidator implements PayloadValidatorInterface
     protected const OPERATION = 'Validation';
 
     /**
-     * @var \Generated\Shared\Transfer\ValidatorConfigTransfer
-     */
-    protected $validatorConfigTransfer;
-
-    /**
      * @var \SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolverInterface
      */
     protected $validatorPluginResolver;
@@ -41,31 +36,29 @@ class PayloadValidator implements PayloadValidatorInterface
     protected $arrayManager;
 
     /**
-     * @param \Generated\Shared\Transfer\ValidatorConfigTransfer $validatorConfigTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Validator\ValidationRuleSet\Resolver\ValidatorPluginResolverInterface $validatorPluginResolver
      * @param \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface $arrayManager
      */
     public function __construct(
-        ValidatorConfigTransfer $validatorConfigTransfer,
         ValidatorPluginResolverInterface $validatorPluginResolver,
         ArrayManagerInterface $arrayManager
     ) {
-        $this->validatorConfigTransfer = $validatorConfigTransfer;
         $this->validatorPluginResolver = $validatorPluginResolver;
         $this->arrayManager = $arrayManager;
     }
 
     /**
      * @param array $payload
+     * @param \Generated\Shared\Transfer\ValidatorConfigTransfer $validatorConfigTransfer
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\InvalidItemException
      *
      * @return array
      */
-    public function validate(array $payload): array
+    public function validate(array $payload, ValidatorConfigTransfer $validatorConfigTransfer): array
     {
         $isValid = true;
-        foreach ($this->validatorConfigTransfer->getRules() as $key => $rules) {
+        foreach ($validatorConfigTransfer->getRules() as $key => $rules) {
             $isValid = $isValid && $this->validateKey($payload, $key, $rules);
         }
 

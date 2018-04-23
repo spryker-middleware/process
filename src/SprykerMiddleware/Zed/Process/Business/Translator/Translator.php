@@ -25,11 +25,6 @@ class Translator implements TranslatorInterface
     protected const KEY_RESULTED_DATA = 'resulted_data';
 
     /**
-     * @var \Generated\Shared\Transfer\TranslatorConfigTransfer
-     */
-    protected $translatorConfigTransfer;
-
-    /**
      * @var \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface
      */
     protected $translatorFunctionResolver;
@@ -40,29 +35,27 @@ class Translator implements TranslatorInterface
     protected $arrayManager;
 
     /**
-     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionPluginResolverInterface $translatorFunctionResolver
      * @param \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface $arrayManager
      */
     public function __construct(
-        TranslatorConfigTransfer $translatorConfigTransfer,
         TranslatorFunctionPluginResolverInterface $translatorFunctionResolver,
         ArrayManagerInterface $arrayManager
     ) {
-        $this->translatorConfigTransfer = $translatorConfigTransfer;
         $this->translatorFunctionResolver = $translatorFunctionResolver;
         $this->arrayManager = $arrayManager;
     }
 
     /**
      * @param array $payload
+     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      *
      * @return array
      */
-    public function translate(array $payload): array
+    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array
     {
         $result = $payload;
-        foreach ($this->translatorConfigTransfer->getDictionary() as $key => $translations) {
+        foreach ($translatorConfigTransfer->getDictionary() as $key => $translations) {
             $result = $this->translateKey($result, $payload, $key, $translations);
         }
 

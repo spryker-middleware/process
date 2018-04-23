@@ -31,83 +31,106 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array
     {
         return $this->getFactory()
-            ->createPayloadMapper($mapperConfigTransfer)
-            ->map($payload);
+            ->createPayloadMapper()
+            ->map($payload, $mapperConfigTransfer);
     }
 
     /**
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByKey(array $result, array $payload, string $key, $value): array
+    public function mapByKey(array $result, array $payload, string $key, $value, string $strategy): array
     {
         return $this->getFactory()
             ->createKeyMapper()
-            ->map($result, $payload, $key, $value);
+            ->map($result, $payload, $key, $value, $strategy);
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByClosure(array $result, array $payload, string $key, $value): array
+    public function mapByClosure(array $result, array $payload, string $key, $value, string $strategy): array
     {
         return $this->getFactory()
             ->createClosureMapper()
-            ->map($result, $payload, $key, $value);
+            ->map($result, $payload, $key, $value, $strategy);
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByArray(array $result, array $payload, string $key, $value): array
+    public function mapByArray(array $result, array $payload, string $key, $value, string $strategy): array
     {
         return $this->getFactory()
             ->createArrayMapper()
-            ->map($result, $payload, $key, $value);
+            ->map($result, $payload, $key, $value, $strategy);
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByDynamic(array $result, array $payload, string $key, $value): array
+    public function mapByDynamic(array $result, array $payload, string $key, $value, string $strategy): array
     {
         return $this->getFactory()
             ->createDynamicMapper()
-            ->map($result, $payload, $key, $value);
+            ->map($result, $payload, $key, $value, $strategy);
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByDynamicArray(array $result, array $payload, string $key, $value): array
+    public function mapByDynamicArray(array $result, array $payload, string $key, $value, string $strategy): array
     {
         return $this->getFactory()
             ->createDynamicArrayMapper()
-            ->map($result, $payload, $key, $value);
+            ->map($result, $payload, $key, $value, $strategy);
     }
 
     /**
@@ -123,8 +146,8 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array
     {
         return $this->getFactory()
-            ->createTranslator($translatorConfigTransfer)
-            ->translate($payload);
+            ->createTranslator()
+            ->translate($payload, $translatorConfigTransfer);
     }
 
     /**
@@ -144,6 +167,8 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @api
      *
      * @param array $payload
@@ -154,7 +179,7 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     public function validate(array $payload, ValidatorConfigTransfer $validatorConfigTransfer): array
     {
         return $this->getFactory()
-            ->createPayloadValidator($validatorConfigTransfer)
-            ->validate($payload);
+            ->createPayloadValidator()
+            ->validate($payload, $validatorConfigTransfer);
     }
 }
