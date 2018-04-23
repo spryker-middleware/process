@@ -7,12 +7,8 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
-use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
-
 class ClosureMapper extends AbstractMapper
 {
-    use MiddlewareLoggerTrait;
-
     /**
      * @param array $result
      * @param array $payload
@@ -25,12 +21,7 @@ class ClosureMapper extends AbstractMapper
     {
         $mappedValue = $value($payload, $key);
 
-        $this->getProcessLogger()->debug(static::OPERATION, [
-            static::KEY_OPERATION => static::OPERATION_MAP_CALLABLE,
-            static::KEY_NEW_KEY => $key,
-            static::KEY_OLD_KEY => $value,
-            static::KEY_DATA => $mappedValue,
-        ]);
+        $this->log(static::OPERATION, static::OPERATION_MAP_CALLABLE, $key, $value, $mappedValue);
 
         return $this->arrayManager->putValue($result, $key, $mappedValue);
     }

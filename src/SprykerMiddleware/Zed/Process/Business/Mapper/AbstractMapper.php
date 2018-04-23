@@ -7,10 +7,13 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
+use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 
 abstract class AbstractMapper implements MapperInterface
 {
+    use MiddlewareLoggerTrait;
+
     protected const OPERATION = 'Mapping';
     protected const OPERATION_COPY_ORIGINAL_DATA = 'Copy original data';
     protected const OPERATION_MAP_ARRAY = 'Map array';
@@ -40,5 +43,24 @@ abstract class AbstractMapper implements MapperInterface
     public function __construct(ArrayManagerInterface $arrayManager)
     {
         $this->arrayManager = $arrayManager;
+    }
+
+    /**
+     * @param string $operationType
+     * @param string $operationKey
+     * @param mixed $newKey
+     * @param mixed $oldKey
+     * @param mixed $data
+     *
+     * @return void
+     */
+    protected function log(string $operationType, string $operationKey, $newKey, $oldKey, $data): void
+    {
+        $this->getProcessLogger()->debug($operationType, [
+            static::KEY_OPERATION => $operationKey,
+            static::KEY_NEW_KEY => $newKey,
+            static::KEY_OLD_KEY => $oldKey,
+            static::KEY_DATA => $data,
+        ]);
     }
 }

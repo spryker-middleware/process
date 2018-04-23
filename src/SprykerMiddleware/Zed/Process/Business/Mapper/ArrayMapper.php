@@ -7,14 +7,11 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
-use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapperInterface;
 
 class ArrayMapper extends AbstractMapper
 {
-    use MiddlewareLoggerTrait;
-
     /**
      * @var \SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapperInterface
      */
@@ -56,12 +53,7 @@ class ArrayMapper extends AbstractMapper
             }
         }
 
-        $this->getProcessLogger()->debug(static::OPERATION, [
-            static::KEY_OPERATION => static::OPERATION_MAP_ARRAY,
-            static::KEY_NEW_KEY => $key,
-            static::KEY_OLD_KEY => $value,
-            static::KEY_DATA => $resultArray,
-        ]);
+        $this->log(static::OPERATION, static::OPERATION_MAP_ARRAY, $key, $value, $resultArray);
 
         return $this->arrayManager->putValue($result, $key, $resultArray);
     }

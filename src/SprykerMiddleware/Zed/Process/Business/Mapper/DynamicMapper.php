@@ -7,13 +7,10 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
-use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\Exception\InvalidReferenceException;
 
 class DynamicMapper extends AbstractMapper
 {
-    use MiddlewareLoggerTrait;
-
     /**
      * @param array $result
      * @param array $payload
@@ -34,12 +31,7 @@ class DynamicMapper extends AbstractMapper
             throw new InvalidReferenceException(sprintf('%s key does not exist in payload.', $reference));
         }
 
-        $this->getProcessLogger()->debug(static::OPERATION, [
-            static::KEY_OPERATION => static::OPERATION_MAP_DYNAMIC,
-            static::KEY_NEW_KEY => $neededKey,
-            static::KEY_OLD_KEY => $value,
-            static::KEY_DATA => $mappedValue,
-        ]);
+        $this->log(static::OPERATION, static::OPERATION_MAP_DYNAMIC, $neededKey, $value, $mappedValue);
 
         return $this->arrayManager->putValue($result, $neededKey, $mappedValue);
     }
