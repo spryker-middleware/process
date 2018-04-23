@@ -29,9 +29,9 @@ class PayloadValidatorTest extends Unit
      */
     public function testValidCase()
     {
-        $payloadValidator = $this->getValidator($this->getValidatorConfigTransfer($this->getRules()));
+        $payloadValidator = $this->getValidator();
 
-        $this->assertEquals($this->getValidPayload(), $payloadValidator->validate($this->getValidPayload()));
+        $this->assertEquals($this->getValidPayload(), $payloadValidator->validate($this->getValidPayload(), $this->getValidatorConfigTransfer($this->getRules())));
     }
 
     /**
@@ -41,24 +41,22 @@ class PayloadValidatorTest extends Unit
     {
         $this->expectException('SprykerMiddleware\Zed\Process\Business\Exception\InvalidItemException');
 
-        $payloadValidator = $this->getValidator($this->getValidatorConfigTransfer($this->getRules()));
+        $payloadValidator = $this->getValidator();
 
-        $payloadValidator->validate($this->getInvalidPayload());
+        $payloadValidator->validate($this->getInvalidPayload(), $this->getValidatorConfigTransfer($this->getRules()));
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ValidatorConfigTransfer $validatorConfigTransfer
-     *
      * @return \SprykerMiddleware\Zed\Process\Business\Validator\PayloadValidator
      */
-    protected function getValidator(ValidatorConfigTransfer $validatorConfigTransfer)
+    protected function getValidator()
     {
         $loggerMock = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
             ->getMock();
         $payloadValidator = $this->getMockBuilder(PayloadValidator::class)
             ->enableOriginalConstructor()
-            ->setConstructorArgs([$validatorConfigTransfer, new ValidatorPluginResolver([]), new ArrayManager()])
+            ->setConstructorArgs([new ValidatorPluginResolver([]), new ArrayManager()])
             ->setMethods(['getProcessLogger'])
             ->getMock();
         $payloadValidator->method('getProcessLogger')->willReturn($loggerMock);

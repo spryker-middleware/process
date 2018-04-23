@@ -7,12 +7,15 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Translator;
 
+use Generated\Shared\Transfer\TranslatorConfigTransfer;
+
 interface TranslatorInterface
 {
     /**
      * @param array $payload
+     * @param \Generated\Shared\Transfer\TranslatorConfigTransfer $translatorConfigTransfer
      *
      * @return array
      */
-    public function translate(array $payload): array;
+    public function translate(array $payload, TranslatorConfigTransfer $translatorConfigTransfer): array;
 }

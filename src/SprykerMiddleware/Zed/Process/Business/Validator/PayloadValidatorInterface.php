@@ -7,12 +7,15 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Validator;
 
+use Generated\Shared\Transfer\ValidatorConfigTransfer;
+
 interface PayloadValidatorInterface
 {
     /**
      * @param array $payload
+     * @param \Generated\Shared\Transfer\ValidatorConfigTransfer $validatorConfigTransfer
      *
      * @return array
      */
-    public function validate(array $payload): array;
+    public function validate(array $payload, ValidatorConfigTransfer $validatorConfigTransfer): array;
 }

@@ -173,7 +173,6 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function getConfigurationMappersPluginsStack(): array
     {
-
         return [
             new DynamicMapRulePlugin(),
             new ClosureMapRulePlugin(),

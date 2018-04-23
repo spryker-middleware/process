@@ -16,12 +16,13 @@ class DynamicMapper extends AbstractMapper
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\InvalidReferenceException
      *
      * @return array
      */
-    public function map(array $result, array $payload, string $key, $value): array
+    public function map(array $result, array $payload, string $key, $value, string $strategy): array
     {
         $mappedValue = $this->arrayManager->getValueByKey($payload, $value);
         $reference = explode(static::OPTION_DYNAMIC_IDENTIFIER, $key)[1];

@@ -30,11 +30,6 @@ class PayloadMapper implements PayloadMapperInterface
     protected const KEY_STRATEGY = 'strategy';
 
     /**
-     * @var \Generated\Shared\Transfer\MapperConfigTransfer
-     */
-    protected $mapperConfigTransfer;
-
-    /**
      * @var \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface
      */
     protected $arrayManager;
@@ -45,30 +40,28 @@ class PayloadMapper implements PayloadMapperInterface
     protected $mapRulePlugins;
 
     /**
-     * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
      * @param \SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface $arrayManager
      * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\MapRule\MapRulePluginInterface[] $mapperPlugins
      */
     public function __construct(
-        MapperConfigTransfer $mapperConfigTransfer,
         ArrayManagerInterface $arrayManager,
         array $mapperPlugins
     ) {
-        $this->mapperConfigTransfer = $mapperConfigTransfer;
         $this->arrayManager = $arrayManager;
         $this->mapRulePlugins = $mapperPlugins;
     }
 
     /**
      * @param array $payload
+     * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
      *
      * @return array
      */
-    public function map(array $payload): array
+    public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array
     {
-        $result = $this->prepareResult($payload);
-        foreach ($this->mapperConfigTransfer->getMap() as $key => $value) {
-            $result = $this->mapByRule($result, $payload, $key, $value);
+        $result = $this->prepareResult($payload, $mapperConfigTransfer);
+        foreach ($mapperConfigTransfer->getMap() as $key => $value) {
+            $result = $this->mapByRule($result, $payload, $key, $value, $mapperConfigTransfer->getStrategy());
         }
 
         return $result;
@@ -79,14 +72,15 @@ class PayloadMapper implements PayloadMapperInterface
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    protected function mapByRule(array $result, array $payload, string $key, $value): array
+    protected function mapByRule(array $result, array $payload, string $key, $value, string $strategy): array
     {
         foreach ($this->mapRulePlugins as $rule) {
             if ($rule->isApplicable($key, $value)) {
-                return $rule->map($result, $payload, $key, $value);
+                return $rule->map($result, $payload, $key, $value, $strategy);
             }
         }
 
@@ -95,15 +89,16 @@ class PayloadMapper implements PayloadMapperInterface
 
     /**
      * @param array $payload
+     * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
      *
      * @return array
      */
-    protected function prepareResult(array $payload): array
+    protected function prepareResult(array $payload, MapperConfigTransfer $mapperConfigTransfer): array
     {
-        if ($this->mapperConfigTransfer->getStrategy() === MapInterface::MAPPER_STRATEGY_COPY_UNKNOWN) {
+        if ($mapperConfigTransfer->getStrategy() === MapInterface::MAPPER_STRATEGY_COPY_UNKNOWN) {
             $this->getProcessLogger()->debug(static::OPERATION, [
                 static::KEY_OPERATION => static::OPERATION_COPY_ORIGINAL_DATA,
-                static::KEY_STRATEGY => $this->mapperConfigTransfer->getStrategy(),
+                static::KEY_STRATEGY => $mapperConfigTransfer->getStrategy(),
             ]);
             return $payload;
         }

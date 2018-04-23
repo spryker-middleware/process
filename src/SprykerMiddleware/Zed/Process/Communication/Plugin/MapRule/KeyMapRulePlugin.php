@@ -21,12 +21,13 @@ class KeyMapRulePlugin extends AbstractPlugin implements MapRulePluginInterface
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function map(array $result, array $payload, string $key, $value): array
+    public function map(array $result, array $payload, string $key, $value, string $strategy): array
     {
-        return $this->getFacade()->mapByKey($result, $payload, $key, $value);
+        return $this->getFacade()->mapByKey($result, $payload, $key, $value, $strategy);
     }
 
     /**

@@ -43,54 +43,84 @@ interface ProcessFacadeInterface
     public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array;
 
     /**
+     * Specification:
+     * - Maps given payload by key.
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByKey(array $result, array $payload, string $key, $value): array;
+    public function mapByKey(array $result, array $payload, string $key, $value, string $strategy): array;
 
     /**
+     * Specification:
+     * - Maps given payload by closure.
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByClosure(array $result, array $payload, string $key, $value): array;
+    public function mapByClosure(array $result, array $payload, string $key, $value, string $strategy): array;
 
     /**
+     * Specification:
+     * - Maps given payload as array with recursive calling.
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByArray(array $result, array $payload, string $key, $value): array;
+    public function mapByArray(array $result, array $payload, string $key, $value, string $strategy): array;
 
     /**
+     * Specification:
+     * - Maps given payload by dynamic keys
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByDynamic(array $result, array $payload, string $key, $value): array;
+    public function mapByDynamic(array $result, array $payload, string $key, $value, string $strategy): array;
 
     /**
+     * Specification:
+     * - Maps given payload as array with dynamic keys and recursive calling.
+     *
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
      * @param mixed $value
+     * @param string $strategy
      *
      * @return array
      */
-    public function mapByDynamicArray(array $result, array $payload, string $key, $value): array;
+    public function mapByDynamicArray(array $result, array $payload, string $key, $value, string $strategy): array;
 
     /**
      * Specification:
