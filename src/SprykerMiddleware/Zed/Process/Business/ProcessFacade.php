@@ -31,8 +31,83 @@ class ProcessFacade extends AbstractFacade implements ProcessFacadeInterface
     public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array
     {
         return $this->getFactory()
-            ->createMapper($mapperConfigTransfer)
+            ->createPayloadMapper($mapperConfigTransfer)
             ->map($payload);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByKey(array $result, array $payload, string $key, $value): array
+    {
+        return $this->getFactory()
+            ->createKeyMapper()
+            ->map($result, $payload, $key, $value);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByClosure(array $result, array $payload, string $key, $value): array
+    {
+        return $this->getFactory()
+            ->createClosureMapper()
+            ->map($result, $payload, $key, $value);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByArray(array $result, array $payload, string $key, $value): array
+    {
+        return $this->getFactory()
+            ->createArrayMapper()
+            ->map($result, $payload, $key, $value);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByDynamic(array $result, array $payload, string $key, $value): array
+    {
+        return $this->getFactory()
+            ->createDynamicMapper()
+            ->map($result, $payload, $key, $value);
+    }
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByDynamicArray(array $result, array $payload, string $key, $value): array
+    {
+        return $this->getFactory()
+            ->createDynamicArrayMapper()
+            ->map($result, $payload, $key, $value);
     }
 
     /**

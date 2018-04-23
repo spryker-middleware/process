@@ -7,7 +7,7 @@
 
 namespace SprykerMiddleware\Zed\Process\Business\Mapper;
 
-interface MapperInterface
+class KeyMapper extends AbstractMapper
 {
     /**
      * @param array $result
@@ -17,5 +17,12 @@ interface MapperInterface
      *
      * @return array
      */
-    public function map(array $result, array $payload, string $key, $value): array;
+    public function map(array $result, array $payload, string $key, $value): array
+    {
+        $mappedValue = $this->arrayManager->getValueByKey($payload, $value);
+
+        $this->log(static::OPERATION, static::OPERATION_MAP_KEY, $key, $value, $mappedValue);
+
+        return $this->arrayManager->putValue($result, $key, $mappedValue);
+    }
 }

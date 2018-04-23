@@ -43,6 +43,56 @@ interface ProcessFacadeInterface
     public function map(array $payload, MapperConfigTransfer $mapperConfigTransfer): array;
 
     /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByKey(array $result, array $payload, string $key, $value): array;
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByClosure(array $result, array $payload, string $key, $value): array;
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByArray(array $result, array $payload, string $key, $value): array;
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByDynamic(array $result, array $payload, string $key, $value): array;
+
+    /**
+     * @param array $result
+     * @param array $payload
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return array
+     */
+    public function mapByDynamicArray(array $result, array $payload, string $key, $value): array;
+
+    /**
      * Specification:
      * - Translates given payload using dictionary that is specified in $translatorConfigTransfer
      *

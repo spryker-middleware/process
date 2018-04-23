@@ -5,10 +5,14 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerMiddleware\Zed\Process\Business\Mapper;
+namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\MapRule;
 
-interface MapperInterface
+interface MapRulePluginInterface
 {
+    public const OPTION_ITEM_MAP = 'itemMap';
+    public const OPTION_SELF_REFERENCE_MAP = 'selfReferenceMap';
+    public const OPTION_DYNAMIC_IDENTIFIER = '&';
+
     /**
      * @param array $result
      * @param array $payload
@@ -18,4 +22,12 @@ interface MapperInterface
      * @return array
      */
     public function map(array $result, array $payload, string $key, $value): array;
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function isApplicable(string $key, $value): bool;
 }
