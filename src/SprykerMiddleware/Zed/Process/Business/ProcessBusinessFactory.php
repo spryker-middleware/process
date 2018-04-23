@@ -16,8 +16,13 @@ use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManagerInterface;
 use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilder;
 use SprykerMiddleware\Zed\Process\Business\ConfigurationSnapshot\ConfigurationSnapshotBuilderInterface;
-use SprykerMiddleware\Zed\Process\Business\Mapper\Mapper;
-use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
+use SprykerMiddleware\Zed\Process\Business\Mapper\ArrayMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\ClosureMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\DynamicArrayMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\DynamicMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\KeyMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapperInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Processor\FingersCrossedProcessor;
@@ -70,14 +75,55 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     /**
      * @param \Generated\Shared\Transfer\MapperConfigTransfer $mapperConfigTransfer
      *
-     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapperInterface
      */
-    public function createMapper(MapperConfigTransfer $mapperConfigTransfer): MapperInterface
+    public function createPayloadMapper(MapperConfigTransfer $mapperConfigTransfer): PayloadMapperInterface
     {
-        return new Mapper(
+        return new PayloadMapper(
             $mapperConfigTransfer,
-            $this->createArrayManager()
+            $this->createArrayManager(),
+            $this->getMapperConfigurationPluginStack()
         );
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\ArrayMapper
+     */
+    public function createArrayMapper(): ArrayMapper
+    {
+        return new ArrayMapper($this->createArrayManager());
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\ClosureMapper
+     */
+    public function createClosureMapper(): ClosureMapper
+    {
+        return new ClosureMapper($this->createArrayManager());
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\DynamicMapper
+     */
+    public function createDynamicMapper(): DynamicMapper
+    {
+        return new DynamicMapper($this->createArrayManager());
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\DynamicArrayMapper
+     */
+    public function createDynamicArrayMapper(): DynamicArrayMapper
+    {
+        return new DynamicArrayMapper($this->createArrayManager());
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\KeyMapper
+     */
+    public function createKeyMapper(): KeyMapper
+    {
+        return new KeyMapper($this->createArrayManager());
     }
 
     /**
@@ -185,5 +231,13 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     public function getProfileConfigurationPluginStack(): array
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_CONFIGURATION_PROFILES);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\RuleMap\MapRulePluginInterface[]
+     */
+    public function getMapperConfigurationPluginStack(): array
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::MIDDLEWARE_MAPPERS);
     }
 }

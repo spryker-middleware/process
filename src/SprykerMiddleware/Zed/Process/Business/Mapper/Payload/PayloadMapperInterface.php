@@ -5,17 +5,14 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerMiddleware\Zed\Process\Business\Mapper;
+namespace SprykerMiddleware\Zed\Process\Business\Mapper\Payload;
 
-interface MapperInterface
+interface PayloadMapperInterface
 {
     /**
-     * @param array $result
      * @param array $payload
-     * @param string $key
-     * @param mixed $value
      *
      * @return array
      */
-    public function map(array $result, array $payload, string $key, $value): array;
+    public function map(array $payload): array;
 }

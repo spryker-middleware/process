@@ -12,6 +12,10 @@ use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Log\Communication\Plugin\Processor\PsrLogMessageProcessorPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Handler\StdErrStreamHandlerPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Log\MiddlewareLoggerConfigPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\ArrayMapRulePlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\ClosureMapRulePlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\DynamicMapRulePlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\KeyMapRulePlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Processor\IntrospectionProcessorPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\ArrayToStringTranslatorFunctionPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction\BoolToStringTranslatorFunctionPlugin;
@@ -61,6 +65,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     public const MIDDLEWARE_LOG_CONFIG_PLUGIN = 'MIDDLEWARE_LOG_CONFIG_PLUGIN';
     public const MIDDLEWARE_TRANSLATOR_FUNCTIONS = 'MIDDLEWARE_TRANSLATOR_FUNCTIONS';
     public const MIDDLEWARE_VALIDATORS = 'MIDDLEWARE_VALIDATORS';
+    public const MIDDLEWARE_MAPPERS = 'MIDDLEWARE_MAPPERS';
 
     public const SERVICE_UTIL_ENCODING = 'UTIL_ENCODING_SERVICE';
     public const SERVICE_PROCESS = 'PROCESS_SERVICE';
@@ -100,6 +105,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addConfigurationProfilesStack($container);
         $container = $this->addProcessService($container);
+        $container = $this->addConfigurationMappersStack($container);
 
         return $container;
     }
@@ -113,6 +119,20 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container[static::MIDDLEWARE_CONFIGURATION_PROFILES] = function () {
             return $this->getConfigurationProfilePluginsStack();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addConfigurationMappersStack($container): Container
+    {
+        $container[static::MIDDLEWARE_MAPPERS] = function () {
+            return $this->getConfigurationMappersPluginsStack();
         };
 
         return $container;
@@ -146,6 +166,21 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     protected function getConfigurationProfilePluginsStack(): array
     {
         return [];
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\MapRule\MapRulePluginInterface[]
+     */
+    protected function getConfigurationMappersPluginsStack(): array
+    {
+
+        return [
+            new DynamicMapRulePlugin(),
+            new ClosureMapRulePlugin(),
+            new ArrayMapRulePlugin(),
+            new DynamicMapRulePlugin(),
+            new KeyMapRulePlugin(),
+        ];
     }
 
     /**
