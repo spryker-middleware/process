@@ -192,6 +192,24 @@ class MapperTest extends Unit
                 ],
             ],
         ]);
+
+        $this->assertEquals($mapper->map($this->getOriginalPayload(), $this->getMapperConfigTransfer(
+            MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN,
+            [
+                'delivery' => ['delivery'],
+            ]
+        )), [
+            'delivery' => [
+                [
+                    'locale' => 'en_GB',
+                    'is_allowed' => true,
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'is_allowed' => false,
+                ],
+            ],
+        ]);
     }
 
     /**

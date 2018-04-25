@@ -39,6 +39,6 @@ class ArrayMapRulePlugin extends AbstractPlugin implements MapRulePluginInterfac
      */
     public function isApplicable(string $key, $value): bool
     {
-        return is_array($value) && array_key_exists(AbstractMapper::OPTION_ITEM_MAP, $value);
+        return is_array($value) && (array_key_exists(AbstractMapper::OPTION_ITEM_MAP, $value) || count($value) === 1);
     }
 }
