@@ -8,6 +8,7 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule;
 
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
+use SprykerMiddleware\Zed\Process\Business\Mapper\AbstractMapper;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\MapRule\MapRulePluginInterface;
 
 /**
@@ -38,6 +39,6 @@ class ArrayMapRulePlugin extends AbstractPlugin implements MapRulePluginInterfac
      */
     public function isApplicable(string $key, $value): bool
     {
-        return is_array($value);
+        return is_array($value) && (array_key_exists(AbstractMapper::OPTION_ITEM_MAP, $value) || count($value) === 1);
     }
 }
