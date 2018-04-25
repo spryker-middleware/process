@@ -12,7 +12,10 @@ use Generated\Shared\Transfer\MapperConfigTransfer;
 use Monolog\Logger;
 use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
 use SprykerMiddleware\Zed\Process\Business\ArrayManager\ArrayManager;
+use SprykerMiddleware\Zed\Process\Business\Mapper\AbstractMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\ArrayMapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\ClosureMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\DynamicArrayMapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\DynamicMapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\KeyMapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Map\MapInterface;
@@ -36,6 +39,26 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\KeyMapRulePlugin;
 class MapperTest extends Unit
 {
     use MiddlewareLoggerTrait;
+
+    /**
+     * @var \SprykerMiddleware\Zed\Process\Business\ProcessFacade
+     */
+    protected $facade;
+
+    /**
+     * @var \SprykerMiddleware\Zed\Process\Business\ProcessFacade
+     */
+    protected $dynamicFacade;
+
+    /**
+     * @return void
+     */
+    public function _before(): void
+    {
+        $this->dynamicFacade = $this->getDynamicFacade();
+        $this->facade = $this->getFacade();
+        parent::_before();
+    }
 
     /**
      * @return void
@@ -115,6 +138,63 @@ class MapperTest extends Unit
     }
 
     /**
+     * @return void
+     */
+    public function testDynamicArrayMapper(): void
+    {
+        $mapper = $this->getMapper();
+
+        $this->assertEquals($mapper->map($this->getOriginalPayload(), $this->getMapperConfigTransfer(
+            MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN,
+            [
+                'delivery' => [
+                    'delivery',
+                    AbstractMapper::OPTION_DYNAMIC_ITEM_MAP => [
+                        '&locale' => 'is_allowed',
+                    ],
+                ],
+            ]
+        )), [
+            'delivery' => [
+                'en_GB' => true,
+                'de_DE' => false,
+            ],
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testArrayMapper(): void
+    {
+        $mapper = $this->getMapper();
+
+        $this->assertEquals($mapper->map($this->getOriginalPayload(), $this->getMapperConfigTransfer(
+            MapInterface::MAPPER_STRATEGY_SKIP_UNKNOWN,
+            [
+                'delivery' => [
+                    'delivery',
+                    'itemMap' => [
+                        'locale' => 'locale',
+                        'is_exist' => 'is_allowed',
+                    ],
+                ],
+            ]
+        )), [
+            'delivery' => [
+                [
+                    'locale' => 'en_GB',
+                    'is_exist' => true,
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'is_exist' => false,
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * @return \SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapper
      */
     protected function getMapper()
@@ -135,36 +215,35 @@ class MapperTest extends Unit
      */
     protected function getMapperPluginsStack(): array
     {
-        $facade = $this->getFacade();
         $dynamicArrayMapRulePluginMock = $this->getMockBuilder(DynamicArrayMapRulePlugin::class)
             ->enableOriginalConstructor()
             ->setMethods(['getFacade'])
             ->getMock();
-        $dynamicArrayMapRulePluginMock->method('getFacade')->willReturn($facade);
+        $dynamicArrayMapRulePluginMock->method('getFacade')->willReturn($this->facade);
 
         $closureRuleMapPluginMock = $this->getMockBuilder(ClosureMapRulePlugin::class)
             ->enableOriginalConstructor()
             ->setMethods(['getFacade'])
             ->getMock();
-        $closureRuleMapPluginMock->method('getFacade')->willReturn($facade);
+        $closureRuleMapPluginMock->method('getFacade')->willReturn($this->dynamicFacade);
 
         $arrayMapRulePluginMock = $this->getMockBuilder(ArrayMapRulePlugin::class)
             ->enableOriginalConstructor()
             ->setMethods(['getFacade'])
             ->getMock();
-        $arrayMapRulePluginMock->method('getFacade')->willReturn($facade);
+        $arrayMapRulePluginMock->method('getFacade')->willReturn($this->facade);
 
         $dynamicMapRulePluginMock = $this->getMockBuilder(DynamicMapRulePlugin::class)
             ->enableOriginalConstructor()
             ->setMethods(['getFacade'])
             ->getMock();
-        $dynamicMapRulePluginMock->method('getFacade')->willReturn($facade);
+        $dynamicMapRulePluginMock->method('getFacade')->willReturn($this->dynamicFacade);
 
         $keyMapRulePluginMock = $this->getMockBuilder(KeyMapRulePlugin::class)
             ->enableOriginalConstructor()
             ->setMethods(['getFacade'])
             ->getMock();
-        $keyMapRulePluginMock->method('getFacade')->willReturn($facade);
+        $keyMapRulePluginMock->method('getFacade')->willReturn($this->dynamicFacade);
 
         return [
             $dynamicArrayMapRulePluginMock,
@@ -260,6 +339,28 @@ class MapperTest extends Unit
 
         $factory->method('createKeyMapper')->willReturn($this->getKeyMapperMock());
         $factory->method('createDynamicMapper')->willReturn($this->getDynamicMapperMock());
+        $factory->method('createDynamicArrayMapper')->willReturn($this->getDynamicArrayMapperMock());
+        $factory->method('createArrayMapper')->willReturn($this->getArrayMapperMock());
+        $factory->method('createClosureMapper')->willReturn($this->getClosureMapperMock());
+
+        $facade->setFactory($factory);
+
+        return $facade;
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\ProcessFacade
+     */
+    protected function getDynamicFacade()
+    {
+        $facade = new ProcessFacade();
+
+        $factory = $this->getMockBuilder(ProcessBusinessFactory::class)
+            ->setMethods(['createKeyMapper', 'createDynamicArrayMapper', 'createArrayMapper', 'createDynamicMapper', 'createClosureMapper'])
+            ->getMock();
+
+        $factory->method('createKeyMapper')->willReturn($this->getKeyMapperMock());
+        $factory->method('createDynamicMapper')->willReturn($this->getDynamicMapperMock());
         $factory->method('createClosureMapper')->willReturn($this->getClosureMapperMock());
 
         $facade->setFactory($factory);
@@ -288,6 +389,34 @@ class MapperTest extends Unit
     {
         $mock = $this->getMockBuilder(DynamicMapper::class)
             ->setConstructorArgs([new ArrayManager()])
+            ->setMethods(['getProcessLogger'])
+            ->getMock();
+        $mock->method('getProcessLogger')->willReturn($this->getLoggerMock());
+
+        return $mock;
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\DynamicMapper
+     */
+    protected function getDynamicArrayMapperMock()
+    {
+        $mock = $this->getMockBuilder(DynamicArrayMapper::class)
+            ->setConstructorArgs([new ArrayManager(), $this->getMapper()])
+            ->setMethods(['getProcessLogger'])
+            ->getMock();
+        $mock->method('getProcessLogger')->willReturn($this->getLoggerMock());
+
+        return $mock;
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\ArrayMapper
+     */
+    protected function getArrayMapperMock()
+    {
+        $mock = $this->getMockBuilder(ArrayMapper::class)
+            ->setConstructorArgs([new ArrayManager(), $this->getMapper()])
             ->setMethods(['getProcessLogger'])
             ->getMock();
         $mock->method('getProcessLogger')->willReturn($this->getLoggerMock());

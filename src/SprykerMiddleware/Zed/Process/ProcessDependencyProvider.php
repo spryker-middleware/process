@@ -14,6 +14,7 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\Handler\StdErrStreamHandl
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Log\MiddlewareLoggerConfigPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\ArrayMapRulePlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\ClosureMapRulePlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\DynamicArrayMapRulePlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\DynamicMapRulePlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\KeyMapRulePlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Processor\IntrospectionProcessorPlugin;
@@ -174,10 +175,10 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     protected function getConfigurationMappersPluginsStack(): array
     {
         return [
-            new DynamicMapRulePlugin(),
-            new ClosureMapRulePlugin(),
             new ArrayMapRulePlugin(),
             new DynamicMapRulePlugin(),
+            new ClosureMapRulePlugin(),
+            new DynamicArrayMapRulePlugin(),
             new KeyMapRulePlugin(),
         ];
     }
