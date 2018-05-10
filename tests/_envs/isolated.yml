@@ -1,6 +1,6 @@
 modules:
   config:
-    \SprykerTest\Shared\Testify\Helper\Environment:
+    \SprykerMiddlewareTest\Shared\Testify\Helper\Environment:
       mode: 'isolated'
 
     \Config\Module\ConfigInit:
