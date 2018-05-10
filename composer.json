@@ -12,13 +12,18 @@
         "spryker-middleware/logger": "dev-dev"
     },
     "require-dev": {
+        "spryker/calculation": "*",
+        "spryker/cart": "*",
         "spryker/code-sniffer": "*",
-        "codeception/codeception": "*",
-        "spryker/testify": "*"
+        "spryker/propel": "*",
+        "spryker/silex": "*",
+        "spryker/testify": "*",
+        "spryker/transfer": "*"
     },
     "autoload": {
         "psr-4": {
-          "SprykerMiddleware\\": "src/SprykerMiddleware/"
+          "SprykerMiddleware\\": "src/SprykerMiddleware/",
+          "SprykerMiddlewareTest\\": "tests/SprykerMiddlewareTest/"
         }
     },
     "prefer-stable": true,
