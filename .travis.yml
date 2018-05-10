@@ -44,4 +44,4 @@ before_install:
 
 script:
   - git clone -b dev https://github.com/spryker-middleware/middleware-ci.git ecoci
-  - ./ecoci/build/travis.sh
+  - ./middleware-ci/build/travis.sh
