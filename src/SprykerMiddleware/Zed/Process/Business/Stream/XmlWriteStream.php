@@ -187,6 +187,6 @@ class XmlWriteStream implements WriteStreamInterface
     {
         $this->xmlWriter = new XMLWriter();
         touch($this->path);
-        return $this->xmlWriter->openURI($this->path);
+        return $this->xmlWriter->openUri($this->path);
     }
 }
