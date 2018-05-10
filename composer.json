@@ -13,7 +13,8 @@
     },
     "require-dev": {
         "spryker/code-sniffer": "*",
-        "codeception/codeception": "*"
+        "codeception/codeception": "*",
+        "spryker/testify": "*"
     },
     "autoload": {
         "psr-4": {
