@@ -95,9 +95,9 @@ class XmlWriteStream implements WriteStreamInterface
         string $entityNodeName,
         ProcessToSymfonyEncoderAdapterInterface $encoder,
         XmlStringNormalizerInterface $xmlStringNormalizer,
-        string $version = null,
-        string $encoding = null,
-        string $standalone = null
+        ?string $version = null,
+        ?string $encoding = null,
+        ?string $standalone = null
     ) {
         $this->path = $path;
         $this->rootNodeName = $rootNodeName;

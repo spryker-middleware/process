@@ -18,6 +18,9 @@ install:
 
 script:
     - vendor/bin/phpcs src --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml
+    - cd tests/SprykerMiddlewareTest/Zed/Process
+    - codecept build
+    - codecept run
 
 notifications:
     email: false

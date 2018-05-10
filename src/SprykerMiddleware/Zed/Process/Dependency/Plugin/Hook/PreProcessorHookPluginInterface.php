@@ -21,5 +21,5 @@ interface PreProcessorHookPluginInterface
      *
      * @return void
      */
-    public function process(ProcessResultTransfer $processResultTransfer = null): void;
+    public function process(?ProcessResultTransfer $processResultTransfer = null): void;
 }
