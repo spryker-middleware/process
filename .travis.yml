@@ -1,25 +1,47 @@
 language: php
 
-php:
-    - 7.1
+notifications:
+  email: false
 
-cache:
-    directories:
-        - vendor
-        - $HOME/.composer/cache
+sudo: required
+
+matrix:
+  fast_finish: true
+  include:
+     - php: "7.1"
+
+services:
+  - postgresql
+  - redis
+  - rabbitmq
+
+addons:
+  postgresql: 9.4
+
+  apt:
+    packages:
+      - graphviz
+
+  hosts:
+    - zed.de.spryker.test
+    - www.de.spryker.test
 
 env:
-    global:
-        - APPLICATION_ENV=development
-        - APPLICATION_STORE=DE
+  global:
+    - APPLICATION_ENV=devtest
+    - APPLICATION_STORE=DE
+    - MODULE_DIR=module
+    - SHOP_DIR=current
+    - MODULE_NAME=heidelpay
 
-install:
-    - composer install --no-interaction --prefer-dist
+cache:
+  directories:
+    - $SHOP_DIR/current/vendor
+    - $HOME/.composer/cache
+
+before_install:
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
-    - vendor/bin/phpcs src --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml
-    - vendor/bin/codecept build
-    - vendor/bin/codecept run --env isolated
-
-notifications:
-    email: false
+  - git clone -b dev https://github.com/spryker-middleware/middleware-ci.git ecoci
+  - ./ecoci/build/travis.sh
