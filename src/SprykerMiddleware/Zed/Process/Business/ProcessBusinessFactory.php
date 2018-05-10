@@ -18,6 +18,7 @@ use SprykerMiddleware\Zed\Process\Business\Mapper\ClosureMapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\DynamicArrayMapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\DynamicMapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\KeyMapper;
+use SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapper;
 use SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapperInterface;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\Pipeline;
@@ -81,41 +82,41 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\ArrayMapper
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createArrayMapper(): ArrayMapper
+    public function createArrayMapper(): MapperInterface
     {
         return new ArrayMapper($this->createArrayManager(), $this->createPayloadMapper());
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\ClosureMapper
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createClosureMapper(): ClosureMapper
+    public function createClosureMapper(): MapperInterface
     {
         return new ClosureMapper($this->createArrayManager());
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\DynamicMapper
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createDynamicMapper(): DynamicMapper
+    public function createDynamicMapper(): MapperInterface
     {
         return new DynamicMapper($this->createArrayManager());
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\DynamicArrayMapper
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createDynamicArrayMapper(): DynamicArrayMapper
+    public function createDynamicArrayMapper(): MapperInterface
     {
         return new DynamicArrayMapper($this->createArrayManager(), $this->createPayloadMapper());
     }
 
     /**
-     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\KeyMapper
+     * @return \SprykerMiddleware\Zed\Process\Business\Mapper\MapperInterface
      */
-    public function createKeyMapper(): KeyMapper
+    public function createKeyMapper(): MapperInterface
     {
         return new KeyMapper($this->createArrayManager());
     }

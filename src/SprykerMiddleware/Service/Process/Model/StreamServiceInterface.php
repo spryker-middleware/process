@@ -13,6 +13,10 @@ use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 interface StreamServiceInterface
 {
     /**
+     * Stream service interface.
+     *
+     * @api
+     *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
      *
      * @return mixed
@@ -20,6 +24,10 @@ interface StreamServiceInterface
     public function read(ReadStreamInterface $stream);
 
     /**
+     * Stream service interface.
+     *
+     * @api
+     *
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $stream
      * @param mixed $data
      *

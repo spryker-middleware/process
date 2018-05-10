@@ -18,7 +18,6 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\Stream\JsonInputStreamPlu
 use SprykerMiddleware\Zed\Process\Communication\Plugin\Stream\JsonOutputStreamPlugin;
 use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamWriterStagePlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface;
-use SprykerMiddleware\Zed\Report\Communication\Plugin\Hook\ReportPostProcessorHookPlugin;
 
 /**
  * @group SprykerMiddlewareTest
@@ -74,7 +73,7 @@ class ConfigurationSnapshotBuilderTest extends Unit
         $mock->method('getLoggerPlugin')->willReturn(new MiddlewareLoggerConfigPlugin());
         $mock->method('getInputStreamPlugin')->willReturn(new JsonInputStreamPlugin());
         $mock->method('getOutputStreamPlugin')->willReturn(new JsonOutputStreamPlugin());
-        $mock->method('getPostProcessorHookPlugins')->willReturn([new ReportPostProcessorHookPlugin()]);
+        $mock->method('getPostProcessorHookPlugins')->willReturn([]);
         $mock->method('getPreProcessorHookPlugins')->willReturn([]);
 
         return $mock;
