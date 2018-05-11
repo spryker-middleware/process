@@ -29,6 +29,7 @@ use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\ProcessConfig getConfig()
+ * @SuppressWarnings(PHPMD.FactoryMethodReturnInterfaceRule)
  */
 class ProcessCommunicationFactory extends AbstractCommunicationFactory
 {
