@@ -10,6 +10,9 @@ namespace SprykerMiddleware\Zed\Process\Business\Iterator;
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 use SprykerMiddleware\Zed\Process\Business\Stream\StreamFactoryInterface;
 
+/**
+ * @SuppressWarnings(FactoryOnlyGetAndCreateRule)
+ */
 class IteratorFactory implements IteratorFactoryInterface
 {
     /**
