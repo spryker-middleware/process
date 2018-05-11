@@ -70,7 +70,7 @@ class ProcessBusinessFactory extends AbstractBusinessFactory
         return new ProcessPluginResolver($this->getProfileConfigurationPluginStack());
     }
 
-    /*WriteStreamInterface*
+    /**IteratorFactoryInterface
      * @return \SprykerMiddleware\Zed\Process\Business\Mapper\Payload\PayloadMapperInterface
      */
     public function createPayloadMapper(): PayloadMapperInterface
