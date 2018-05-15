@@ -1,0 +1,16 @@
+[
+  {
+    "order_reference": "11111111",
+    "data": {
+      "payment": "CC",
+      "store": "DE"
+    }
+  },
+  {
+    "order_reference": "22222222",
+    "data": {
+      "payment": "CASH",
+      "store": "GB"
+    }
+  }
+]

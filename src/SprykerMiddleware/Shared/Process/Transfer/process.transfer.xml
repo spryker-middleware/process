@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="ProcessSettings">
+        <property name="name" type="string"/>
+        <property name="inputPath" type="string"/>
+        <property name="outputPath" type="string"/>
+        <property name="iteratorConfig" type="IteratorConfig"/>
+        <property name="loggerConfig" type="LoggerConfig"/>
+    </transfer>
+
+    <transfer name="IteratorConfig">
+        <property name="offset" type="int"/>
+        <property name="limit" type="int"/>
+        <property name="parseAsArray" type="bool"/>
+    </transfer>
+
+    <transfer name="LoggerConfig">
+        <property name="verboseLevel" type="int"/>
+        <property name="isQuiet" type="bool"/>
+    </transfer>
+
+    <transfer name="MapperConfig">
+        <property name="map" type="array"/>
+        <property name="strategy" type="string"/>
+    </transfer>
+
+    <transfer name="TranslatorConfig">
+        <property name="dictionary" type="array"/>
+    </transfer>
+
+    <transfer name="ValidatorConfig">
+        <property name="rules" type="array"/>
+    </transfer>
+
+    <transfer name="ProcessResult">
+        <property name="processName" type="string"/>
+        <property name="startTime" type="int"/>
+        <property name="endTime" type="int"/>
+        <property name="itemCount" type="int"/>
+        <property name="processedItemCount" type="int"/>
+        <property name="failedItemCount" type="int"/>
+        <property name="skippedItemCount" type="int"/>
+        <property name="stageResults" type="StageResults[]" singular="stageResult"/>
+        <property name="processConfiguration" type="ProcessConfiguration"/>
+    </transfer>
+
+    <transfer name="StageResults">
+        <property name="stageName" type="string"/>
+        <property name="inputItemCount" type="string"/>
+        <property name="outputItemCount" type="string"/>
+        <property name="totalExecutionTime" type="int"/>
+    </transfer>
+
+    <transfer name="ProcessConfiguration">
+        <property name="iteratorPluginName" type="string"/>
+        <property name="inputStreamPlugin" type="StreamConfiguration"/>
+        <property name="outputStreamPlugin" type="StreamConfiguration"/>
+        <property name="loggerPluginName" type="string"/>
+        <property name="stagePluginNames" type="string[]" singular="stagePluginName"/>
+        <property name="preProcessHookPluginNames" type="string[]" singular="preProcessHookPluginName"/>
+        <property name="postProcessHookPluginNames" type="string[]" singular="postProcessHookPluginName"/>
+    </transfer>
+
+    <transfer name="StreamConfiguration">
+        <property name="streamPluginName" type="string"/>
+        <property name="path" type="string"/>
+    </transfer>
+
+</transfers>
