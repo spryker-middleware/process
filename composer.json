@@ -9,7 +9,7 @@
         "spryker/development": "^3.0.0",
         "spryker/transfer": "^3.4.0",
         "spryker/util-encoding": "^2.0.0",
-        "spryker-middleware/logger": "dev-dev"
+        "spryker-middleware/logger": "^1.0.0"
     },
     "require-dev": {
         "spryker/calculation": "*",
