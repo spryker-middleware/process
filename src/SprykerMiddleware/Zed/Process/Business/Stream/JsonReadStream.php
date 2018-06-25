@@ -51,8 +51,6 @@ class JsonReadStream implements ReadStreamInterface
             return false;
         }
 
-        $this->data = $this->loadJson();
-
         return true;
     }
 
@@ -74,7 +72,8 @@ class JsonReadStream implements ReadStreamInterface
     public function read()
     {
         if (!$this->eof()) {
-            return $this->data[$this->position++];
+            $this->position++;
+            return json_decode(fgets($this->handle), true);
         }
 
         return false;
@@ -85,67 +84,11 @@ class JsonReadStream implements ReadStreamInterface
      */
     public function seek(int $offset, int $whence): int
     {
-        $newPosition = $this->getNewPosition($offset, $whence);
-        if ($newPosition < 0 || $newPosition > count($this->data)) {
-            return false;
-        }
-        $this->position = $newPosition;
-
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function eof(): bool
     {
-        return $this->position >= count($this->data);
-    }
-
-    /**
-     * @throws \SprykerMiddleware\Zed\Process\Business\Exception\InvalidReadSourceException
-     *
-     * @return mixed
-     */
-    protected function loadJson()
-    {
-        $data = '';
-
-        while (!feof($this->handle)) {
-            $data .= fread($this->handle, 1000);
-        }
-
-        $this->position = 0;
-
-        $json = json_decode($data, true);
-        if ((json_last_error() !== JSON_ERROR_NONE)) {
-            throw new InvalidReadSourceException("Invalid json: " . json_last_error_msg());
-        }
-        return $json;
-    }
-
-    /**
-     * @param int $offset
-     * @param int $whence
-     *
-     * @return int
-     */
-    protected function getNewPosition(int $offset, int $whence)
-    {
-        $newPosition = $this->position;
-        if ($whence === SEEK_SET) {
-            $newPosition = $offset;
-        }
-
-        if ($whence === SEEK_CUR) {
-            $newPosition = $this->position + $offset;
-        }
-
-        if ($whence === SEEK_END) {
-            $offset = $offset <= 0 ? $offset : 0;
-            $newPosition = count($this->data) + $offset;
-        }
-
-        return $newPosition;
+        return $this->position > 50000;
     }
 }
