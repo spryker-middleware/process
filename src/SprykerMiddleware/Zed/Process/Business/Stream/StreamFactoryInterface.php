@@ -75,4 +75,12 @@ interface StreamFactoryInterface
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
     public function createCsvWriteStream(string $path, array $header = [], string $delimiter = ',', string $enclosure = '"'): WriteStreamInterface;
+
+
+    /**
+     * @param string $path
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     */
+    public function createJsonRowWriteStream(string $path): WriteStreamInterface;
 }
