@@ -24,6 +24,13 @@ interface StreamFactoryInterface
     /**
      * @param string $path
      *
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
+     */
+    public function createJsonRowReadStream(string $path): ReadStreamInterface;
+
+    /**
+     * @param string $path
+     *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
     public function createJsonWriteStream(string $path): WriteStreamInterface;

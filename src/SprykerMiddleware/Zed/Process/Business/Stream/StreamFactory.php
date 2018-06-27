@@ -29,6 +29,16 @@ class StreamFactory implements StreamFactoryInterface
     /**
      * @param string $path
      *
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
+     */
+    public function createJsonRowReadStream(string $path): ReadStreamInterface
+    {
+        return new JsonRowReadStream($path);
+    }
+
+    /**
+     * @param string $path
+     *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
     public function createJsonWriteStream(string $path): WriteStreamInterface
