@@ -72,7 +72,6 @@ class JsonRowReadStream implements ReadStreamInterface
     public function read()
     {
         if (!$this->eof()) {
-            $this->position++;
             return json_decode(fgets($this->handle), true);
         }
 
