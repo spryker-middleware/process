@@ -11,6 +11,8 @@ use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 
 class JsonRowWriteStream implements WriteStreamInterface
 {
+    protected const KEY_SIZE = 'size';
+
     /**
      * @var resource
      */
@@ -77,6 +79,10 @@ class JsonRowWriteStream implements WriteStreamInterface
     public function close(): bool
     {
         if ($this->handle) {
+            $this->flush();
+            $stat = fstat($this->handle);
+            ftruncate($this->handle, $stat[static::KEY_SIZE] - 1);
+
             return fclose($this->handle);
         }
 
@@ -127,6 +133,7 @@ class JsonRowWriteStream implements WriteStreamInterface
             $this->position = 0;
             $this->count = 0;
         }
+
         return $result;
     }
 

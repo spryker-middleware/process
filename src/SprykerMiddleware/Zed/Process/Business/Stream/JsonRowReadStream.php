@@ -8,7 +8,6 @@
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
-use SprykerMiddleware\Zed\Process\Business\Exception\InvalidReadSourceException;
 
 class JsonRowReadStream implements ReadStreamInterface
 {
