@@ -32,7 +32,7 @@ interface StagePluginInterface
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
      * @param mixed $originalPayload
      *
-     * @return mixed
+     * @return array
      */
     public function process($payload, WriteStreamInterface $outStream, $originalPayload);
 }
