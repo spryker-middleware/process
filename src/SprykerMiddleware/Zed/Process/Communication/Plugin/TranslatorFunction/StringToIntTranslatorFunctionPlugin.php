@@ -12,6 +12,7 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\StringT
 class StringToIntTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlugin
 {
     public const NAME = 'StringToInt';
+
     /**
      * @return string
      */
