@@ -20,7 +20,7 @@ class StreamReaderStagePlugin extends AbstractPlugin implements StagePluginInter
     protected const PLUGIN_NAME = 'StreamReaderStagePlugin';
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
      *
      * @api
      *

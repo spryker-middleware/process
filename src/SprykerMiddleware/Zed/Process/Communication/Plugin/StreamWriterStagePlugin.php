@@ -20,7 +20,7 @@ class StreamWriterStagePlugin extends AbstractPlugin implements StagePluginInter
     protected const PLUGIN_NAME = 'StreamWriterStagePlugin';
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
      *
      * @api
      *
