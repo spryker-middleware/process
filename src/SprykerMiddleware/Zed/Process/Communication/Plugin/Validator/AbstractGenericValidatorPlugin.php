@@ -16,16 +16,22 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\GenericValidatorPl
 abstract class AbstractGenericValidatorPlugin extends AbstractPlugin implements GenericValidatorPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     abstract public function getValidatorClassName(): string;
 
     /**
+     * @api
+     *
      * @return string
      */
     abstract public function getName(): string;
 
     /**
+     * @api
+     *
      * @param mixed $value
      * @param array $payload
      * @param string $key

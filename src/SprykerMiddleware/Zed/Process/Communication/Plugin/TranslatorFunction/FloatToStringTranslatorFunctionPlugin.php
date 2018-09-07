@@ -14,6 +14,8 @@ class FloatToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFun
     public const NAME = 'FloatToString';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class FloatToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFun
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

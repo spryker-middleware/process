@@ -14,6 +14,8 @@ class GreaterOrEqualThanValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'GreaterOrEqualThan';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string
@@ -22,6 +24,8 @@ class GreaterOrEqualThanValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

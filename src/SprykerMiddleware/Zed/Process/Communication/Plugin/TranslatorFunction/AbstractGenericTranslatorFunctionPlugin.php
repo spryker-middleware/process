@@ -17,16 +17,22 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\GenericTr
 abstract class AbstractGenericTranslatorFunctionPlugin extends AbstractPlugin implements GenericTranslatorFunctionPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     abstract public function getName(): string;
 
     /**
+     * @api
+     *
      * @return string
      */
     abstract public function getTranslatorFunctionClassName(): string;
 
     /**
+     * @api
+     *
      * @param mixed $value
      * @param array $payload
      * @param string $key

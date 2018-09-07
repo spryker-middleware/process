@@ -14,7 +14,7 @@
     "require-dev": {
         "spryker/calculation": "*",
         "spryker/cart": "*",
-        "spryker/code-sniffer": "*",
+        "spryker/code-sniffer": "dev-list",
         "spryker/propel": "*",
         "spryker/silex": "*",
         "spryker/testify": "*",

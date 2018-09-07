@@ -20,7 +20,15 @@ class StreamWriterStagePlugin extends AbstractPlugin implements StagePluginInter
     protected const PLUGIN_NAME = 'StreamWriterStagePlugin';
 
     /**
-     * @inheritdoc
+     * {inheritDoc}
+     *
+     * @api
+     *
+     * @param mixed $payload
+     * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $outStream
+     * @param mixed $originalPayload
+     *
+     * @return mixed
      */
     public function process($payload, WriteStreamInterface $outStream, $originalPayload)
     {
@@ -32,6 +40,8 @@ class StreamWriterStagePlugin extends AbstractPlugin implements StagePluginInter
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

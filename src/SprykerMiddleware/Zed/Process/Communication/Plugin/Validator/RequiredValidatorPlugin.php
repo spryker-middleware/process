@@ -14,6 +14,8 @@ class RequiredValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'Required';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class RequiredValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string

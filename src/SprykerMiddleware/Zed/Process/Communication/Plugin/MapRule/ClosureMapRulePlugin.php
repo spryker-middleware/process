@@ -18,6 +18,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\MapRule\MapRulePluginInterfa
 class ClosureMapRulePlugin extends AbstractPlugin implements MapRulePluginInterface
 {
     /**
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
@@ -32,6 +34,8 @@ class ClosureMapRulePlugin extends AbstractPlugin implements MapRulePluginInterf
     }
 
     /**
+     * @api
+     *
      * @param string $key
      * @param mixed $value
      *

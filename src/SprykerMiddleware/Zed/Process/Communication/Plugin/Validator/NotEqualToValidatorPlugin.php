@@ -14,6 +14,8 @@ class NotEqualToValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'NotEqualTo';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string
@@ -22,6 +24,8 @@ class NotEqualToValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

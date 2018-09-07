@@ -14,6 +14,8 @@ class InListValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'InList';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string
@@ -22,6 +24,8 @@ class InListValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

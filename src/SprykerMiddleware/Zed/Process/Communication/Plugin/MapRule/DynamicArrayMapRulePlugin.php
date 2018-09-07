@@ -21,6 +21,8 @@ class DynamicArrayMapRulePlugin extends AbstractPlugin implements MapRulePluginI
     use MiddlewareLoggerTrait;
 
     /**
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
@@ -35,6 +37,8 @@ class DynamicArrayMapRulePlugin extends AbstractPlugin implements MapRulePluginI
     }
 
     /**
+     * @api
+     *
      * @param string $key
      * @param mixed $value
      *

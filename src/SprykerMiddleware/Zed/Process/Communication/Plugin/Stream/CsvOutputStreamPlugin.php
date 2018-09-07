@@ -20,6 +20,8 @@ class CsvOutputStreamPlugin extends AbstractPlugin implements OutputStreamPlugin
     protected const PLUGIN_NAME = 'CsvOutputStreamPlugin';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -28,6 +30,8 @@ class CsvOutputStreamPlugin extends AbstractPlugin implements OutputStreamPlugin
     }
 
     /**
+     * @api
+     *
      * @param string $path
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface

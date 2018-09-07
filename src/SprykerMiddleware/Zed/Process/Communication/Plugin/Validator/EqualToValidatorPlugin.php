@@ -14,6 +14,8 @@ class EqualToValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'EqualTo';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string
@@ -22,6 +24,8 @@ class EqualToValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

@@ -14,6 +14,8 @@ class MoneyDecimalToIntegerTranslatorFunctionPlugin extends AbstractGenericTrans
     public const NAME = 'MoneyDecimalToInteger';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class MoneyDecimalToIntegerTranslatorFunctionPlugin extends AbstractGenericTrans
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

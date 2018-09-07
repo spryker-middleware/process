@@ -14,6 +14,8 @@ class StringToDateTimeTranslatorFunctionPlugin extends AbstractGenericTranslator
     public const NAME = 'StringToDateTime';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class StringToDateTimeTranslatorFunctionPlugin extends AbstractGenericTranslator
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

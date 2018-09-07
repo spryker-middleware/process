@@ -14,6 +14,8 @@ class LessThanValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'LessThan';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string
@@ -22,6 +24,8 @@ class LessThanValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
