@@ -15,8 +15,6 @@ class StreamService implements StreamServiceInterface
     /**
      * Stream service
      *
-     * @api
-     *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
      *
      * @return mixed
@@ -28,8 +26,6 @@ class StreamService implements StreamServiceInterface
 
     /**
      * Stream service
-     *
-     * @api
      *
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $stream
      * @param array $data

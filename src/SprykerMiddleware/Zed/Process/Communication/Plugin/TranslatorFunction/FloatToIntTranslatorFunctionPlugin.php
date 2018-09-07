@@ -14,6 +14,8 @@ class FloatToIntTranslatorFunctionPlugin extends AbstractGenericTranslatorFuncti
     public const NAME = 'FloatToInt';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class FloatToIntTranslatorFunctionPlugin extends AbstractGenericTranslatorFuncti
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

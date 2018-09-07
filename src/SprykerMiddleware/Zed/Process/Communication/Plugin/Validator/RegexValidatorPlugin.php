@@ -14,6 +14,8 @@ class RegexValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'Regex';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string
@@ -22,6 +24,8 @@ class RegexValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

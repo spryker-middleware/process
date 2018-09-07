@@ -14,6 +14,8 @@ class LengthValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'Length';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string
@@ -22,6 +24,8 @@ class LengthValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

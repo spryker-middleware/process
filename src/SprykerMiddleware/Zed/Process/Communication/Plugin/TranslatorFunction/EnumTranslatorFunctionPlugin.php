@@ -14,6 +14,8 @@ class EnumTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlug
     public const NAME = 'Enum';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class EnumTranslatorFunctionPlugin extends AbstractGenericTranslatorFunctionPlug
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

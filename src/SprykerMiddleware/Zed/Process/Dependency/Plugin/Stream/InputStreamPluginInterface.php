@@ -12,11 +12,15 @@ use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 interface InputStreamPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string;
 
     /**
+     * @api
+     *
      * @param string $path
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface

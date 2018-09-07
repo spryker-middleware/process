@@ -14,6 +14,8 @@ class TypeValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'Type';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string
@@ -22,6 +24,8 @@ class TypeValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

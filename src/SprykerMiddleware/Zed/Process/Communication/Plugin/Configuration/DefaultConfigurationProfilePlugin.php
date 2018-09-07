@@ -17,6 +17,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationP
 class DefaultConfigurationProfilePlugin extends AbstractPlugin implements ConfigurationProfilePluginInterface
 {
     /**
+     * @api
+     *
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ProcessConfigurationPluginInterface[]
      */
     public function getProcessConfigurationPlugins(): array
@@ -26,6 +28,8 @@ class DefaultConfigurationProfilePlugin extends AbstractPlugin implements Config
     }
 
     /**
+     * @api
+     *
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
     public function getTranslatorFunctionPlugins(): array
@@ -35,6 +39,8 @@ class DefaultConfigurationProfilePlugin extends AbstractPlugin implements Config
     }
 
     /**
+     * @api
+     *
      * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator\ValidatorPluginInterface[]
      */
     public function getValidatorPlugins(): array

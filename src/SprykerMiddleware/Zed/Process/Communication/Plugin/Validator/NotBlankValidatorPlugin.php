@@ -14,6 +14,8 @@ class NotBlankValidatorPlugin extends AbstractGenericValidatorPlugin
     public const NAME = 'NotBlank';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class NotBlankValidatorPlugin extends AbstractGenericValidatorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string

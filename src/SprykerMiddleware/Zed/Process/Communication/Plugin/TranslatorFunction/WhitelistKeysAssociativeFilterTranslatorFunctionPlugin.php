@@ -14,6 +14,8 @@ class WhitelistKeysAssociativeFilterTranslatorFunctionPlugin extends AbstractGen
     public const NAME = 'WhitelistKeysAssociativeFilter';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class WhitelistKeysAssociativeFilterTranslatorFunctionPlugin extends AbstractGen
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

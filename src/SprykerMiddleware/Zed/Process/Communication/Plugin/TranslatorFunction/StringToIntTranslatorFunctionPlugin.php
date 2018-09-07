@@ -14,6 +14,8 @@ class StringToIntTranslatorFunctionPlugin extends AbstractGenericTranslatorFunct
     public const NAME = 'StringToInt';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class StringToIntTranslatorFunctionPlugin extends AbstractGenericTranslatorFunct
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

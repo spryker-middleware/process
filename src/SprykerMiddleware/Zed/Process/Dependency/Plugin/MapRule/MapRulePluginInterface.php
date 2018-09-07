@@ -14,6 +14,8 @@ interface MapRulePluginInterface
     public const OPTION_DYNAMIC_IDENTIFIER = '&';
 
     /**
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
@@ -25,6 +27,8 @@ interface MapRulePluginInterface
     public function map(array $result, array $payload, string $key, $value, string $strategy): array;
 
     /**
+     * @api
+     *
      * @param string $key
      * @param mixed $value
      *

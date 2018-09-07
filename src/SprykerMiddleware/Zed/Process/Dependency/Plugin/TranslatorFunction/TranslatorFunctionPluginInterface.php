@@ -10,11 +10,15 @@ namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction;
 interface TranslatorFunctionPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string;
 
     /**
+     * @api
+     *
      * @param mixed $value
      * @param array $payload
      * @param string $key

@@ -14,6 +14,8 @@ class StringToBoolTranslatorFunctionPlugin extends AbstractGenericTranslatorFunc
     public const NAME = 'StringToBool';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class StringToBoolTranslatorFunctionPlugin extends AbstractGenericTranslatorFunc
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

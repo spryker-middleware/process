@@ -17,6 +17,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\MapRule\MapRulePluginInterfa
 class KeyMapRulePlugin extends AbstractPlugin implements MapRulePluginInterface
 {
     /**
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
@@ -31,6 +33,8 @@ class KeyMapRulePlugin extends AbstractPlugin implements MapRulePluginInterface
     }
 
     /**
+     * @api
+     *
      * @param string $key
      * @param mixed $value
      *

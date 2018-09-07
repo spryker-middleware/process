@@ -17,6 +17,8 @@ class ArrayToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFun
     public const NAME = 'ArrayToString';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -25,6 +27,8 @@ class ArrayToStringTranslatorFunctionPlugin extends AbstractGenericTranslatorFun
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

@@ -20,6 +20,8 @@ class JsonOutputStreamPlugin extends AbstractPlugin implements OutputStreamPlugi
     protected const PLUGIN_NAME = 'JsonOutputStreamPlugin';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -28,6 +30,8 @@ class JsonOutputStreamPlugin extends AbstractPlugin implements OutputStreamPlugi
     }
 
     /**
+     * @api
+     *
      * @param string $path
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface

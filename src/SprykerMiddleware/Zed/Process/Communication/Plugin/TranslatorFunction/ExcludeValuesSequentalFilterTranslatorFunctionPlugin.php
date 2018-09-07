@@ -14,6 +14,8 @@ class ExcludeValuesSequentalFilterTranslatorFunctionPlugin extends AbstractGener
     public const NAME = 'ExcludeValuesSequentalFilter';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class ExcludeValuesSequentalFilterTranslatorFunctionPlugin extends AbstractGener
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

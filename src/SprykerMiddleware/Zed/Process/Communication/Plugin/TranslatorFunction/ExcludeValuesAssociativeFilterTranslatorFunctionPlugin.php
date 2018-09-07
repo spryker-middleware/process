@@ -14,6 +14,8 @@ class ExcludeValuesAssociativeFilterTranslatorFunctionPlugin extends AbstractGen
     public const NAME = 'ExcludeValuesAssociativeFilter';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class ExcludeValuesAssociativeFilterTranslatorFunctionPlugin extends AbstractGen
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

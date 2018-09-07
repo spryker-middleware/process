@@ -22,6 +22,8 @@ class JsonDirectoryIteratorPlugin extends AbstractPlugin implements ProcessItera
     protected const PLUGIN_NAME = 'JsonDirectoryIteratorPlugin';
 
     /**
+     * @api
+     *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      * @param \Generated\Shared\Transfer\IteratorConfigTransfer $iteratorConfigTransfer
      *
@@ -35,6 +37,8 @@ class JsonDirectoryIteratorPlugin extends AbstractPlugin implements ProcessItera
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

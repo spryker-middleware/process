@@ -20,6 +20,8 @@ class DirectoryStreamPlugin extends AbstractPlugin implements InputStreamPluginI
     protected const PLUGIN_NAME = 'DirectoryStreamPlugin';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -28,6 +30,8 @@ class DirectoryStreamPlugin extends AbstractPlugin implements InputStreamPluginI
     }
 
     /**
+     * @api
+     *
      * @param string $path
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface

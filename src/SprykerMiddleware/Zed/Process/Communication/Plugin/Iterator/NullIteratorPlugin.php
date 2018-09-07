@@ -22,6 +22,8 @@ class NullIteratorPlugin extends AbstractPlugin implements ProcessIteratorPlugin
     protected const PLUGIN_NAME = 'NullIteratorPlugin';
 
     /**
+     * @api
+     *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      * @param \Generated\Shared\Transfer\IteratorConfigTransfer $iteratorConfigTransfer
      *
@@ -35,6 +37,8 @@ class NullIteratorPlugin extends AbstractPlugin implements ProcessIteratorPlugin
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
