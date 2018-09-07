@@ -12,6 +12,8 @@ use Monolog\Handler\HandlerInterface;
 interface MiddlewareLogHandlerPluginInterface extends HandlerInterface
 {
     /**
+     * @api
+     *
      * @param int|string $level
      *
      * @return \Monolog\Handler\HandlerInterface

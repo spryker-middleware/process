@@ -10,6 +10,8 @@ namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\Validator;
 interface GenericValidatorPluginInterface extends ValidatorPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidatorClassName(): string;

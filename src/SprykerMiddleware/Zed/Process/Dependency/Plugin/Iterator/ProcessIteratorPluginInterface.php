@@ -14,11 +14,15 @@ use SprykerMiddleware\Zed\Process\Business\Iterator\IteratorInterface;
 interface ProcessIteratorPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string;
 
     /**
+     * @api
+     *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inputStream
      * @param \Generated\Shared\Transfer\IteratorConfigTransfer $iteratorConfigTransfer
      *

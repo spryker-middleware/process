@@ -12,11 +12,15 @@ use Generated\Shared\Transfer\ProcessResultTransfer;
 interface PostProcessorHookPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string;
 
     /**
+     * @api
+     *
      * @param \Generated\Shared\Transfer\ProcessResultTransfer|null $processResultTransfer
      *
      * @return void

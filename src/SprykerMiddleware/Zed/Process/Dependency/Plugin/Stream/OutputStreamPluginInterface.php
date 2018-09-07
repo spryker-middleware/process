@@ -12,11 +12,15 @@ use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 interface OutputStreamPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string;
 
     /**
+     * @api
+     *
      * @param string $path
      *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface

@@ -12,6 +12,8 @@ use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
 interface StagePluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string;

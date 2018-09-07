@@ -16,8 +16,6 @@ interface ProcessServiceInterface
      * Specification:
      * - Read data from given stream.
      *
-     * @api
-     *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $stream
      *
      * @return mixed
@@ -27,8 +25,6 @@ interface ProcessServiceInterface
     /**
      * Specification:
      * - Write given data to given stream.
-     *
-     * @api
      *
      * @param \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface $stream
      * @param mixed $data

@@ -22,7 +22,9 @@ use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAda
  */
 class StreamTest extends Unit
 {
-    /** @var \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory */
+    /**
+     * @var \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory
+     */
     protected $factory;
 
     protected const VALUE_TEST_ARRAY = [
@@ -45,7 +47,7 @@ class StreamTest extends Unit
     protected const PATH_SUPPORT_STREAM_FILES = __DIR__ . '/../../_support/stream/files/';
 
     /**
-     * @param null|string $name
+     * @param string|null $name
      * @param array $data
      * @param string $dataName
      */
