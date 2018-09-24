@@ -10,12 +10,21 @@ namespace SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction;
 class TranslatorFunctionFactory implements TranslatorFunctionFactoryInterface
 {
     /**
+     * @var array
+     */
+    protected static $translatorFunctionCache = [];
+
+    /**
      * @param string $translatorFunctionClassName
      *
      * @return \SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionInterface
      */
     public function createTranslatorFunction(string $translatorFunctionClassName): TranslatorFunctionInterface
     {
-        return new $translatorFunctionClassName();
+        if (!isset(static::$translatorFunctionCache[$translatorFunctionClassName])) {
+            static::$translatorFunctionCache[$translatorFunctionClassName] = new $translatorFunctionClassName();
+        }
+
+        return static::$translatorFunctionCache[$translatorFunctionClassName];
     }
 }
