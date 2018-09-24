@@ -43,7 +43,6 @@ class JsonRowWriteStream implements WriteStreamInterface
      */
     protected $count;
 
-
     /**
      * @param string $path
      * @param int $bufferSize

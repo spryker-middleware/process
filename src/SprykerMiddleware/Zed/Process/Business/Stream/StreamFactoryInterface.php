@@ -83,7 +83,6 @@ interface StreamFactoryInterface
      */
     public function createCsvWriteStream(string $path, array $header = [], string $delimiter = ',', string $enclosure = '"'): WriteStreamInterface;
 
-
     /**
      * @param string $path
      *

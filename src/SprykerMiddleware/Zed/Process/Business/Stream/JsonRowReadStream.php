@@ -85,6 +85,9 @@ class JsonRowReadStream implements ReadStreamInterface
         return true;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function eof(): bool
     {
         return feof($this->handle);
