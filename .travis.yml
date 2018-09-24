@@ -41,6 +41,7 @@ cache:
 
 before_install:
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 script:
   - git clone -b master https://github.com/spryker-middleware/middleware-ci.git middleware-ci
