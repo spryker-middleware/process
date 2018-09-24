@@ -82,7 +82,7 @@ class JsonRowReadStream implements ReadStreamInterface
      */
     public function seek(int $offset, int $whence): int
     {
-        return 1;
+        return static::STATUS_SEEK_SUCCESS;
     }
 
     /**

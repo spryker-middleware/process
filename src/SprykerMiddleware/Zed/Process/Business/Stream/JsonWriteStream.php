@@ -86,11 +86,11 @@ class JsonWriteStream implements WriteStreamInterface
     {
         $newPosition = $this->getNewPosition($offset, $whence);
         if ($newPosition < 0 || $newPosition > count($this->data)) {
-            return 0;
+            return static::STATUS_SEEK_FAIL;
         }
         $this->position = $newPosition;
 
-        return 1;
+        return static::STATUS_SEEK_SUCCESS;
     }
 
     /**

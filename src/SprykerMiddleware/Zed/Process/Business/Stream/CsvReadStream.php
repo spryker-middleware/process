@@ -87,7 +87,8 @@ class CsvReadStream implements ReadStreamInterface
     {
         if ($whence === SEEK_SET) {
             $this->file->seek($offset);
-            return 1;
+
+            return static::STATUS_SEEK_SUCCESS;
         }
 
         return $this->file->fseek($offset, $whence);

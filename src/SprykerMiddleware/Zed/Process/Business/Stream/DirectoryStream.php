@@ -82,11 +82,11 @@ class DirectoryStream implements ReadStreamInterface
     {
         $newPosition = $this->getNewPosition($offset, $whence);
         if ($newPosition < 0 || $newPosition > count($this->list)) {
-            return 0;
+            return static::STATUS_SEEK_FAIL;
         }
         $this->position = $newPosition;
 
-        return 1;
+        return static::STATUS_SEEK_SUCCESS;
     }
 
     /**

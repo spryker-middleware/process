@@ -9,6 +9,9 @@ namespace SprykerMiddleware\Shared\Process\Stream;
 
 interface WriteStreamInterface extends StreamInterface
 {
+    public const STATUS_SEEK_SUCCESS = 1;
+    public const STATUS_SEEK_FAIL = 0;
+
     /**
      * @param array $data
      *
