@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerMiddlewareTest\Zed\Process\Business\Stream;
@@ -22,7 +22,9 @@ use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAda
  */
 class StreamTest extends Unit
 {
-    /** @var \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory */
+    /**
+     * @var \SprykerMiddleware\Zed\Process\Business\Stream\StreamFactory
+     */
     protected $factory;
 
     protected const VALUE_TEST_ARRAY = [
@@ -45,7 +47,7 @@ class StreamTest extends Unit
     protected const PATH_SUPPORT_STREAM_FILES = __DIR__ . '/../../_support/stream/files/';
 
     /**
-     * @param null|string $name
+     * @param string|null $name
      * @param array $data
      * @param string $dataName
      */

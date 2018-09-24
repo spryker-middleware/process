@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Log;
@@ -25,6 +25,8 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
     protected $handlers;
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getChannelName(): string
@@ -33,6 +35,8 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
     }
 
     /**
+     * @api
+     *
      * @return \Monolog\Handler\AbstractHandler[]
      */
     public function getHandlers(): array
@@ -45,6 +49,8 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
     }
 
     /**
+     * @api
+     *
      * @return callable[]
      */
     public function getProcessors(): array
@@ -54,6 +60,8 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
 
     /**
      * Sets minimum logging level at which all handlers will be triggered.
+     *
+     * @api
      *
      * @param int|string $level Level or level name
      *
@@ -68,6 +76,8 @@ class MiddlewareLoggerConfigPlugin extends AbstractPlugin implements MiddlewareL
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

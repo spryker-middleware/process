@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\Hook;
@@ -12,11 +12,15 @@ use Generated\Shared\Transfer\ProcessResultTransfer;
 interface PostProcessorHookPluginInterface
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string;
 
     /**
+     * @api
+     *
      * @param \Generated\Shared\Transfer\ProcessResultTransfer|null $processResultTransfer
      *
      * @return void

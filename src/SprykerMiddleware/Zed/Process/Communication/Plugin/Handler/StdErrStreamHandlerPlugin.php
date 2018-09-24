@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Handler;
@@ -37,6 +37,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @param array $record
      *
      * @return bool
@@ -47,6 +49,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @param array $record
      *
      * @return bool
@@ -57,6 +61,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @param array $records
      *
      * @return void
@@ -67,6 +73,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @param callable $callback
      *
      * @return \Monolog\Handler\HandlerInterface
@@ -77,6 +85,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @return callable
      */
     public function popProcessor(): callable
@@ -85,6 +95,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @param \Monolog\Formatter\FormatterInterface $formatter
      *
      * @return \Monolog\Handler\HandlerInterface
@@ -95,6 +107,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @return \Monolog\Formatter\FormatterInterface
      */
     public function getFormatter(): FormatterInterface
@@ -103,6 +117,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @param int|string $level
      *
      * @return \Monolog\Handler\HandlerInterface

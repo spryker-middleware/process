@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Iterator;
@@ -22,6 +22,8 @@ class JsonDirectoryIteratorPlugin extends AbstractPlugin implements ProcessItera
     protected const PLUGIN_NAME = 'JsonDirectoryIteratorPlugin';
 
     /**
+     * @api
+     *
      * @param \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface $inStream
      * @param \Generated\Shared\Transfer\IteratorConfigTransfer $iteratorConfigTransfer
      *
@@ -35,6 +37,8 @@ class JsonDirectoryIteratorPlugin extends AbstractPlugin implements ProcessItera
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string

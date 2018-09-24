@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
@@ -17,6 +17,8 @@ class StringToArrayTranslatoFunctionPlugin extends AbstractGenericTranslatorFunc
     public const NAME = 'StringToArray';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -25,6 +27,8 @@ class StringToArrayTranslatoFunctionPlugin extends AbstractGenericTranslatorFunc
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

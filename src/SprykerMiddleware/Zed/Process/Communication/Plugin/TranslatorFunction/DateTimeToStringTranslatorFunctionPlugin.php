@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\TranslatorFunction;
@@ -14,6 +14,8 @@ class DateTimeToStringTranslatorFunctionPlugin extends AbstractGenericTranslator
     public const NAME = 'DateTimeToString';
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -22,6 +24,8 @@ class DateTimeToStringTranslatorFunctionPlugin extends AbstractGenericTranslator
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getTranslatorFunctionClassName(): string

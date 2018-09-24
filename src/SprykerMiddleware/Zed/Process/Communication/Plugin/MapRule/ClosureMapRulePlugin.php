@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule;
@@ -18,6 +18,8 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\MapRule\MapRulePluginInterfa
 class ClosureMapRulePlugin extends AbstractPlugin implements MapRulePluginInterface
 {
     /**
+     * @api
+     *
      * @param array $result
      * @param array $payload
      * @param string $key
@@ -32,6 +34,8 @@ class ClosureMapRulePlugin extends AbstractPlugin implements MapRulePluginInterf
     }
 
     /**
+     * @api
+     *
      * @param string $key
      * @param mixed $value
      *
