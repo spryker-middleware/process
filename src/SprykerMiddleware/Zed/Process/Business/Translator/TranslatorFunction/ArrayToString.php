@@ -21,7 +21,7 @@ class ArrayToString extends AbstractTranslatorFunction
     ];
 
     /**
-     * @param mixed $value
+     * @param array $value
      * @param array $payload
      *
      * @throws \SprykerMiddleware\Zed\Process\Business\Exception\WrongTypeValueTranslatorException
