@@ -1,30 +1,27 @@
 language: php
 
-sudo: required
+sudo: false
 
 php:
-  - 7.1
+- 7.1
 
 env:
   global:
-    - DEFAULT=1
+  - DEFAULT=1
 
 matrix:
   include:
-    - php: 7.2
-      env: PHPCS=1 DEFAULT=0
+  - php: 7.2
+    env: PHPCS=1 DEFAULT=0
 
   fast_finish: true
 
 before_script:
-  - composer install --prefer-dist --no-interaction
-before_install:
-  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+- composer install --prefer-dist --no-interaction
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/codecept run; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then composer cs-check ; fi"
+- sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/codecept run; fi"
+- sh -c "if [ '$PHPCS' = '1' ]; then composer cs-check ; fi"
 
 notifications:
   email: false
