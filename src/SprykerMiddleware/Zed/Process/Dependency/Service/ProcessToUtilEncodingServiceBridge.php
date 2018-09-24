@@ -27,9 +27,9 @@ class ProcessToUtilEncodingServiceBridge implements ProcessToUtilEncodingService
      * @param int|null $options
      * @param int|null $depth
      *
-     * @return string
+     * @return string|null
      */
-    public function encodeJson($value, $options = null, $depth = null): string
+    public function encodeJson($value, $options = null, $depth = null): ?string
     {
         return $this->utilEncodingService->encodeJson($value, $options, $depth);
     }

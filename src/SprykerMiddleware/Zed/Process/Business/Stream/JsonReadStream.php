@@ -13,7 +13,7 @@ use SprykerMiddleware\Zed\Process\Business\Exception\InvalidReadSourceException;
 class JsonReadStream implements ReadStreamInterface
 {
     /**
-     * @var resource
+     * @var resource|null
      */
     protected $handle;
 
@@ -87,11 +87,11 @@ class JsonReadStream implements ReadStreamInterface
     {
         $newPosition = $this->getNewPosition($offset, $whence);
         if ($newPosition < 0 || $newPosition > count($this->data)) {
-            return false;
+            return 0;
         }
         $this->position = $newPosition;
 
-        return true;
+        return 1;
     }
 
     /**

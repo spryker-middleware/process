@@ -12,7 +12,7 @@ use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 class JsonRowReadStream implements ReadStreamInterface
 {
     /**
-     * @var resource
+     * @var resource|null
      */
     protected $handle;
 
@@ -82,7 +82,7 @@ class JsonRowReadStream implements ReadStreamInterface
      */
     public function seek(int $offset, int $whence): int
     {
-        return true;
+        return 1;
     }
 
     /**

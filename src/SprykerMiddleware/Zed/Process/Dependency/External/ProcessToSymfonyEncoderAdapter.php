@@ -27,9 +27,9 @@ class ProcessToSymfonyEncoderAdapter implements ProcessToSymfonyEncoderAdapterIn
      * @param string $format
      * @param array $context
      *
-     * @return string
+     * @return mixed
      */
-    public function encode($data, string $format, array $context): string
+    public function encode($data, string $format, array $context)
     {
         return $this->encoder
             ->encode($data, $format, $context);

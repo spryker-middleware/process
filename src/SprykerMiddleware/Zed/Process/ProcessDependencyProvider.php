@@ -290,7 +290,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return \Spryker\Shared\Log\Dependency\Plugin\LogHandlerPluginInterface[]
+     * @return \Spryker\Shared\Log\Dependency\Plugin\LogProcessorPluginInterface[]
      */
     protected function getLogProcessors(): array
     {
@@ -301,7 +301,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return \Spryker\Shared\Log\Dependency\Plugin\LogProcessorPluginInterface[]
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLogHandlerPluginInterface[]
      */
     protected function getLogHandlers(): array
     {

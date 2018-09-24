@@ -49,8 +49,8 @@
 
     <transfer name="StageResults">
         <property name="stageName" type="string"/>
-        <property name="inputItemCount" type="string"/>
-        <property name="outputItemCount" type="string"/>
+        <property name="inputItemCount" type="int"/>
+        <property name="outputItemCount" type="int"/>
         <property name="totalExecutionTime" type="int"/>
     </transfer>
 

@@ -14,7 +14,7 @@ class JsonRowWriteStream implements WriteStreamInterface
     protected const KEY_SIZE = 'size';
 
     /**
-     * @var resource
+     * @var resource|null
      */
     protected $handle;
 
@@ -52,6 +52,7 @@ class JsonRowWriteStream implements WriteStreamInterface
         $this->path = $path;
         $this->bufferSize = $bufferSize;
         $this->count = 0;
+        $this->position = 0;
     }
 
     /**
@@ -110,11 +111,11 @@ class JsonRowWriteStream implements WriteStreamInterface
     {
         $newPosition = $this->getNewPosition($offset, $whence);
         if ($newPosition < 0 || $newPosition > count($this->data)) {
-            return false;
+            return 0;
         }
         $this->position = $newPosition;
 
-        return true;
+        return 1;
     }
 
     /**

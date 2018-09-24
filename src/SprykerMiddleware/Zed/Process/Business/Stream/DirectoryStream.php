@@ -13,7 +13,7 @@ use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 class DirectoryStream implements ReadStreamInterface
 {
     /**
-     * @var \DirectoryIterator
+     * @var \DirectoryIterator|null
      */
     protected $directoryIterator;
 
@@ -82,11 +82,11 @@ class DirectoryStream implements ReadStreamInterface
     {
         $newPosition = $this->getNewPosition($offset, $whence);
         if ($newPosition < 0 || $newPosition > count($this->list)) {
-            return false;
+            return 0;
         }
         $this->position = $newPosition;
 
-        return true;
+        return 1;
     }
 
     /**

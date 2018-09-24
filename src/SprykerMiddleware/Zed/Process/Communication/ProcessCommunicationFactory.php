@@ -11,8 +11,8 @@ use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\AbstractHandler;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
-use Psr\Log\LogLevel;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use SprykerMiddleware\Service\Process\ProcessServiceInterface;
 use SprykerMiddleware\Zed\Process\Business\Iterator\IteratorFactory;
@@ -104,7 +104,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     {
         $streamHandler = new StreamHandler(
             'php://stderr',
-            LogLevel::DEBUG
+            Logger::DEBUG
         );
         $formatter = $this->createLogstashFormatter();
         $streamHandler->setFormatter($formatter);

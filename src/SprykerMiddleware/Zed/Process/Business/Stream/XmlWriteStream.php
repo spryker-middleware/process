@@ -30,17 +30,17 @@ class XmlWriteStream implements WriteStreamInterface
     private $entityNodeName;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $version;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $encoding;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $standalone;
 

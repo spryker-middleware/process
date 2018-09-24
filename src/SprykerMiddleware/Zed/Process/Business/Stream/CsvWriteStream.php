@@ -68,10 +68,6 @@ class CsvWriteStream implements WriteStreamInterface
     {
         $this->handle = new SplFileObject($this->path, 'w');
 
-        if ($this->handle === false) {
-            return false;
-        }
-
         $this->data = [];
 
         $this->position = 0;
@@ -109,11 +105,11 @@ class CsvWriteStream implements WriteStreamInterface
     {
         $newPosition = $this->getNewPosition($offset, $whence);
         if ($newPosition < 0 || $newPosition > count($this->data)) {
-            return false;
+            return 0;
         }
         $this->position = $newPosition;
 
-        return true;
+        return 1;
     }
 
     /**

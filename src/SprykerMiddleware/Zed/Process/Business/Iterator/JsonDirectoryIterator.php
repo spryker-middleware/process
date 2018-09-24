@@ -87,7 +87,6 @@ class JsonDirectoryIterator implements IteratorInterface
     public function rewind()
     {
         $this->directoryStream->seek(0, SEEK_SET);
-        $this->jsonStream = null;
         $this->initJsonStreamForNextItem();
     }
 
