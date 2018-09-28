@@ -13,16 +13,34 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\Translato
 class TranslatorFunctionPluginResolver implements TranslatorFunctionPluginResolverInterface
 {
     /**
-     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[]
+     * @var \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface[]
      */
-    protected $configurationProfilePluginsStack;
+    protected $translatorFunctionPlugins;
 
     /**
      * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[] $configurationProfilePluginsStack
      */
     public function __construct(array $configurationProfilePluginsStack)
     {
-        $this->configurationProfilePluginsStack = $configurationProfilePluginsStack;
+        $this->translatorFunctionPlugins = $this->generateTranslatorFunctionPluginList($configurationProfilePluginsStack);
+    }
+
+    /**
+     * @param \SprykerMiddleware\Zed\Process\Dependency\Plugin\Configuration\ConfigurationProfilePluginInterface[] $configurationProfilePluginsStack
+     *
+     * @return array
+     */
+    protected function generateTranslatorFunctionPluginList(array $configurationProfilePluginsStack): array
+    {
+        $translatorFunctionPluginList = [];
+
+        foreach ($configurationProfilePluginsStack as $profile) {
+            foreach ($profile->getTranslatorFunctionPlugins() as $translatorFunctionPlugin) {
+                $translatorFunctionPluginList[$translatorFunctionPlugin->getName()] = $translatorFunctionPlugin;
+            }
+        }
+
+        return $translatorFunctionPluginList;
     }
 
     /**
@@ -34,17 +52,33 @@ class TranslatorFunctionPluginResolver implements TranslatorFunctionPluginResolv
      */
     public function getTranslatorFunctionPluginByName(string $translatorFunctionPluginName): TranslatorFunctionPluginInterface
     {
-        foreach ($this->configurationProfilePluginsStack as $profile) {
-            foreach ($profile->getTranslatorFunctionPlugins() as $translatorFunctionPlugin) {
-                if ($translatorFunctionPlugin->getName() === $translatorFunctionPluginName) {
-                    return $translatorFunctionPlugin;
-                }
-            }
+        if ($this->issetTranslationFunctionPlugin($translatorFunctionPluginName)) {
+            return $this->getTranslationFunctionPlugin($translatorFunctionPluginName);
         }
 
         throw new MissingTranslatorFunctionPluginException(sprintf(
             'Missing "%s" translator function plugin. You need to add your translator function to configuration profile',
             $translatorFunctionPluginName
         ));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    protected function issetTranslationFunctionPlugin(string $name): bool
+    {
+        return isset($this->translatorFunctionPlugins[$name]);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\TranslatorFunction\TranslatorFunctionPluginInterface
+     */
+    protected function getTranslationFunctionPlugin(string $name): TranslatorFunctionPluginInterface
+    {
+        return $this->translatorFunctionPlugins[$name];
     }
 }
