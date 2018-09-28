@@ -1,7 +1,7 @@
 {
     "name": "spryker-middleware/process",
     "description": "Process module",
-    "license": "MIT",
+    "license": "proprietary",
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.1",
