@@ -4,6 +4,7 @@ sudo: false
 
 php:
 - 7.1
+- 7.2
 
 env:
   global:
@@ -12,7 +13,7 @@ env:
 matrix:
   include:
   - php: 7.2
-    env: PHPCS=1 DEFAULT=0
+    env: CHECKS=1 DEFAULT=0
 
   fast_finish: true
 
@@ -20,8 +21,8 @@ before_script:
 - composer install --prefer-dist --no-interaction
 
 script:
-- sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/codecept run; fi"
-- sh -c "if [ '$PHPCS' = '1' ]; then composer cs-check ; fi"
+- if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept run ; fi
+- if [[ $CHECKS == 1 ]]; then composer cs-check ; fi
 
 notifications:
   email: false
