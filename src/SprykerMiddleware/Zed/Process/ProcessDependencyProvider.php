@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerMiddleware\Zed\Process;
@@ -290,7 +290,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return \Spryker\Shared\Log\Dependency\Plugin\LogHandlerPluginInterface[]
+     * @return \Spryker\Shared\Log\Dependency\Plugin\LogProcessorPluginInterface[]
      */
     protected function getLogProcessors(): array
     {
@@ -301,7 +301,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @return \Spryker\Shared\Log\Dependency\Plugin\LogProcessorPluginInterface[]
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLogHandlerPluginInterface[]
      */
     protected function getLogHandlers(): array
     {

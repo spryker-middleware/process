@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerMiddleware\Zed\Process\Communication;
@@ -11,8 +11,8 @@ use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\AbstractHandler;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
-use Psr\Log\LogLevel;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use SprykerMiddleware\Service\Process\ProcessServiceInterface;
 use SprykerMiddleware\Zed\Process\Business\Iterator\IteratorFactory;
@@ -104,7 +104,7 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     {
         $streamHandler = new StreamHandler(
             'php://stderr',
-            LogLevel::DEBUG
+            Logger::DEBUG
         );
         $formatter = $this->createLogstashFormatter();
         $streamHandler->setFormatter($formatter);

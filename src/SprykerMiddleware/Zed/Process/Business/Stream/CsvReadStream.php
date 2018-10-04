@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
@@ -87,7 +87,8 @@ class CsvReadStream implements ReadStreamInterface
     {
         if ($whence === SEEK_SET) {
             $this->file->seek($offset);
-            return 1;
+
+            return static::STATUS_SEEK_SUCCESS;
         }
 
         return $this->file->fseek($offset, $whence);

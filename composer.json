@@ -1,7 +1,7 @@
 {
     "name": "spryker-middleware/process",
     "description": "Process module",
-    "license": "MIT",
+    "license": "proprietary",
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.1",
@@ -32,12 +32,6 @@
         "sort-packages": true,
         "process-timeout": 600
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://code.spryker.com/repo/private"
-        }
-    ],
     "scripts": {
         "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v src/ tests/",
         "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v src/ tests/"

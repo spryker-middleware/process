@@ -1,27 +1,47 @@
 language: php
 
-sudo: false
+notifications:
+  email: false
 
-php:
-  - 7.1
+sudo: required
+
+matrix:
+  fast_finish: true
+  include:
+  - php: "7.1"
+
+services:
+- postgresql
+- redis
+- rabbitmq
+
+addons:
+  postgresql: 9.4
+
+  apt:
+    packages:
+    - graphviz
+
+  hosts:
+  - zed.de.spryker.test
+  - www.de.spryker.test
 
 env:
   global:
-    - DEFAULT=1
+  - APPLICATION_ENV=devtest
+  - APPLICATION_STORE=DE
+  - MODULE_DIR=module
+  - SHOP_DIR=current
+  - MODULE_NAME=process
 
-matrix:
-  include:
-    - php: 7.2
-      env: PHPCS=1 DEFAULT=0
+cache:
+  directories:
+  - $SHOP_DIR/current/vendor
+  - $HOME/.composer/cache
 
-  fast_finish: true
-
-before_script:
-  - composer install --prefer-dist --no-interaction
+before_install:
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/codecept run; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then composer cs-check ; fi"
-
-notifications:
-  email: false
+  - git clone -b master https://github.com/spryker-middleware/middleware-ci.git middleware-ci
+  - ./middleware-ci/build/travis.sh

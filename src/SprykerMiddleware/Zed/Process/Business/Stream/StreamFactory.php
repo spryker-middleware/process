@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
@@ -29,11 +29,31 @@ class StreamFactory implements StreamFactoryInterface
     /**
      * @param string $path
      *
+     * @return \SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface
+     */
+    public function createJsonRowReadStream(string $path): ReadStreamInterface
+    {
+        return new JsonRowReadStream($path);
+    }
+
+    /**
+     * @param string $path
+     *
      * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
      */
     public function createJsonWriteStream(string $path): WriteStreamInterface
     {
         return new JsonWriteStream($path);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return \SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface
+     */
+    public function createJsonRowWriteStream(string $path): WriteStreamInterface
+    {
+        return new JsonRowWriteStream($path);
     }
 
     /**

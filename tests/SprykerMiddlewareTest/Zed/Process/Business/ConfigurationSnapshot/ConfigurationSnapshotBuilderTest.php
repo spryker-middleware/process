@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerMiddlewareTest\Zed\Process\Business\ConfigurationSnapshot;
@@ -44,7 +44,7 @@ class ConfigurationSnapshotBuilderTest extends Unit
         $this->assertEquals($expectedTransfer->getInputStreamPlugin()->getStreamPluginName(), $processConfigurationTransfer->getInputStreamPlugin()->getStreamPluginName());
         $this->assertEquals($expectedTransfer->getOutputStreamPlugin()->getStreamPluginName(), $processConfigurationTransfer->getOutputStreamPlugin()->getStreamPluginName());
         $this->assertEquals($expectedTransfer->getStagePluginNames()[0], 'StreamWriterStagePlugin');
-        $this->assertEquals($expectedTransfer->getPreProcessHookPluginNames(), null);
+        $this->assertEquals($expectedTransfer->getPreProcessHookPluginNames(), []);
         $this->assertEquals($expectedTransfer->getPostProcessHookPluginNames()[0], 'ReportPostProcessorHookPlugin');
     }
 

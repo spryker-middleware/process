@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerMiddleware\Zed\Process\Business\Stream;
@@ -13,7 +13,7 @@ use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
 class DirectoryStream implements ReadStreamInterface
 {
     /**
-     * @var \DirectoryIterator
+     * @var \DirectoryIterator|null
      */
     protected $directoryIterator;
 
@@ -82,11 +82,11 @@ class DirectoryStream implements ReadStreamInterface
     {
         $newPosition = $this->getNewPosition($offset, $whence);
         if ($newPosition < 0 || $newPosition > count($this->list)) {
-            return false;
+            return static::STATUS_SEEK_FAIL;
         }
         $this->position = $newPosition;
 
-        return true;
+        return static::STATUS_SEEK_SUCCESS;
     }
 
     /**
