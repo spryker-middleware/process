@@ -44,7 +44,7 @@ class ConfigurationSnapshotBuilderTest extends Unit
         $this->assertEquals($expectedTransfer->getInputStreamPlugin()->getStreamPluginName(), $processConfigurationTransfer->getInputStreamPlugin()->getStreamPluginName());
         $this->assertEquals($expectedTransfer->getOutputStreamPlugin()->getStreamPluginName(), $processConfigurationTransfer->getOutputStreamPlugin()->getStreamPluginName());
         $this->assertEquals($expectedTransfer->getStagePluginNames()[0], 'StreamWriterStagePlugin');
-        $this->assertEquals($expectedTransfer->getPreProcessHookPluginNames(), null);
+        $this->assertEquals($expectedTransfer->getPreProcessHookPluginNames(), []);
         $this->assertEquals($expectedTransfer->getPostProcessHookPluginNames()[0], 'ReportPostProcessorHookPlugin');
     }
 

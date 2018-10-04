@@ -3,8 +3,8 @@ language: php
 sudo: false
 
 php:
-- 7.1
-- 7.2
+  - 7.1
+  - 7.2
 
 env:
   global:
@@ -12,17 +12,18 @@ env:
 
 matrix:
   include:
-  - php: 7.2
-    env: CHECKS=1 DEFAULT=0
+    - php: 7.2
+      env: CHECKS=1 DEFAULT=0
 
   fast_finish: true
 
 before_script:
-- composer install --prefer-dist --no-interaction
+  - composer install --prefer-dist --no-interaction
 
 script:
-- if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept run ; fi
-- if [[ $CHECKS == 1 ]]; then composer cs-check ; fi
+  - if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept run ; fi
+  - if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept build ; fi
+  - if [[ $CHECKS == 1 ]]; then composer cs-check ; fi
 
 notifications:
   email: false
