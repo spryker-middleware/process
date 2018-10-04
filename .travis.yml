@@ -8,7 +8,9 @@ php:
 
 env:
   global:
-  - DEFAULT=1
+    - DEFAULT=1
+    - APPLICATION_ENV=devtest
+    - APPLICATION_STORE=DE
 
 matrix:
   include:
