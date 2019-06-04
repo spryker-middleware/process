@@ -14,4 +14,4 @@ composer require spryker-middleware/process
 ```
 
 ## Documentation
-[Module Documentation](https://academy.spryker.com/developing_with_spryker/spryker_middleware.html)
+[Module Documentation](https://documentation.spryker.com/spryker-middleware.htm)
