@@ -81,7 +81,10 @@ class JsonRowWriteStream implements WriteStreamInterface
         if ($this->handle) {
             $this->flush();
             $stat = fstat($this->handle);
-            ftruncate($this->handle, $stat[static::KEY_SIZE] - 1);
+
+            if ($stat[static::KEY_SIZE] > 0) {
+                ftruncate($this->handle, $stat[static::KEY_SIZE] - 1);
+            }
 
             return fclose($this->handle);
         }
