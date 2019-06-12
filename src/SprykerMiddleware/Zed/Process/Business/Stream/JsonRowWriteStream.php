@@ -78,7 +78,6 @@ class JsonRowWriteStream implements WriteStreamInterface
      */
     public function close(): bool
     {
-        // Scrutinizer fix
         if ($this->handle) {
             $this->flush();
             $stat = fstat($this->handle);
