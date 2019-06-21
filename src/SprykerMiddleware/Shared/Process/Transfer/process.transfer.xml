@@ -6,7 +6,9 @@
     <transfer name="ProcessSettings">
         <property name="name" type="string"/>
         <property name="inputPath" type="string"/>
+        <property name="inputStreamOptions" type="array"/>
         <property name="outputPath" type="string"/>
+        <property name="outputStreamOptions" type="array"/>
         <property name="iteratorConfig" type="IteratorConfig"/>
         <property name="loggerConfig" type="LoggerConfig"/>
     </transfer>
