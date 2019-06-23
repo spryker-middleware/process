@@ -57,6 +57,9 @@ class XmlOutputStreamPlugin extends AbstractOptionAwareStreamPlugin implements O
             );
     }
 
+    /**
+     * @return \Symfony\Component\OptionsResolver\OptionsResolver
+     */
     protected function configureOptionsResolver(): OptionsResolver
     {
         return $this->createOptionsResolver()
@@ -67,24 +70,34 @@ class XmlOutputStreamPlugin extends AbstractOptionAwareStreamPlugin implements O
             ])
             ->setRequired([static::ROOT_NODE_NAME_STREAM_OPTION, static::ENTITY_NODE_NAME_STREAM_OPTION])
             ->setAllowedTypes(
-                static::ROOT_NODE_NAME_STREAM_OPTION, [
-                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL
-            ])
+                static::ROOT_NODE_NAME_STREAM_OPTION,
+                [
+                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
+                ]
+            )
             ->setAllowedTypes(
-            static::ENTITY_NODE_NAME_STREAM_OPTION, [
-                static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL
-            ])
+                static::ENTITY_NODE_NAME_STREAM_OPTION,
+                [
+                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
+                ]
+            )
             ->setAllowedTypes(
-                static::VERSION_STREAM_OPTION, [
-                static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL
-            ])
+                static::VERSION_STREAM_OPTION,
+                [
+                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
+                ]
+            )
             ->setAllowedTypes(
-                static::ENCODING_STREAM_OPTION, [
-                static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL
-            ])
+                static::ENCODING_STREAM_OPTION,
+                [
+                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
+                ]
+            )
             ->setAllowedTypes(
-                static::STANDALONE_STREAM_OPTION, [
-                static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL
-            ]);
+                static::STANDALONE_STREAM_OPTION,
+                [
+                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
+                ]
+            );
     }
 }

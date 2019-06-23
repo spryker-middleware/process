@@ -49,6 +49,10 @@ class XmlInputStreamPlugin extends AbstractOptionAwareStreamPlugin implements In
             );
     }
 
+
+    /**
+     * @return \Symfony\Component\OptionsResolver\OptionsResolver
+     */
     protected function configureOptionsResolver(): OptionsResolver
     {
         return $this->createOptionsResolver()

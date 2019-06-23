@@ -43,7 +43,6 @@ class ProcessConsole extends Console
 
     protected const DEFAULT_OPTIONS = '{}';
 
-
     /**
      * @var int
      */
