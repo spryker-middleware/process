@@ -95,7 +95,7 @@ class ProcessConsole extends Console
             static::OPTION_INPUT_OPTIONS,
             static::OPTION_INPUT_OPTIONS_SHORTCUT,
             InputOption::VALUE_OPTIONAL,
-            'Input Stream Options',
+            'Input Stream Options. Should be JSON format, for example: \'{"rootNodeName": "Root"}\'',
             static::DEFAULT_OPTIONS
         );
 
@@ -110,7 +110,7 @@ class ProcessConsole extends Console
             static::OPTION_OUTPUT_OPTIONS,
             static::OPTION_OUTPUT_OPTIONS_SHORTCUT,
             InputOption::VALUE_OPTIONAL,
-            'Output Stream Options',
+            'Output Stream Options. Should be JSON format, for example: \'{"rootNodeName": "Root", "entityNodeName": "Entity"}\'',
             static::DEFAULT_OPTIONS
         );
     }
