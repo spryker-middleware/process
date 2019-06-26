@@ -23,9 +23,14 @@ use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\Transla
 use SprykerMiddleware\Zed\Process\Business\Translator\TranslatorFunction\TranslatorFunctionFactoryInterface;
 use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactory;
 use SprykerMiddleware\Zed\Process\Business\Validator\Factory\ValidatorFactoryInterface;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\XmlInputStreamConfigurator;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\XmlOutputStreamConfigurator;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyDecoderAdapterInterface;
 use SprykerMiddleware\Zed\Process\Dependency\External\ProcessToSymfonyEncoderAdapterInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceInterface;
 use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\ProcessConfig getConfig()
@@ -158,5 +163,37 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     public function getEncoder(): ProcessToSymfonyEncoderAdapterInterface
     {
         return $this->getProvidedDependency(ProcessDependencyProvider::ENCODER);
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Dependency\Service\ProcessToUtilEncodingServiceInterface
+     */
+    public function getUtilEncodingService(): ProcessToUtilEncodingServiceInterface
+    {
+        return $this->getProvidedDependency(ProcessDependencyProvider::SERVICE_UTIL_ENCODING);
+    }
+
+    /**
+     * @return \Symfony\Component\OptionsResolver\OptionsResolver
+     */
+    public function createOptionsResolver(): OptionsResolver
+    {
+        return new OptionsResolver();
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface
+     */
+    public function createXmlInputStreamConfigurator(): StreamConfiguratorInterface
+    {
+        return new XmlInputStreamConfigurator($this->createOptionsResolver());
+    }
+
+    /**
+     * @return \SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface
+     */
+    public function createXmlOutputStreamConfigurator(): StreamConfiguratorInterface
+    {
+        return new XmlOutputStreamConfigurator($this->createOptionsResolver());
     }
 }

@@ -8,8 +8,9 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\ReadStreamInterface;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\XmlInputStreamConfigurator;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\InputStreamPluginInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
@@ -18,8 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class XmlInputStreamPlugin extends AbstractOptionAwareStreamPlugin implements InputStreamPluginInterface
 {
     protected const PLUGIN_NAME = 'XmlInputStreamPlugin';
-
-    protected const ROOT_NODE_NAME_STREAM_OPTION = 'rootNodeName';
 
     /**
      * @api
@@ -44,19 +43,16 @@ class XmlInputStreamPlugin extends AbstractOptionAwareStreamPlugin implements In
             ->createStreamFactory()
             ->createXmlReadStream(
                 $path,
-                $this->options[static::ROOT_NODE_NAME_STREAM_OPTION],
+                $this->options[XmlInputStreamConfigurator::ROOT_NODE_NAME_STREAM_OPTION],
                 $this->getFactory()->getDecoder()
             );
     }
 
-
     /**
-     * @return \Symfony\Component\OptionsResolver\OptionsResolver
+     * @return \SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface
      */
-    protected function configureOptionsResolver(): OptionsResolver
+    protected function getStreamConfigurator(): StreamConfiguratorInterface
     {
-        return $this->createOptionsResolver()
-            ->setRequired([static::ROOT_NODE_NAME_STREAM_OPTION])
-            ->setAllowedTypes(static::ROOT_NODE_NAME_STREAM_OPTION, [static::OPTION_TYPE_STRING]);
+        return $this->getFactory()->createXmlInputStreamConfigurator();
     }
 }

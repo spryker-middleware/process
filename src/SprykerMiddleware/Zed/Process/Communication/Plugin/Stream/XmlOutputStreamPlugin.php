@@ -8,8 +8,9 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Stream;
 
 use SprykerMiddleware\Shared\Process\Stream\WriteStreamInterface;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\XmlOutputStreamConfigurator;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OutputStreamPluginInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
@@ -18,12 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class XmlOutputStreamPlugin extends AbstractOptionAwareStreamPlugin implements OutputStreamPluginInterface
 {
     protected const PLUGIN_NAME = 'XmlOutputStreamPlugin';
-
-    protected const ROOT_NODE_NAME_STREAM_OPTION = 'rootNodeName';
-    protected const ENTITY_NODE_NAME_STREAM_OPTION = 'entityNodeName';
-    protected const VERSION_STREAM_OPTION = 'version';
-    protected const ENCODING_STREAM_OPTION = 'encoding';
-    protected const STANDALONE_STREAM_OPTION = 'standalone';
 
     /**
      * @api
@@ -48,56 +43,20 @@ class XmlOutputStreamPlugin extends AbstractOptionAwareStreamPlugin implements O
             ->createStreamFactory()
             ->createXmlWriteStream(
                 $path,
-                $this->options[static::ROOT_NODE_NAME_STREAM_OPTION],
-                $this->options[static::ENTITY_NODE_NAME_STREAM_OPTION],
+                $this->options[XmlOutputStreamConfigurator::ROOT_NODE_NAME_STREAM_OPTION],
+                $this->options[XmlOutputStreamConfigurator::ENTITY_NODE_NAME_STREAM_OPTION],
                 $this->getFactory()->getEncoder(),
-                $this->options[static::VERSION_STREAM_OPTION],
-                $this->options[static::ENCODING_STREAM_OPTION],
-                $this->options[static::STANDALONE_STREAM_OPTION]
+                $this->options[XmlOutputStreamConfigurator::VERSION_STREAM_OPTION],
+                $this->options[XmlOutputStreamConfigurator::ENCODING_STREAM_OPTION],
+                $this->options[XmlOutputStreamConfigurator::STANDALONE_STREAM_OPTION]
             );
     }
 
     /**
-     * @return \Symfony\Component\OptionsResolver\OptionsResolver
+     * @return \SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface
      */
-    protected function configureOptionsResolver(): OptionsResolver
+    protected function getStreamConfigurator(): StreamConfiguratorInterface
     {
-        return $this->createOptionsResolver()
-            ->setDefaults([
-                static::VERSION_STREAM_OPTION => null,
-                static::ENCODING_STREAM_OPTION => null,
-                static::STANDALONE_STREAM_OPTION => null,
-            ])
-            ->setRequired([static::ROOT_NODE_NAME_STREAM_OPTION, static::ENTITY_NODE_NAME_STREAM_OPTION])
-            ->setAllowedTypes(
-                static::ROOT_NODE_NAME_STREAM_OPTION,
-                [
-                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
-                ]
-            )
-            ->setAllowedTypes(
-                static::ENTITY_NODE_NAME_STREAM_OPTION,
-                [
-                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
-                ]
-            )
-            ->setAllowedTypes(
-                static::VERSION_STREAM_OPTION,
-                [
-                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
-                ]
-            )
-            ->setAllowedTypes(
-                static::ENCODING_STREAM_OPTION,
-                [
-                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
-                ]
-            )
-            ->setAllowedTypes(
-                static::STANDALONE_STREAM_OPTION,
-                [
-                    static::OPTION_TYPE_STRING, static::OPTION_TYPE_NULL,
-                ]
-            );
+        return $this->getFactory()->createXmlOutputStreamConfigurator();
     }
 }

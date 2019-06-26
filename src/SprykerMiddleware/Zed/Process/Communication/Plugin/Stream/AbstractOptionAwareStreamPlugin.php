@@ -8,8 +8,8 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Stream;
 
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
+use SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OptionAwareStreamPluginInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @method \SprykerMiddleware\Zed\Process\Business\ProcessFacadeInterface getFacade()
@@ -17,9 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractOptionAwareStreamPlugin extends AbstractPlugin implements OptionAwareStreamPluginInterface
 {
-    protected const OPTION_TYPE_STRING = 'string';
-    protected const OPTION_TYPE_NULL = 'null';
-
     /**
      * @var array
      */
@@ -34,21 +31,13 @@ abstract class AbstractOptionAwareStreamPlugin extends AbstractPlugin implements
      */
     public function setOptions(array $options)
     {
-        $this->options = $this->configureOptionsResolver()->resolve($options);
+        $this->options = $this->getStreamConfigurator()->resolveOptions($options);
 
         return $this;
     }
 
     /**
-     * @return \Symfony\Component\OptionsResolver\OptionsResolver
+     * @return \SprykerMiddleware\Zed\Process\Communication\Plugin\StreamConfigurator\StreamConfiguratorInterface
      */
-    protected function createOptionsResolver(): OptionsResolver
-    {
-        return new OptionsResolver();
-    }
-
-    /**
-     * @return \Symfony\Component\OptionsResolver\OptionsResolver
-     */
-    abstract protected function configureOptionsResolver(): OptionsResolver;
+    abstract protected function getStreamConfigurator(): StreamConfiguratorInterface;
 }

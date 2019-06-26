@@ -260,6 +260,6 @@ class ProcessConsole extends Console
      */
     protected function mapOptionToArray(string $option): ?array
     {
-        return json_decode($option, true);
+        return $this->getFactory()->getUtilEncodingService()->decodeJson($option, true);
     }
 }
