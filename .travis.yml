@@ -9,6 +9,8 @@ matrix:
   fast_finish: true
   include:
   - php: "7.1"
+    env:
+      TEST_VAR=test
 
 services:
 - postgresql
