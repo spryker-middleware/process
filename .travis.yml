@@ -9,6 +9,8 @@ matrix:
   fast_finish: true
   include:
   - php: "7.1"
+    env:
+      - PRODUCT_NAME=suite-nonsplit
 
 services:
 - postgresql
@@ -41,6 +43,8 @@ cache:
 
 before_install:
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - phpenv config-rm xdebug.ini
+
 
 script:
   - git clone -b master https://github.com/spryker-middleware/middleware-ci.git middleware-ci
