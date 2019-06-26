@@ -43,6 +43,10 @@ class ProcessConsole extends Console
 
     protected const DEFAULT_OPTIONS = '{}';
 
+    protected const OPTION_INPUT_OPTIONS_DESCRIPTION = 'Input Stream Options. Should be JSON format, for example: \'{"rootNodeName": "Root"}\'';
+
+    protected const OPTION_OUTPUT_OPTIONS_DESCRIPTION = 'Output Stream Options. Should be JSON format, for example: \'{"rootNodeName": "Root", "entityNodeName": "Entity"}\'';
+
     /**
      * @var int
      */
@@ -95,7 +99,7 @@ class ProcessConsole extends Console
             static::OPTION_INPUT_OPTIONS,
             static::OPTION_INPUT_OPTIONS_SHORTCUT,
             InputOption::VALUE_OPTIONAL,
-            'Input Stream Options. Should be JSON format, for example: \'{"rootNodeName": "Root"}\'',
+            static::OPTION_INPUT_OPTIONS_DESCRIPTION,
             static::DEFAULT_OPTIONS
         );
 
@@ -110,7 +114,7 @@ class ProcessConsole extends Console
             static::OPTION_OUTPUT_OPTIONS,
             static::OPTION_OUTPUT_OPTIONS_SHORTCUT,
             InputOption::VALUE_OPTIONAL,
-            'Output Stream Options. Should be JSON format, for example: \'{"rootNodeName": "Root", "entityNodeName": "Entity"}\'',
+            static::OPTION_OUTPUT_OPTIONS_DESCRIPTION,
             static::DEFAULT_OPTIONS
         );
     }
