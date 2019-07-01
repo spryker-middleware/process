@@ -43,9 +43,9 @@ class ProcessConsole extends Console
 
     protected const DEFAULT_OPTIONS = '{}';
 
-    protected const OPTION_INPUT_OPTIONS_DESCRIPTION = 'Input Stream Options. Should be JSON format, for example: \'{"rootNodeName": "Root"}\'';
+    protected const OPTION_INPUT_OPTIONS_DESCRIPTION = 'Input Stream Options. Must be JSON format, for example: \'{"rootNodeName": "Root"}\'';
 
-    protected const OPTION_OUTPUT_OPTIONS_DESCRIPTION = 'Output Stream Options. Should be JSON format, for example: \'{"rootNodeName": "Root", "entityNodeName": "Entity"}\'';
+    protected const OPTION_OUTPUT_OPTIONS_DESCRIPTION = 'Output Stream Options. Must be JSON format, for example: \'{"rootNodeName": "Root", "entityNodeName": "Entity"}\'';
 
     /**
      * @var int
