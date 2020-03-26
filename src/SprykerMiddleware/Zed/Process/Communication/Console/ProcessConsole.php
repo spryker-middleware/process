@@ -260,7 +260,7 @@ class ProcessConsole extends Console
     /**
      * @param string $options
      *
-     * @return array
+     * @return array|null
      */
     protected function mapOptionToArray(string $options): ?array
     {
