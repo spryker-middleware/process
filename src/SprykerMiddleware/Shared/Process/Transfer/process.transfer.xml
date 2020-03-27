@@ -6,9 +6,9 @@
     <transfer name="ProcessSettings">
         <property name="name" type="string"/>
         <property name="inputPath" type="string"/>
-        <property name="inputStreamOptions" type="array"/>
+        <property name="inputStreamOptions" type="array" singular="inputStreamOption"/>
         <property name="outputPath" type="string"/>
-        <property name="outputStreamOptions" type="array"/>
+        <property name="outputStreamOptions" type="array" singular="outputStreamOption"/>
         <property name="iteratorConfig" type="IteratorConfig"/>
         <property name="loggerConfig" type="LoggerConfig"/>
     </transfer>
@@ -25,16 +25,16 @@
     </transfer>
 
     <transfer name="MapperConfig">
-        <property name="map" type="array"/>
+        <property name="map" type="array" singular="map"/>
         <property name="strategy" type="string"/>
     </transfer>
 
     <transfer name="TranslatorConfig">
-        <property name="dictionary" type="array"/>
+        <property name="dictionary" type="array" singular="dictionary"/>
     </transfer>
 
     <transfer name="ValidatorConfig">
-        <property name="rules" type="array"/>
+        <property name="rules" type="array" singular="rule"/>
     </transfer>
 
     <transfer name="ProcessResult">
