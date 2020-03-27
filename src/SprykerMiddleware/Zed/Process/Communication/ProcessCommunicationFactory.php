@@ -9,7 +9,7 @@ namespace SprykerMiddleware\Zed\Process\Communication;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LogstashFormatter;
-use Monolog\Handler\AbstractHandler;
+use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
@@ -103,9 +103,9 @@ class ProcessCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return \Monolog\Handler\AbstractHandler
+     * @return \Monolog\Handler\AbstractProcessingHandler
      */
-    public function createStdErrStreamHandler(): AbstractHandler
+    public function createStdErrStreamHandler(): AbstractProcessingHandler
     {
         $streamHandler = new StreamHandler(
             'php://stderr',
