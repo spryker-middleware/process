@@ -129,6 +129,8 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     }
 
     /**
+     * @api
+     *
      * @return void
      */
     public function close(): void
