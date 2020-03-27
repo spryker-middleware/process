@@ -5,7 +5,7 @@
     "minimum-stability": "dev",
     "require": {
         "monolog/monolog": "^2.0.0",
-        "php": ">=7.2",
+        "php": ">=7.1",
         "spryker/symfony": "^3.0.0",
         "spryker/console": "^4.0.0",
         "spryker/development": "^3.0.0",
@@ -33,6 +33,11 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "process-timeout": 600
+    },
+   "extra": {
+        "branch-alias": {
+          "dev-master": "1.0.x-dev"
+        }
     },
     "scripts": {
         "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v src/ tests/",
