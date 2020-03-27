@@ -7,9 +7,15 @@
 
 namespace SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream;
 
+/**
+ * Use this plugin if you need configurable options in input or output stream.
+ */
 interface OptionAwareStreamPluginInterface
 {
     /**
+     * Specification:
+     *  - Sets options to input/output stream.
+     *
      * @api
      *
      * @param array $options

@@ -4,6 +4,7 @@
     "license": "proprietary",
     "minimum-stability": "dev",
     "require": {
+        "monolog/monolog": "^2.0.0",
         "php": ">=7.1",
         "spryker/symfony": "^3.0.0",
         "spryker/console": "^4.0.0",

@@ -127,4 +127,12 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     {
         return $this->getHandler()->setLevel($level);
     }
+
+    /**
+     * @return void
+     */
+    public function close(): void
+    {
+        $this->getHandler()->close();
+    }
 }
