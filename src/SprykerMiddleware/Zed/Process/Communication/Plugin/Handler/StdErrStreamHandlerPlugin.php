@@ -20,7 +20,7 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLogHandlerPlug
 class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogHandlerPluginInterface
 {
     /**
-     * @var \Monolog\Handler\AbstractProcessingHandler
+     * @var \Monolog\Handler\AbstractProcessingHandler|null
      */
     protected $handler;
 

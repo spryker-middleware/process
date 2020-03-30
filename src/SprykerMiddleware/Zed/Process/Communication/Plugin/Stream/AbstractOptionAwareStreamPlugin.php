@@ -18,7 +18,7 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OptionAwareStreamPlug
 abstract class AbstractOptionAwareStreamPlugin extends AbstractPlugin implements OptionAwareStreamPluginInterface
 {
     /**
-     * @var array
+     * @var array|null
      */
     protected $options;
 
