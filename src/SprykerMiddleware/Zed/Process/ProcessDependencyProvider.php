@@ -92,6 +92,7 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addValidators($container);
         $container = $this->addDecoder($container);
         $container = $this->addEncoder($container);
+        $container = $this->addEncodingService($container);
 
         return $container;
     }

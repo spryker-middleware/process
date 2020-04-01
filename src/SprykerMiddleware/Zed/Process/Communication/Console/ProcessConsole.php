@@ -29,13 +29,23 @@ class ProcessConsole extends Console
     protected const OPTION_ITERATOR_LIMIT = 'limit';
     protected const OPTION_LOG_LEVEL = 'flagLogLevel';
     protected const OPTION_INPUT = 'input';
+    protected const OPTION_INPUT_STREAM_OPTIONS = 'input-stream-options';
     protected const OPTION_OUTPUT = 'output';
+    protected const OPTION_OUTPUT_STREAM_OPTIONS = 'output-stream-options';
     protected const OPTION_PROCESS_NAME_SHORTCUT = 'p';
     protected const OPTION_ITERATOR_OFFSET_SHORTCUT = 's';
     protected const OPTION_ITERATOR_LIMIT_SHORTCUT = 'l';
     protected const OPTION_LOG_LEVEL_SHORTCUT = 'f';
     protected const OPTION_INPUT_SHORTCUT = 'i';
     protected const OPTION_OUTPUT_SHORTCUT = 'o';
+    protected const OPTION_INPUT_STREAM_OPTIONS_SHORTCUT = 't';
+    protected const OPTION_OUTPUT_STREAM_OPTIONS_SHORTCUT = 'u';
+
+    protected const DEFAULT_OPTIONS = '{}';
+
+    protected const OPTION_INPUT_STREAM_OPTIONS_DESCRIPTION = 'Input Stream Options. Must be JSON format, for example: \'{"rootNodeName": "Root"}\'';
+
+    protected const OPTION_OUTPUT_STREAM_OPTIONS_DESCRIPTION = 'Output Stream Options. Must be JSON format, for example: \'{"rootNodeName": "Root", "entityNodeName": "Entity"}\'';
 
     /**
      * @var int
@@ -86,10 +96,26 @@ class ProcessConsole extends Console
         );
 
         $this->addOption(
+            static::OPTION_INPUT_STREAM_OPTIONS,
+            static::OPTION_INPUT_STREAM_OPTIONS_SHORTCUT,
+            InputOption::VALUE_OPTIONAL,
+            static::OPTION_INPUT_STREAM_OPTIONS_DESCRIPTION,
+            static::DEFAULT_OPTIONS
+        );
+
+        $this->addOption(
             static::OPTION_OUTPUT,
             static::OPTION_OUTPUT_SHORTCUT,
             InputOption::VALUE_REQUIRED,
             'Output Stream'
+        );
+
+        $this->addOption(
+            static::OPTION_OUTPUT_STREAM_OPTIONS,
+            static::OPTION_OUTPUT_STREAM_OPTIONS_SHORTCUT,
+            InputOption::VALUE_OPTIONAL,
+            static::OPTION_OUTPUT_STREAM_OPTIONS_DESCRIPTION,
+            static::DEFAULT_OPTIONS
         );
     }
 
@@ -207,5 +233,37 @@ class ProcessConsole extends Console
         }
         $processSettingsTransfer->setInputPath($inputPath);
         $processSettingsTransfer->setOutputPath($outputPath);
+        $processSettingsTransfer->setInputStreamOptions($this->getInputStreamOptions($input));
+        $processSettingsTransfer->setOutputStreamOptions($this->getOutputStreamOptions($input));
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return array
+     */
+    protected function getInputStreamOptions(InputInterface $input): array
+    {
+        return $this->mapOptionToArray($input->getOption(static::OPTION_INPUT_STREAM_OPTIONS));
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return array
+     */
+    protected function getOutputStreamOptions(InputInterface $input): array
+    {
+        return $this->mapOptionToArray($input->getOption(static::OPTION_OUTPUT_STREAM_OPTIONS));
+    }
+
+    /**
+     * @param string $options
+     *
+     * @return array|null
+     */
+    protected function mapOptionToArray(string $options): ?array
+    {
+        return $this->getFactory()->getUtilEncodingService()->decodeJson($options, true);
     }
 }

@@ -8,7 +8,7 @@
 namespace SprykerMiddleware\Zed\Process\Communication\Plugin\Handler;
 
 use Monolog\Formatter\FormatterInterface;
-use Monolog\Handler\AbstractHandler;
+use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\HandlerInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLogHandlerPluginInterface;
@@ -20,14 +20,14 @@ use SprykerMiddleware\Zed\Process\Dependency\Plugin\Log\MiddlewareLogHandlerPlug
 class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogHandlerPluginInterface
 {
     /**
-     * @var \Monolog\Handler\AbstractHandler
+     * @var \Monolog\Handler\AbstractProcessingHandler|null
      */
     protected $handler;
 
     /**
-     * @return \Monolog\Handler\AbstractHandler
+     * @return \Monolog\Handler\AbstractProcessingHandler
      */
-    protected function getHandler(): AbstractHandler
+    protected function getHandler(): AbstractProcessingHandler
     {
         if (!$this->handler) {
             $this->handler = $this->getFactory()->createStdErrStreamHandler();
@@ -126,5 +126,15 @@ class StdErrStreamHandlerPlugin extends AbstractPlugin implements MiddlewareLogH
     public function setLevel($level): HandlerInterface
     {
         return $this->getHandler()->setLevel($level);
+    }
+
+    /**
+     * @api
+     *
+     * @return void
+     */
+    public function close(): void
+    {
+        $this->getHandler()->close();
     }
 }

@@ -4,9 +4,11 @@
     "license": "proprietary",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.1",
+        "monolog/monolog": "^2.0.0",
+        "php": ">=7.2",
         "spryker/console": "^4.0.0",
         "spryker/development": "^3.0.0",
+        "spryker/symfony": "^3.0.0",
         "spryker/transfer": "^3.4.0",
         "spryker/util-encoding": "^2.0.0",
         "spryker-middleware/logger": "^1.0.0"
@@ -31,6 +33,11 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "process-timeout": 600
+    },
+   "extra": {
+        "branch-alias": {
+          "dev-master": "1.0.x-dev"
+        }
     },
     "scripts": {
         "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v src/ tests/",

@@ -15,6 +15,7 @@ use SprykerMiddleware\Zed\Process\Business\Exception\TolerableProcessException;
 use SprykerMiddleware\Zed\Process\Business\Pipeline\PipelineInterface;
 use SprykerMiddleware\Zed\Process\Business\PluginResolver\ProcessPluginResolverInterface;
 use SprykerMiddleware\Zed\Process\Business\ProcessResult\ProcessResultHelperInterface;
+use SprykerMiddleware\Zed\Process\Dependency\Plugin\Stream\OptionAwareStreamPluginInterface;
 
 class Processor implements ProcessorInterface
 {
@@ -160,13 +161,17 @@ class Processor implements ProcessorInterface
         $this->processPlugin = $this->processPluginResolver
             ->getProcessConfigurationPluginByProcessName($this->processSettingsTransfer->getName());
 
-        $this->inputStream = $this->processPlugin
-            ->getInputStreamPlugin()
-            ->getInputStream($this->processSettingsTransfer->getInputPath());
+        $inputStreamPlugin = $this->processPlugin->getInputStreamPlugin();
+        if ($inputStreamPlugin instanceof OptionAwareStreamPluginInterface) {
+            $inputStreamPlugin->setOptions($this->processSettingsTransfer->getInputStreamOptions());
+        }
+        $this->inputStream = $inputStreamPlugin->getInputStream($this->processSettingsTransfer->getInputPath());
 
-        $this->outputStream = $this->processPlugin
-            ->getOutputStreamPlugin()
-            ->getOutputStream($this->processSettingsTransfer->getOutputPath());
+        $outputStreamPlugin = $this->processPlugin->getOutputStreamPlugin();
+        if ($outputStreamPlugin instanceof OptionAwareStreamPluginInterface) {
+            $outputStreamPlugin->setOptions($this->processSettingsTransfer->getOutputStreamOptions());
+        }
+        $this->outputStream = $outputStreamPlugin->getOutputStream($this->processSettingsTransfer->getOutputPath());
 
         $this->iterator = $this->processPlugin
             ->getIteratorPlugin()
