@@ -20,7 +20,6 @@
         "spryker/propel": "*",
         "spryker/silex": "*",
         "spryker/testify": "*",
-        "spryker/transfer": "*"
     },
     "autoload": {
         "psr-4": {
