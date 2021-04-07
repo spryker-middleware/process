@@ -33,6 +33,8 @@ use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
  * @group Business
  * @group ProcessFacade
  * @group ProcessFacadeTest
+ *
+ * @property \SprykerMiddlewareTest\Zed\Process\ProcessZedTester $tester
  */
 class ProcessFacadeTest extends Unit
 {
@@ -86,7 +88,7 @@ class ProcessFacadeTest extends Unit
         $transfer->setInputPath(static::PATH_INPUT);
         $transfer->setOutputPath(static::PATH_OUTPUT);
         $transfer->setIteratorConfig(new IteratorConfigTransfer());
-        $transfer->setLoggerConfig(new LoggerConfigTransfer());
+        $transfer->setLoggerConfig((new LoggerConfigTransfer())->setVerboseLevel(100));
 
         return $transfer;
     }
