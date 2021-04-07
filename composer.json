@@ -13,13 +13,12 @@
         "spryker-middleware/logger": "^1.0.0"
     },
     "require-dev": {
-        "spryker/development": "^3.0.0",
         "spryker/calculation": "*",
         "spryker/cart": "*",
         "spryker/code-sniffer": "*",
         "spryker/propel": "*",
         "spryker/silex": "*",
-        "spryker/testify": "*",
+        "spryker/testify": "*"
     },
     "autoload": {
         "psr-4": {
