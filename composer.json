@@ -5,6 +5,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.3",
+        "spryker/kernel": "^3.30.0",
         "spryker/console": "^4.0.0",
         "spryker/monolog": "^2.0.0",
         "spryker/symfony": "^3.0.0",
