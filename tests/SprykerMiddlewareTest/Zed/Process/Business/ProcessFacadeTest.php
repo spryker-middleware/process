@@ -11,6 +11,7 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\IteratorConfigTransfer;
 use Generated\Shared\Transfer\LoggerConfigTransfer;
 use Generated\Shared\Transfer\ProcessSettingsTransfer;
+use Monolog\Logger;
 use Spryker\Zed\Kernel\Container;
 use SprykerMiddleware\Zed\Process\Business\ProcessBusinessFactory;
 use SprykerMiddleware\Zed\Process\Business\ProcessFacade;
@@ -33,8 +34,6 @@ use SprykerMiddleware\Zed\Process\ProcessDependencyProvider;
  * @group Business
  * @group ProcessFacade
  * @group ProcessFacadeTest
- *
- * @property \SprykerMiddlewareTest\Zed\Process\ProcessZedTester $tester
  */
 class ProcessFacadeTest extends Unit
 {
@@ -56,6 +55,11 @@ class ProcessFacadeTest extends Unit
             'store' => 'GB',
         ],
     ];
+
+    /**
+     * @var \SprykerMiddlewareTest\Zed\Process\ProcessZedTester
+     */
+    protected $tester;
 
     /**
      * @return void
@@ -88,7 +92,7 @@ class ProcessFacadeTest extends Unit
         $transfer->setInputPath(static::PATH_INPUT);
         $transfer->setOutputPath(static::PATH_OUTPUT);
         $transfer->setIteratorConfig(new IteratorConfigTransfer());
-        $transfer->setLoggerConfig((new LoggerConfigTransfer())->setVerboseLevel(100));
+        $transfer->setLoggerConfig((new LoggerConfigTransfer())->setVerboseLevel(Logger::DEBUG));
 
         return $transfer;
     }

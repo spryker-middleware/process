@@ -8,7 +8,6 @@
 namespace SprykerMiddlewareTest\Zed\Process\Business\Mapper;
 
 use Codeception\Test\Unit;
-use Everon\Component\Factory\Tests\Unit\Doubles\LoggerStub;
 use Generated\Shared\Transfer\MapperConfigTransfer;
 use Monolog\Logger;
 use SprykerMiddleware\Shared\Logger\Logger\MiddlewareLoggerTrait;
@@ -36,12 +35,15 @@ use SprykerMiddleware\Zed\Process\Communication\Plugin\MapRule\KeyMapRulePlugin;
  * @group Business
  * @group Mapper
  * @group MapperTest
- *
- * @property \SprykerMiddlewareTest\Zed\Process\ProcessZedTester $tester
  */
 class MapperTest extends Unit
 {
     use MiddlewareLoggerTrait;
+
+    /**
+     * @var \SprykerMiddlewareTest\Zed\Process\ProcessZedTester
+     */
+    protected $tester;
 
     /**
      * @return void
