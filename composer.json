@@ -24,8 +24,8 @@
     },
     "autoload": {
         "psr-4": {
-          "SprykerMiddleware\\": "src/SprykerMiddleware/",
-          "SprykerMiddlewareTest\\": "tests/SprykerMiddlewareTest/"
+            "SprykerMiddleware\\": "src/SprykerMiddleware/",
+            "SprykerMiddlewareTest\\": "tests/SprykerMiddlewareTest/"
         }
     },
     "prefer-stable": true,
@@ -34,9 +34,9 @@
         "sort-packages": true,
         "process-timeout": 600
     },
-   "extra": {
+    "extra": {
         "branch-alias": {
-          "dev-master": "1.0.x-dev"
+            "dev-master": "1.0.x-dev"
         }
     },
     "scripts": {
