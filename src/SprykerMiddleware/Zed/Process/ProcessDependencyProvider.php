@@ -119,9 +119,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addConfigurationProfilesStack($container): Container
     {
-        $container[static::MIDDLEWARE_CONFIGURATION_PROFILES] = function () {
+        $container->set(static::MIDDLEWARE_CONFIGURATION_PROFILES, function () {
             return $this->getConfigurationProfilePluginsStack();
-        };
+        });
 
         return $container;
     }
@@ -133,9 +133,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addConfigurationMappersStack($container): Container
     {
-        $container[static::MIDDLEWARE_MAPPERS] = function () {
+        $container->set(static::MIDDLEWARE_MAPPERS, function () {
             return $this->getConfigurationMappersPluginsStack();
-        };
+        });
 
         return $container;
     }
@@ -147,9 +147,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addProcessesStack($container): Container
     {
-        $container[static::MIDDLEWARE_PROCESSES] = function () {
+        $container->set(static::MIDDLEWARE_PROCESSES, function () {
             return $this->getProcessesPluginsStack();
-        };
+        });
 
         return $container;
     }
@@ -191,9 +191,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addEncodingService(Container $container): Container
     {
-        $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
+        $container->set(static::SERVICE_UTIL_ENCODING, function (Container $container) {
             return new ProcessToUtilEncodingServiceBridge($container->getLocator()->utilEncoding()->service());
-        };
+        });
 
         return $container;
     }
@@ -205,9 +205,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addProcessService(Container $container): Container
     {
-        $container[static::SERVICE_PROCESS] = function (Container $container) {
+        $container->set(static::SERVICE_PROCESS, function (Container $container) {
             return $container->getLocator()->process()->service();
-        };
+        });
 
         return $container;
     }
@@ -219,9 +219,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addLogHandlers($container): Container
     {
-        $container[static::MIDDLEWARE_LOG_HANDLERS] = function () {
+        $container->set(static::MIDDLEWARE_LOG_HANDLERS, function () {
             return $this->getLogHandlers();
-        };
+        });
 
         return $container;
     }
@@ -233,9 +233,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addLogProcessors($container): Container
     {
-        $container[static::MIDDLEWARE_LOG_PROCESSORS] = function () {
+        $container->set(static::MIDDLEWARE_LOG_PROCESSORS, function () {
             return $this->getLogProcessors();
-        };
+        });
 
         return $container;
     }
@@ -247,9 +247,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addMiddlewareLoggerConfigPlugin($container): Container
     {
-        $container[static::MIDDLEWARE_LOG_CONFIG_PLUGIN] = function () {
+        $container->set(static::MIDDLEWARE_LOG_CONFIG_PLUGIN, function () {
             return $this->getMiddlewareLoggerConfigPlugin();
-        };
+        });
 
         return $container;
     }
@@ -261,9 +261,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addTranslatorFunctions($container): Container
     {
-        $container[static::MIDDLEWARE_TRANSLATOR_FUNCTIONS] = function () {
+        $container->set(static::MIDDLEWARE_TRANSLATOR_FUNCTIONS, function () {
             return $this->getTranslatorFunctionsStack();
-        };
+        });
 
         return $container;
     }
@@ -275,9 +275,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addValidators($container): Container
     {
-        $container[static::MIDDLEWARE_VALIDATORS] = function () {
+        $container->set(static::MIDDLEWARE_VALIDATORS, function () {
             return $this->getValidatorsStack();
-        };
+        });
 
         return $container;
     }
@@ -368,9 +368,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addDecoder($container)
     {
-        $container[static::DECODER] = function () {
+        $container->set(static::DECODER, function () {
             return $this->getDecoder();
-        };
+        });
 
         return $container;
     }
@@ -382,9 +382,9 @@ class ProcessDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addEncoder($container)
     {
-        $container[static::ENCODER] = function () {
+        $container->set(static::ENCODER, function () {
             return $this->getEncoder();
-        };
+        });
 
         return $container;
     }

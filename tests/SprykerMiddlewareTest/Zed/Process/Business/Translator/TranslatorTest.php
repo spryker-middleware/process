@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerMiddlewareTest\Zed\Process\Business\Mapper;
+namespace SprykerMiddlewareTest\Zed\Process\Business\Translator;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\TranslatorConfigTransfer;
