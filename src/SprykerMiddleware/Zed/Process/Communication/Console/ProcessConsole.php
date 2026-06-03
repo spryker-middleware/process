@@ -50,7 +50,7 @@ class ProcessConsole extends Console
     /**
      * @var int
      */
-    protected $exitCode = self::CODE_SUCCESS;
+    protected int $exitCode = self::CODE_SUCCESS;
 
     /**
      * @return void
@@ -144,7 +144,7 @@ class ProcessConsole extends Console
     /**
      * @return bool
      */
-    protected function hasError()
+    protected function hasError(): bool
     {
         return $this->exitCode !== static::CODE_SUCCESS;
     }
